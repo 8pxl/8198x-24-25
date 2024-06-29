@@ -1,6 +1,6 @@
 #include "keejLib/lib.h"
 
-int lib::controller::select(std::vector<std::string> names) {
+int lib::Controller::select(std::vector<std::string> names) {
     int num = names.size();
     int curr = 0;
     cont -> clear();
@@ -35,7 +35,7 @@ int lib::controller::select(std::vector<std::string> names) {
     }
 }
 
-std::vector<bool> lib::controller::getAll(std::vector<pros::controller_digital_e_t> buttons) {
+std::vector<bool> lib::Controller::getAll(std::vector<pros::controller_digital_e_t> buttons) {
     std::vector<bool> out;
     for (pros::controller_digital_e_t button : buttons) {
         out.push_back(cont -> get_digital(button));
@@ -45,14 +45,14 @@ std::vector<bool> lib::controller::getAll(std::vector<pros::controller_digital_e
 }
 
 //https://www.desmos.com/calculator/puepnlubzh
-double lib::controller::curve(double x, double scale) {
+double lib::Controller::curve(double x, double scale) {
     if (scale != 0) {
         return(pow(2.718, (scale * ((std::fabs(x) - 127))) / 1000 ) * x);
     }
     return x;
 }
 
-std::pair<double, double> lib::controller::drive(int direction, driveMode mode) {
+std::pair<double, double> lib::Controller::drive(int direction, driveMode mode) {
     double lStick = curve(cont -> get_analog(ANALOG_LEFT_Y) * direction, leftCurve);
     double rStick;
     switch(mode)
@@ -76,7 +76,7 @@ std::pair<double, double> lib::controller::drive(int direction, driveMode mode) 
     }
 }
 
-void lib::controller::setCurves(double left, double right) {
+void lib::Controller::setCurves(double left, double right) {
     leftCurve = left;
     rightCurve = right;
 }
