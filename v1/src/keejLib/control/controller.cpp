@@ -1,4 +1,7 @@
 #include "keejLib/lib.h"
+#include "main.h"
+
+keejLib::Controller::Controller(pros::Controller& cont) : cont(&cont) {}
 
 int keejLib::Controller::select(std::vector<std::string> names) {
     int num = names.size();

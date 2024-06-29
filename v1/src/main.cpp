@@ -1,6 +1,6 @@
 #include "main.h"
 #include "keejLib/lib.h"
-#include "robot.cpp"
+#include "robot.hpp"
 
 // - globals
 void (*auton)();

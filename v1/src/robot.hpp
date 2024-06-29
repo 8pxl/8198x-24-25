@@ -1,5 +1,6 @@
 #include "keejLib/lib.h"
 #include "pros/misc.hpp"
+#pragma once
 using namespace keejLib;
 
 namespace robot {
