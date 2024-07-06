@@ -19,8 +19,8 @@ void DriveTrain::spinVolts(int left, int right) {
     _motor_group_mutex.take();
     int half = _motor_count / 2;
     for (int i = 0; i < half; i++) {
-        _motors[i].move_voltage(left);
-        _motors[i + half].move_voltage(right);
+        _motors[i].move(left);
+        _motors[i + half].move(right);
     }
     _motor_group_mutex.give();
 }
