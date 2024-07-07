@@ -12,4 +12,10 @@ namespace robot {
     keejLib::Controller cont = keejLib::Controller(prosController);
     
     pros::Motor intake(20);
+    
+    pros::ADIDigitalOut clampPiston('A');
+    pros::ADIDigitalOut tiltPiston('B');
+    
+    Pis clamp({clampPiston}, false);
+    Pis tilt({tiltPiston}, false);
 }
