@@ -6,7 +6,7 @@
 
 using namespace robot;
 
-void driver() {
+void driver(Controller::driveMode mode) {
     dt.spinVolts(cont.drive(1, Controller::driveMode::arcade));
     auto state = cont.getAll(ALLBUTTONS);
     

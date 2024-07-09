@@ -58,8 +58,7 @@ double keejLib::Controller::curve(double x, double scale) {
 std::pair<double, double> keejLib::Controller::drive(int direction, driveMode mode) {
     double lStick = curve(cont -> get_analog(ANALOG_LEFT_Y) * direction, leftCurve);
     double rStick;
-    switch(mode)
-    {
+    switch(mode) {
         case arcade:
             rStick = curve(cont ->get_analog(ANALOG_RIGHT_X), rightCurve);
             return(std::make_pair(lStick + rStick, lStick - rStick));
@@ -77,6 +76,7 @@ std::pair<double, double> keejLib::Controller::drive(int direction, driveMode mo
             double right = lStick - (std::abs(lStick) * rStick) / 127.0;
             return (std::make_pair(left, right));
     }
+    return(std::make_pair(0, 0));
 }
 
 void keejLib::Controller::setCurves(double left, double right) {

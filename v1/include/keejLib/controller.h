@@ -2,7 +2,7 @@
 #include "main.h"
 
 namespace keejLib {
-    class Controller{
+    class Controller {
         private:
             pros::Controller* cont;
             double leftCurve;
@@ -23,4 +23,7 @@ namespace keejLib {
             std::pair<double, double> drive(int direction, Controller::driveMode mode);
             void setCurves(double left, double right);
     };
+    
+    std::vector<Controller::driveMode> driveModes = {keejLib::Controller::driveMode::tank, keejLib::Controller::driveMode::arcade, keejLib::Controller::driveMode::curvature};
+    #define DRIVEMODE_NAMES {"Tank", "Arcade", "Curvature"}
 }
