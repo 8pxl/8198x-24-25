@@ -14,6 +14,7 @@ namespace keejLib {
             enum driveMode{
                 arcade,
                 tank,
+                reverseArcade,
                 curvature
             };
 
@@ -24,6 +25,6 @@ namespace keejLib {
             void setCurves(double left, double right);
     };
     
-    std::vector<Controller::driveMode> driveModes = {keejLib::Controller::driveMode::tank, keejLib::Controller::driveMode::arcade, keejLib::Controller::driveMode::curvature};
-    #define DRIVEMODE_NAMES {"Tank", "Arcade", "Curvature"}
+    // std::vector<Controller::driveMode> driveModes = {keejLib::Controller::driveMode::tank, keejLib::Controller::driveMode::arcade, keejLib::Controller::driveMode::curvature};
+    #define DRIVEMODE_NAMES {"arcade", "tank", "reverse arcade", "curvature"}
 }

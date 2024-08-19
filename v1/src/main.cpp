@@ -1,17 +1,18 @@
-// #include "main.h"
-#include "keejLib/controller.h"
+#include "main.h"
 #include "keejLib/lib.h"
 #include "robot.hpp"
 #include "controls.hpp"
 
+std::vector<Controller::driveMode> driveModes = {keejLib::Controller::driveMode::arcade, keejLib::Controller::driveMode::tank, keejLib::Controller::driveMode::reverseArcade, keejLib::Controller::driveMode::curvature};
 // - globals
 void (*auton)();
 bool color;
 keejLib::Controller::driveMode mode = keejLib::Controller::arcade;
 
 void initialize() {
-    mode = keejLib::driveModes[cont.select(DRIVEMODE_NAMES)];
-    color = cont.select({"red", "blue"});
+    init();
+    mode = driveModes[cont.select(DRIVEMODE_NAMES)];
+    // color = cont.select({"red", "blue"});
 }
 
 void autonomous() {auton();}

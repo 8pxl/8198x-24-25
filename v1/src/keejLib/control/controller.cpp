@@ -66,7 +66,11 @@ std::pair<double, double> keejLib::Controller::drive(int direction, driveMode mo
         case tank:
             rStick = curve(cont -> get_analog(ANALOG_RIGHT_Y), rightCurve);
             return(std::make_pair(lStick, rStick));
-
+        
+        case reverseArcade:
+            rStick = curve(cont -> get_analog(ANALOG_RIGHT_Y) * direction, leftCurve);
+            lStick = curve(cont ->get_analog(ANALOG_LEFT_X), rightCurve);
+            return(std::make_pair(rStick + lStick, rStick - lStick));
         case curvature:
             rStick = curve(cont ->get_analog(ANALOG_RIGHT_X), rightCurve);
             if (lStick == 0) {

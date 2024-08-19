@@ -19,9 +19,9 @@ void keejLib::Pis::setState(bool iState)
 {
     state = iState;
 
-    for(int i = 0; i < Pistons.size(); i++)
+    for(int i = 0; i < pistons.size(); i++)
     {
-        Pistons[i].set_value(state);
+        pistons[i].set_value(state);
     }
 }
 

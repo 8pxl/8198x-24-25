@@ -36,7 +36,9 @@ double fromStandard(double rad) {
     a = a > 0 ? a : 2 * M_PI + a;
     return (keejLib::toDeg(a));
 }
-
+Angle::Angle() {
+    this -> angle_s = 0;
+}
 Angle::Angle(double angle, AngleType type) {
     switch (type) {
         case AngleType::DEG:

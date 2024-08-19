@@ -6,16 +6,19 @@ using namespace keejLib;
 
 namespace robot {
     DriveTrain dt = keejLib::DriveTrain({-16,18,-17}, {15,-13,14});
-    // Chassis chass = keejLib::Chassis(dt, {});
+    Chassis chass = keejLib::Chassis(&dt, {});
     
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController);
     
-    pros::Motor intake(20);
+    pros::Motor intake(-20);
+    pros::Motor lift(12);
     
     pros::ADIDigitalOut clampPiston('A');
     pros::ADIDigitalOut tiltPiston('B');
+    pros::ADIDigitalOut redirPiston('C');
     
     Pis clamp({clampPiston}, false);
     Pis tilt({tiltPiston}, false);
+    Pis redirect({redirPiston} , false);
 }

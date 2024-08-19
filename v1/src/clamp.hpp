@@ -18,8 +18,11 @@ namespace clamp {
             pros::delay(200);
             state = tilted;
         }
+        else if (state == tilted){
+            state = clamped;
+        }
         else {
-            state = opened;
+            state = tilted;
         }
         robot::tilt.toggle();
     }
@@ -30,10 +33,12 @@ namespace clamp {
             pros::delay(200);
             state = opened;
         }
-        else {
+        else if (state == opened){
             state = clamped;
         }
+        else {
+            state = opened;
+        }
         robot::clamp.toggle();
-        state 
     }
 }
