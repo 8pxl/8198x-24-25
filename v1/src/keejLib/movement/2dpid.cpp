@@ -12,9 +12,7 @@ std::pair<double, double> Chassis::pidMTPVel(Pt target, MotionParams params, PID
     double angularVel = rCont -> out(rotationError);
     double linearVel = cre * lCont -> out(linearError);
     
-    if (linearVel < params.vMin) {
-        linearVel = params.vMin;
-    }
+    linearVel = std::clamp(linearVel, -params.vMin, params.vMin);
     if (std::abs(linearVel) + std::abs(angularVel) > 127) {
         linearVel = (127 - std::abs(angularVel)) * sign(linearVel);
     }
@@ -59,7 +57,6 @@ void Chassis::mtp(Pose target, double theta, double dLead, MotionParams params) 
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { mtp(target, theta, dLead, params);});
-        pros::delay(10);
         return;
     }
 
