@@ -52,7 +52,7 @@ namespace keejLib {
      
     class PID {
         private:
-            double prevError, error, derivative, integral;
+            double prevError, error, derivative, integral, prevTime;
             PIDConstants constants;
         public:
             PID(){}
