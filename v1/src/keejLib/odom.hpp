@@ -1,7 +1,6 @@
 #include "keejLib/lib.h"
-#include "keejLib/util.h"
 
-using namespace keejLib;
+namespace keejLib {
 void Chassis::startTracking() {
     if (odomTask == nullptr) {
         odomTask = new pros::Task{[=] {
@@ -48,4 +47,5 @@ void Chassis::update() {
     pose.pos.x += locY * sin(avgHeading.rad()) + locX * -cos(avgHeading.rad());
     pose.pos.y += locY * cos(avgHeading.rad()) + locX * sin(avgHeading.rad());
     pose.heading = currTheta;
+}
 }

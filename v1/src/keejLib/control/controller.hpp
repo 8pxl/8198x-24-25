@@ -1,3 +1,4 @@
+#pragma once
 #include "keejLib/lib.h"
 #include "main.h"
 

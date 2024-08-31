@@ -1,6 +1,8 @@
+#pragma once
 #include "keejLib/lib.h"
 
-using namespace keejLib;
+namespace keejLib {
+    
 PID::PID(PIDConstants constants) : constants(constants), integral(0){};
 
 double PID::out(double error) {
@@ -21,4 +23,6 @@ double PID::getError() {
 
 double PID::getDerivative() {
     return derivative;
+}
+
 }

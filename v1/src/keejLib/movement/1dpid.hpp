@@ -1,6 +1,7 @@
+#pragma once
 #include "keejLib/lib.h"
-#include "keejLib/util.h"
-using namespace keejLib;
+
+namespace keejLib {
 
 void Chassis::turn(double angle, MotionParams params = {.async = false, .timeout = 2000, .vMin = 0, .exit = exit::Range(0.01, 500)}) {
     if (params.async) {
@@ -19,4 +20,5 @@ void Chassis::turn(double angle, MotionParams params = {.async = false, .timeout
         this -> dt -> spinVolts(vel, -vel);
         pros::delay(10);
     }
+}
 }

@@ -1,11 +1,8 @@
-#include "keejLib/chassis.h"
-#include "keejLib/control.h"
-#include "keejLib/util.h"
+#pragma once
 #include "keejlib/lib.h"
-#include "pros/rtos.hpp"
 #include <numeric>
 
-using namespace keejLib;
+namespace keejLib {
 
 DriveTrain::DriveTrain(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports) : pros::MotorGroup(concat(left_ports, right_ports)){}
 
@@ -39,3 +36,4 @@ double DriveTrain::getAvgPosition() {
 }
 
 Chassis::Chassis(DriveTrain *dt, ChassConstants chassConsts) : dt(dt), chassConsts(chassConsts) {}
+}

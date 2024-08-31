@@ -1,9 +1,7 @@
 #pragma once
 
 #include "keejLib/lib.h"
-#include "pros/misc.hpp"
-#include "lift.hpp"
-#include "pros/rotation.hpp"
+// #include "lift.hpp"
 using namespace keejLib;
 
 namespace robot {
@@ -28,12 +26,12 @@ namespace robot {
     Pis redirect({redirPiston} , false);
     Pis tsukasa({intakePiston}, false);
     
-    Lift lift(&liftMotor, &rotationSensor, {
-        .kp = 1,
-        .ki = 0,
-        .kd = 0,
-        .maxIntegral = 127,
-        .tolerance = 0,
-        .integralThreshold = 100000,
-    }, 23);
+    // Lift lift(&liftMotor, &rotationSensor, {
+    //     .kp = 1,
+    //     .ki = 0,
+    //     .kd = 0,
+    //     .maxIntegral = 127,
+    //     .tolerance = 0,
+    //     .integralThreshold = 100000,
+    // });
 }

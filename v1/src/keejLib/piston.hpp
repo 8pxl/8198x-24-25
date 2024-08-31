@@ -1,5 +1,6 @@
 #include "keejLib/lib.h"
 
+namespace keejLib {
 keejLib::Pis::Pis(std::vector<pros::ADIDigitalOut> p, bool s) : pistons(p), state(s)
 {
     setState(s);
@@ -25,4 +26,5 @@ void keejLib::Pis::setState(bool iState) {
 bool keejLib::Pis::getState()
 {
     return(state);
+}
 }

@@ -2,21 +2,11 @@
 
 #include "main.h"
 #include "keejLib/lib.h"
-#include "keejLib/angles.hpp"
+// #include "keejLib/angles.hpp"
 using namespace keejLib; 
 
 class Lift {
-    private:
-        pros::Motor *lift;
-        pros::Rotation *rot;
-        pros::Task *task = nullptr;
-        PID pid;
-        double target = 0;
-        double restAngle = 10;
-        double prevAngle;
-        double angle = 0;
-        int count = 0;
-        
+    public:
         enum state {
             resting,
             mid,
@@ -28,12 +18,20 @@ class Lift {
             {mid, 340},
             {raised, 800},
         };
+    private:
+        pros::Motor *lift;
+        pros::Rotation *rot;
+        pros::Task *task = nullptr;
+        PID pid;
+        double target = 0;
+        double prevAngle;
+        double angle = 0;
         
         state currState = resting;
         state nextState = raised;
     
     public:
-        Lift(pros::Motor *lift, pros::Rotation *rot, PIDConstants constants, double restAngle) : lift(lift), rot(rot), restAngle(restAngle) {
+        Lift(pros::Motor *lift, pros::Rotation *rot, PIDConstants constants) : lift(lift), rot(rot) {
             pid = PID(constants);
         }
         void initTask() {
@@ -62,15 +60,10 @@ class Lift {
             else {
                 lift -> move(pid.out(error));
             }
-            if (count % 50 == 0) {
-                std::cout << error << std::endl;
-            }
-            count++;
-
         }
         
         void setTarget(double t) {
-            target = t + restAngle;
+            target = t;
         }
         
         state setSate(state s) {
@@ -82,5 +75,19 @@ class Lift {
         
         void toggle() {
             nextState = setSate(nextState);
+        }
+        
+        void switchState() {
+            switch (currState) {
+                case resting:
+                    setSate(nextState);
+                    break;
+                case mid:
+                    setSate(raised);
+                    break;
+                case raised:
+                    setSate(mid);
+                    break;
+            }
         }
 };

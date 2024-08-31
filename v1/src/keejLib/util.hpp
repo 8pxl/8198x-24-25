@@ -1,7 +1,6 @@
 #include "keejLib/lib.h"
-#include "keejLib/util.h"
 
-using namespace keejLib;
+namespace keejLib {
 
 EMA::EMA(double ka): ka(ka){}
 
@@ -36,4 +35,5 @@ Angle absoluteAngleToPoint(const Pt &pos, const Pt &point) {
     t = -t;
     t = t >= 0 ? t :  180 + 180+t;
     return (Angle(t, HEADING));
+}
 }
