@@ -1,7 +1,9 @@
+#pragma once
+
 #include "keejLib/lib.h"
 #include "keejLib/util.h"
 
-using namespace keejLib;
+namespace keejLib {
 
 double toRad(double deg) {
     return deg * M_PI / 180;
@@ -87,3 +89,4 @@ double Angle::heading() {
 double Angle::error(Angle current) {
     return angError(heading(), current.heading());
 } 
+}
