@@ -40,6 +40,7 @@ namespace keejLib {
         double vMin;
         Exit exit;
         double mtpRotBias;
+        double vStart;
     };
     
     class Chassis {

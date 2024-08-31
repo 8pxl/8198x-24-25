@@ -5,18 +5,15 @@ keejLib::Pis::Pis(std::vector<pros::ADIDigitalOut> p, bool s) : pistons(p), stat
     setState(s);
 }
 
-void keejLib::Pis::toggle() 
-{
+void keejLib::Pis::toggle()  {
     state = !state;
 
-    {
-    for(int i = 0; i < pistons.size(); i++)
+    for(int i = 0; i < pistons.size(); i++) {
         pistons[i].set_value(state);
     }
 }
 
-void keejLib::Pis::setState(bool iState) 
-{
+void keejLib::Pis::setState(bool iState) {
     state = iState;
 
     for(int i = 0; i < pistons.size(); i++)

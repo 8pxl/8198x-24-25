@@ -1,4 +1,5 @@
 #include "keejLib/controller.h"
+#include "keejLib/piston.h"
 #include "keejLib/util.h"
 #include "keejlib/lib.h"
 #include "pros/motors.h"
@@ -9,37 +10,53 @@
 
 using namespace robot;
 
+bool lock = false;
+
 void init() {
-    lift.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    lift.initTask();
+    // lift.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 
-bool lock = false;
-void driver(Controller::driveMode mode) {
-    if (!lock) {
-        dt.spinVolts(cont.drive(1, mode));
+void shifted(std::vector<bool> &state) {
+    if (state[NR1]) {
+        lift.toggle();
     }
-    auto state = cont.getAll(ALLBUTTONS);
     
+    if (state[NR2]) {
+        tsukasa.toggle();
+    }
+}
+
+void normal(std::vector<bool> &state) {
     if (state[R1]) {
-        // baseArm.move(127);
+        if (tsukasa.getState()) {
+            tsukasa.toggle();
+        }
         intake.move(127);
     }
     else if (state[R2]) {
-        // baseArm.move(-127);
         intake.move(-127);
     }
     else {
         intake.move(0);
     }
     
-    if (state[L1]) {
-        lift.move(127);
+    if (state[NL1]) {
+        redirect.toggle();
     }
-    else if (state[L2]) {
-        lift.move(-127);
+}
+
+void driver(Controller::driveMode mode) {
+    if (!lock) {
+        dt.spinVolts(cont.drive(1, mode));
+    }
+    std::vector<bool> state = cont.getAll(ALLBUTTONS);
+    
+    if(state[L2]) {
+        shifted(state);
     }
     else {
-        lift.brake();
+        normal(state);
     }
     
     if (state[NA]) {
@@ -50,9 +67,6 @@ void driver(Controller::driveMode mode) {
         clamp::clamp();
     }
     
-    if (state[NY]) {
-        redirect.toggle();
-    }
     
     if (state[NUP]) {
         if (lock) {

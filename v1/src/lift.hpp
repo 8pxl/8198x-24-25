@@ -1,5 +1,8 @@
+#pragma once
+
 #include "main.h"
-#include "lib.h"
+#include "keejLib/lib.h"
+#include "keejLib/angles.hpp"
 using namespace keejLib; 
 
 class Lift {
@@ -8,8 +11,11 @@ class Lift {
         pros::Rotation *rot;
         pros::Task *task = nullptr;
         PID pid;
-        double target;
-        double restAngle;
+        double target = 0;
+        double restAngle = 10;
+        double prevAngle;
+        double angle = 0;
+        int count = 0;
         
         enum state {
             resting,
@@ -19,8 +25,8 @@ class Lift {
         
         std::unordered_map<state, double> stateVal = {
             {resting, 0},
-            {mid, 90},
-            {raised, 130},
+            {mid, 340},
+            {raised, 800},
         };
         
         state currState = resting;
@@ -33,22 +39,34 @@ class Lift {
         void initTask() {
             if (task == nullptr) {
                 task = new pros::Task{[=] {
+                    prevAngle = rot -> get_angle();
                     while (true) {
+                        angle += angError((rot -> get_angle()) / 100.0, prevAngle);
+                        prevAngle = rot -> get_angle()/100.0;
                         control();
-                        pros::delay(20);
+                        
+                        pros::delay(10);
                     }
                 }};
             }
         }
         
         void control() {
-            double error = target - (rot -> get_angle() + restAngle);
-            if (fabs(error) < 20 && currState == resting) {
+            double error = target - (angle);
+            if (fabs(error) > 200 & fabs(error) < 400 && currState == resting) {
+                lift -> move(-40);
+            }
+            else if (fabs(error) < 200 && currState == resting) {
                 lift -> move(0);
             }
             else {
                 lift -> move(pid.out(error));
             }
+            if (count % 50 == 0) {
+                std::cout << error << std::endl;
+            }
+            count++;
+
         }
         
         void setTarget(double t) {
