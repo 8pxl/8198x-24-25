@@ -5,8 +5,8 @@
 #include "pros/rtos.hpp"
 #include <numeric>
 
-using namespace keejLib;
-
+namespace keejLib {
+    
 DriveTrain::DriveTrain(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports) : pros::MotorGroup(concat(left_ports, right_ports)){}
 
 std::vector<std::int8_t> DriveTrain::concat(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports) {
@@ -39,3 +39,4 @@ double DriveTrain::getAvgPosition() {
 }
 
 Chassis::Chassis(DriveTrain *dt, ChassConstants chassConsts) : dt(dt), chassConsts(chassConsts) {}
+}

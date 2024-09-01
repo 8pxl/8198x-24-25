@@ -80,7 +80,7 @@ namespace keejLib {
     
     struct Pose {
         Pt pos;
-        Angle heading;
+        keejLib::Angle heading;
     };
     
     template <typename T>

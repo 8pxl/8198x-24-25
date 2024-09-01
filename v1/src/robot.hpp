@@ -1,9 +1,9 @@
 #pragma once
 
 #include "keejLib/lib.h"
-#include "pros/misc.hpp"
+// #include "pros/misc.hpp"
 #include "lift.hpp"
-#include "pros/rotation.hpp"
+// #include "pros/rotation.hpp"
 using namespace keejLib;
 
 namespace robot {

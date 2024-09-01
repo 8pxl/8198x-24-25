@@ -1,7 +1,7 @@
 #pragma once
 
 #include "keejLib/lib.h"
-#include "lift.hpp"
+// #include "lift.hpp"
 #include "robot.hpp"
 #include "main.h"
 #include "clamp.hpp"

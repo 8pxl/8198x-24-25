@@ -1,7 +1,7 @@
 #include "keejLib/lib.h"
 #include <cmath>
 
-using namespace keejLib;
+namespace keejLib {
 
 std::pair<double, double> Chassis::pidMTPVel(Pt target, MotionParams params, PID *lCont, PID *rCont) {
     double linearError = pose.pos.dist(target);
@@ -68,4 +68,6 @@ void Chassis::mtp(Pose target, double theta, double dLead, MotionParams params) 
         Pt carrot = {target.pos.x - (h * sin(theta) * dLead), target.pos.y - (h * cos(theta) * dLead)};
         dt -> spinVolts(pidMTPVel(target.pos, params, &linCont, &angCont));
     }
+}
+
 }
