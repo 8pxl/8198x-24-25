@@ -35,5 +35,5 @@ namespace robot {
         .maxIntegral = 127,
         .tolerance = 0,
         .integralThreshold = 100000,
-    }, 23);
+    });
 }

@@ -1,12 +1,11 @@
-#include "keejLib/controller.h"
-#include "keejLib/piston.h"
-#include "keejLib/util.h"
-#include "keejlib/lib.h"
-#include "pros/motors.h"
+#pragma once
+
+#include "keejLib/lib.h"
+#include "lift.hpp"
 #include "robot.hpp"
 #include "main.h"
 #include "clamp.hpp"
-#include <random>
+// #include "keejLib/lib.hpp"
 
 using namespace robot;
 
@@ -17,6 +16,7 @@ void init() {
     // lift.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 
+keejLib::Stopwatch shiftSw;
 void shifted(std::vector<bool> &state) {
     if (state[NR1]) {
         lift.toggle();
@@ -25,6 +25,14 @@ void shifted(std::vector<bool> &state) {
     if (state[NR2]) {
         tsukasa.toggle();
     }
+    
+    if (state[NL1]) {
+        lift.switchState();
+    }   
+    // if (shiftSw.elapsed() > 600) {
+    //     lift.setSate(Lift::state::resting);
+    //     shiftSw.reset();
+    // }
 }
 
 void normal(std::vector<bool> &state) {
@@ -56,6 +64,7 @@ void driver(Controller::driveMode mode) {
         shifted(state);
     }
     else {
+        shiftSw.reset();
         normal(state);
     }
     
@@ -66,7 +75,6 @@ void driver(Controller::driveMode mode) {
     if (state[NB]) {
         clamp::clamp();
     }
-    
     
     if (state[NUP]) {
         if (lock) {
