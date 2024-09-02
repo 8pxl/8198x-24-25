@@ -18,11 +18,6 @@ double Pt::dist(Pt a) {
     return sqrt(pow(a.x - x, 2) + pow(a.y - y, 2));
 }
 
-template <typename T>
-int sign(T x) {
-    return(x > 0 ? 1 : -1);
-}
-
 Angle absoluteAngleToPoint(const Pt &pos, const Pt &point) {
     double t;
     try { 
@@ -30,9 +25,10 @@ Angle absoluteAngleToPoint(const Pt &pos, const Pt &point) {
     }
 
     catch(...) {
-        t = M_PI/2, RAD;
+        t = M_PI/2;
     }
     
+    t = keejLib::toDeg(t);
     t = -t;
     t = t >= 0 ? t :  180 + 180+t;
     return (Angle(t, HEADING));
@@ -49,4 +45,6 @@ void Stopwatch::reset() {
 int Stopwatch::elapsed() {
     return pros::millis() - start;
 }
+
+
 }
