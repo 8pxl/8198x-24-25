@@ -29,16 +29,16 @@ namespace keejLib {
     };
     
     struct PrevOdom {
-        double vert;
-        double horiz;
-        Angle theta;
+        double vert = 0;
+        double horiz = 0;
+        Angle theta = Angle(0, DEG);
     };
     
     struct MotionParams {
         bool async;
         int timeout;
         double vMin;
-        Exit exit;
+        Exit* exit;
         double mtpRotBias;
         double vStart;
     };
@@ -52,11 +52,11 @@ namespace keejLib {
             ChassConstants chassConsts;
             PIDConstants linConsts;
             PIDConstants angConsts;
-            keejLib::Pose pose;
+            Pose pose;
             pros::Task* odomTask = nullptr;
             PrevOdom prev;
         public:
-            Chassis(DriveTrain *dt, ChassConstants constants);
+            Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc);
             void update();
             void startTracking();
             void setConstants(PIDConstants linear, PIDConstants angular);
@@ -67,6 +67,6 @@ namespace keejLib {
             std::pair<double, double> pidMTPVel(Pt target, MotionParams params, PID* lCont, PID* rCont);
             void turn(double angle, MotionParams params);
             void driveAngle(double dist, double angle, MotionParams params);
-            void mtp(keejLib::Pose target, double theta, double dLead, MotionParams params);
+            void mtp(Pose target, double dLead, MotionParams params);
     };
 }

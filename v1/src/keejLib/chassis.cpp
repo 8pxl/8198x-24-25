@@ -1,8 +1,6 @@
-#include "keejLib/chassis.h"
-#include "keejLib/control.h"
-#include "keejLib/util.h"
+#include "chassis.h"
+#include "main.h"
 #include "keejlib/lib.h"
-#include "pros/rtos.hpp"
 #include <numeric>
 
 namespace keejLib {
@@ -38,5 +36,13 @@ double DriveTrain::getAvgPosition() {
     return (std::reduce(v.begin(), v.end()) / v.size());
 }
 
-Chassis::Chassis(DriveTrain *dt, ChassConstants chassConsts) : dt(dt), chassConsts(chassConsts) {}
+Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : dt(dt), chassConsts(constants), imu(imu), vertEnc(vertEnc), horizEnc(horizEnc) {}
+
+void Chassis::setLin(PIDConstants linear) {
+    linConsts = linear;
+}
+
+void Chassis::setAng(PIDConstants ang) {
+    angConsts = ang;
+}
 }
