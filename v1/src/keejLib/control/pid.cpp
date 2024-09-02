@@ -7,6 +7,9 @@ PID::PID(PIDConstants constants) : constants(constants), integral(0){};
 double PID::out(double error) {
     double dt = pros::millis() - prevTime;
     prevTime = pros::millis();
+    if (dt == 0) {
+        dt = 0.00001;
+    }
     if(std::fabs(error) < constants.tolerance) integral = 0;
     else if(std::fabs(error) < constants.integralThreshold) integral += error;
     if(integral > constants.maxIntegral) integral = constants.maxIntegral;
