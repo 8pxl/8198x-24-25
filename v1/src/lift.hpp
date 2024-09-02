@@ -40,7 +40,7 @@ class Lift {
                 task = new pros::Task{[=] {
                     prevAngle = rot -> get_angle();
                     while (true) {
-                        angle += angError((rot -> get_angle()) / 100.0, prevAngle);
+                        angle -= angError((rot -> get_angle()) / 100.0, prevAngle);
                         prevAngle = rot -> get_angle()/100.0;
                         control();
                         

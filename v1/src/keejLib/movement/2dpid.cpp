@@ -7,12 +7,13 @@ namespace keejLib {
 
 std::pair<double, double> Chassis::pidMTPVel(Pt target, MotionParams params, PID *lCont, PID *rCont) {
     double linearError = pose.pos.dist(target);
-    // std::cout << lineanrError << std::endl;
+    // std::cout << linearError << std::endl;
     Angle currHeading = pose.heading;
     Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
     double rotationError = targetHeading.error(currHeading);
-    // double cre = fabs(rotationError) > 90 ? 0.1 : cos(toRad(rotationError));
-    double cre = 1;
+    std::cout << rotationError << std::endl;
+    double cre = fabs(rotationError) > 90 ? 0.1 : cos(toRad(fabs(rotationError)));
+    // double cre = 1;
     double angularVel = rCont -> out(rotationError);
     // std::cout << angularVel << std::endl;
     double linearVel = cre * lCont -> out(linearError);
@@ -21,8 +22,8 @@ std::pair<double, double> Chassis::pidMTPVel(Pt target, MotionParams params, PID
     if (std::abs(linearVel) + std::abs(angularVel) > 127) {
         linearVel = (127 - std::abs(angularVel)) * sign(linearVel);
     }
-    double rVel = (linearVel - (fabs(angularVel) * params.mtpRotBias)) + angularVel;
-    double lVel = (linearVel - (fabs(angularVel) * params.mtpRotBias)) - angularVel;
+    double lVel = (linearVel - (fabs(angularVel) * params.mtpRotBias)) + angularVel;
+    double rVel = (linearVel - (fabs(angularVel) * params.mtpRotBias)) - angularVel;
     // std::cout << lVel << " " << rVel << std::endl;
     return(std::make_pair(lVel, rVel));
 }
@@ -70,10 +71,10 @@ void Chassis::mtp(Pose target, double dLead, MotionParams params) {
     PID linCont(linConsts);
     PID angCont(angConsts);
     while (timeout -> exited({}) || params.exit -> exited({.error = pose.pos.dist(target.pos), .pose = pose })) {
-        double h = std::hypot(pose.pos.x - target.pos.x, pose.pos.y - target.pos.y);
+        double h = std::hypot(target.pos.x - pose.pos.x, target.pos.y - pose.pos.y);
         Pt carrot = {target.pos.x - (h * sin(pose.heading.rad()) * dLead), target.pos.y - (h * cos(pose.heading.rad()) * dLead)};
-        std::cout << h << std::endl;
-        dt -> spinVolts(pidMTPVel(carrot, params, &linCont, &angCont));
+        // std::cout << h << std::endl;
+        dt -> spinVolts(pidMTPVel(target.pos, params, &linCont, &angCont));
         pros::delay(10);
     }
 }

@@ -3,7 +3,7 @@
 using namespace keejLib;
 
 PIDConstants chassLin = {
-    .kp = 5,
+    .kp = 2.8,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 1000,
@@ -12,7 +12,7 @@ PIDConstants chassLin = {
 };
 
 PIDConstants chassAng = {
-    .kp = 3,
+    .kp = 1.2,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 1000,

@@ -13,7 +13,7 @@ double keejLib::toDeg(double rad) {
 int keejLib::dirToSpin(double target, double current) {
     double d = (target - current);
     double diff = d < 0 ? d + 360 : d;
-    return (diff > 180 ? 1 : -1);
+    return (diff > 180 ? -1 : 1);
 }
 
 double keejLib::angError(double target, double current) {
@@ -32,7 +32,7 @@ double keejLib::toStandard(double deg) {
 
 double keejLib::fromStandard(double rad) {
     double a = M_PI/2 - rad;
-    a = a > 0 ? a : 2 * M_PI + a;
+    a = a >= 0 ? a : 2 * M_PI + a;
     return (keejLib::toDeg(a));
 }
 keejLib::Angle::Angle() {
@@ -47,7 +47,7 @@ keejLib::Angle::Angle(double angle, AngleType type) {
             this -> angle_s = angle;
             break;
         case AngleType::HEADING:
-            this -> angle_s = fromStandard(angle);
+            this -> angle_s = toStandard(angle);
     }
 }
 
@@ -80,7 +80,7 @@ double keejLib::Angle::deg() {
 }
 
 double keejLib::Angle::heading() {
-   return toStandard(angle_s);
+   return fromStandard(angle_s);
 }
 
 double keejLib::Angle::error(Angle current) {

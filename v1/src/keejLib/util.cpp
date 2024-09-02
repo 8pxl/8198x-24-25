@@ -29,8 +29,7 @@ Angle absoluteAngleToPoint(const Pt &pos, const Pt &point) {
     }
     
     t = keejLib::toDeg(t);
-    t = -t;
-    t = t >= 0 ? t :  180 + 180+t;
+    t = t >= 0 ? t : 360+t;
     return (Angle(t, HEADING));
 }
 

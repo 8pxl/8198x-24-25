@@ -49,8 +49,8 @@ namespace keejLib {
     };
     
     struct Pt {
-        double x;
-        double y;
+        double x = 0;
+        double y = 0;
         
         double dist(Pt a);
     };
@@ -84,7 +84,9 @@ namespace keejLib {
     };
     
     template <typename T>
-    int sign(T x);
+    int sign(T x) {
+        return(x > 0 ? 1 : -1);
+    }
     
     int dirToSpin(double target, double current);
     double angError(double target, double current);
