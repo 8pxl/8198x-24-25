@@ -1,6 +1,7 @@
 #include "chassis.h"
 #include "main.h"
 #include "keejlib/lib.h"
+#include "util.h"
 #include <numeric>
 
 namespace keejLib {
@@ -37,6 +38,37 @@ double DriveTrain::getAvgPosition() {
 }
 
 Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : dt(dt), chassConsts(constants), imu(imu), vertEnc(vertEnc), horizEnc(horizEnc) {}
+
+std::pair<double, double> Chassis::measureOffsets(int iterations) {
+    std::pair<double, double> offsets = {0,0};
+    for (int i = 0; i < iterations; i++) {
+        std::pair<double, double> deltaEnc = {0, 0};
+        imu -> reset(true);
+        double imuStart = imu -> get_heading();
+        double target = i%2 == 0 ? 90 : 270;
+        this -> turn(target, {.async = true, .timeout=1000, .exit = new exit::Range(0.01, 500)});
+        Stopwatch s;
+        PrevOdom prev = {0,0};
+        vertEnc -> reset_position();
+        horizEnc -> reset_position();
+        while (s.elapsed() < 1000) {
+            double currVert = vertEnc -> get_position() / 100.0;
+            double currHoriz = horizEnc -> get_position()/ 100.0;
+            
+            deltaEnc.first += angError(currVert, prev.vert);
+            deltaEnc.second += angError(currHoriz, prev.horiz);
+            std::cout << "vert: " << deltaEnc.first << " horiz: " << deltaEnc.second << std::endl;
+            prev.vert = currVert;
+            prev.horiz = currHoriz;
+            pros::delay(10);
+        }
+        double delta = toRad(fabs(angError(imu -> get_heading(), imuStart)));
+        std::cout << delta << std::endl;
+        offsets.first += ((deltaEnc.first * M_PI * chassConsts.wheelDia) / 360) / delta;
+        offsets.second += ((deltaEnc.second * M_PI * chassConsts.wheelDia) / 360) / delta;
+    }
+    return {offsets.first / iterations, offsets.second / iterations};
+}
 
 void Chassis::setLin(PIDConstants linear) {
     linConsts = linear;

@@ -35,6 +35,12 @@ double keejLib::fromStandard(double rad) {
     a = a >= 0 ? a : 2 * M_PI + a;
     return (keejLib::toDeg(a));
 }
+
+double keejLib::reverseDir(double heading) {
+    double a = 180 + heading;
+    return(a <= 180 ? a : a-360);
+}
+
 keejLib::Angle::Angle() {
     this -> angle_s = 0;
 }

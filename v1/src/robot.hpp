@@ -30,8 +30,8 @@ namespace robot {
     pros::Imu imu(5);
     
     Chassis chass = keejLib::Chassis(&dt, {
-        .horizWidth = 0,
-        .vertWidth = 0,
+        .horizWidth = 0.333556,
+        .vertWidth = 0.227827,
         .trackDia = 4.0,
         .wheelDia = 2.0,
         .gearRatio = 0.75,

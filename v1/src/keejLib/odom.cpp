@@ -1,5 +1,6 @@
 #include "keejLib/lib.h"
 #include "keejLib/util.h"
+#include <cstdio>
 
 namespace keejLib {
     
@@ -10,7 +11,8 @@ void Chassis::startTracking() {
         odomTask = new pros::Task{[=] {
             while (true) {
                 update();
-                std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.heading() << std::endl;
+                // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
+                std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
                 pros::delay(10);
             }
         }};
@@ -20,14 +22,14 @@ void Chassis::startTracking() {
 void Chassis::update() {
     Angle currTheta = Angle(imu -> get_rotation(), AngleType::HEADING);
     // std::cout << "heading: " << currTheta.heading() << std::endl;
-    double currVert = (vertEnc -> get_position() / 100.0) * chassConsts.trackDia * M_PI / 360;
-    double currHoriz = (horizEnc -> get_position()/ 100.0) * chassConsts.trackDia * M_PI / 360;
+    double currVert = (vertEnc -> get_position() / 100.0);
+    double currHoriz = (horizEnc -> get_position()/ 100.0);
     // std::cout << "currVert: " << currVert << " currHoriz: " << currHoriz << std::endl;
     double dTheta = toRad(currTheta.error(prev.theta));
     // std::cout << toDeg(dTheta) << std::endl;
     
-    double dVert = angError(currVert, prev.vert);
-    double dHoriz = angError(currHoriz, prev.horiz);
+    double dVert = (angError(currVert, prev.vert) * M_PI * chassConsts.wheelDia) / 360.0;
+    double dHoriz = (angError(currHoriz, prev.horiz) * M_PI * chassConsts.wheelDia) / 360.0;
     // std::cout << "dVert: " << dVert << " dHoriz: " << dHoriz << std::endl;
     // std::cout << "dTheta: " << dTheta*10 << std::endl;
     prev.theta = currTheta;

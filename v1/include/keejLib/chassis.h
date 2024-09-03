@@ -38,9 +38,12 @@ namespace keejLib {
         bool async;
         int timeout;
         double vMin;
+        double settleRange;
         Exit* exit;
         double mtpRotBias;
         double vStart;
+        double rotationCut;
+        bool reverse;
     };
     
     class Chassis {
@@ -63,10 +66,13 @@ namespace keejLib {
             void setLin(PIDConstants linear);
             void setAng(PIDConstants angular);
             
+            std::pair<double, double> measureOffsets(int iterations);
             double getTheta();
-            std::pair<double, double> pidMTPVel(Pt target, MotionParams params, PID* lCont, PID* rCont);
+            std::pair<double, double> pidMTPVel(Pt target, MotionParams params, PID* lCont, PID* rCont, double absDist);
             void turn(double angle, MotionParams params);
             void driveAngle(double dist, double angle, MotionParams params);
-            void mtp(Pose target, double dLead, MotionParams params);
+            void mtpose(Pose target, double dLead, MotionParams params);
+            void mtpoint(Pt target, MotionParams params);
+            
     };
 }

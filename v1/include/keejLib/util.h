@@ -94,5 +94,6 @@ namespace keejLib {
     double toDeg(double rad);
     double toStandard(double deg);
     double fromStandard(double rad);
+    double reverseDir(double heading);
     Angle absoluteAngleToPoint(const Pt& pos, const Pt& point);
 }
