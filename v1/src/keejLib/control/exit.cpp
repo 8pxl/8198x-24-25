@@ -6,16 +6,17 @@ namespace keejLib {
 exit::Timeout::Timeout(int timeout) : sw(Stopwatch()), timeout(timeout) {};
 
 bool exit::Timeout::exited(exitParams params) {
-    return (sw.elapsed() < timeout);
+    return (sw.elapsed() > timeout);
 }
 
 exit::Range::Range(double range, int timeout) : range(range), timeout(timeout), sw(Stopwatch()) {};
 
 bool exit::Range::exited(exitParams params) {
-    return (sw.elapsed() < timeout);
+    std::cout << sw.elapsed() << " " << timeout << std::endl;
     if (params.error > range) {
         sw.reset();
     }
+    return (sw.elapsed() > timeout);
 }
 
 exit::Perp::Perp(Pose target): target(target) {
