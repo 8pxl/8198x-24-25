@@ -10,7 +10,7 @@
 std::vector<Controller::driveMode> driveModes = {keejLib::Controller::driveMode::arcade, keejLib::Controller::driveMode::tank, keejLib::Controller::driveMode::reverseArcade, keejLib::Controller::driveMode::curvature};
 // - globals
 void (*auton)();
-bool color;
+Color color = blue;
 keejLib::Controller::driveMode mode = keejLib::Controller::arcade;
 
 void initialize() {
@@ -19,6 +19,7 @@ void initialize() {
     robot:chass.startTracking();
     mode = driveModes[cont.select(DRIVEMODE_NAMES)];
     // color = cont.select({"red", "blue"});
+    // color = 
     // chass.setAng(chassAng);
     // auto x = chass.measureOffsets(10);
     // std::cout << x.first << " " << x.second << std::endl;

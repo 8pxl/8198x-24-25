@@ -55,23 +55,25 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
     double prevLin = dist;
     double pct = 0;
     bool close = false;
-    int dir = 1;
+    int dir = params.reverse ? -1 : 1;
     double angularVel;
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (timeout -> exited({}) || params.exit -> exited({.error = pose.pos.dist(target), .pose = pose })) {
         Angle currHeading = pose.heading;
         Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
-        if (params.reverse) targetHeading = Angle(reverseDir(targetHeading.heading()), HEADING);
+        if (dir < 0) targetHeading = Angle(reverseDir(targetHeading.heading()), HEADING);
         double angularError = targetHeading.error(currHeading);
         // std::cout << angularError << std::endl;
         double adjHeading = pose.heading.deg();
         if (adjHeading > 180) adjHeading = adjHeading - 180;
         double m = tan(toRad(adjHeading));
-        dir = pose.pos.y < (- 1 / m) * (pose.pos.x - target.x) + target.y;
-        if (dir == 0) dir = -1;
+        int side = pose.pos.y < (- 1 / m) * (pose.pos.x - target.x) + target.y;
+        if (side == 0) side = -1;
+        dir = side * (params.reverse ? -1 : 1);
         angularVel = angCont.out(angularError);
         if (close) {
-            angularVel = std::min(angularVel, 30.0);
+            angularVel = std::clamp(angularVel, -30.0, 30.0);
+            // angularVel = 0;
             double tx = (m *(target.y - pose.pos.y + pose.pos.x*m + target.x/m)) / (m*m + 1);
             double ty = -m * (tx - target.x) + target.y;
             linearError = pose.pos.dist({tx, ty});
@@ -85,7 +87,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         if (linearError < params.settleRange && !close) close = true;
         // std::cout << angularVel << std::endl;
         // std::cout << linearError << std::endl;
-        double linearVel = cos(angularError) * dir * linCont.out(linearError);
+        double linearVel = cos(toRad(angularError)) * dir * linCont.out(linearError);
         
         // linearVel = std::clamp(linearVel, -params.vMin, params.vMin);
         if (std::abs(linearVel) + std::abs(angularVel) > 127) {

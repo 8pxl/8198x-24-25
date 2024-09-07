@@ -30,6 +30,12 @@ namespace keejLib {
         A = 22,
         NA = 23 
     };
+    
+    enum Color {
+        blue = 0,
+        red = 1,
+    };
+    
     class Stopwatch {
         private:
             int start;
