@@ -42,7 +42,7 @@ namespace robot {
     Pis redirect({redirPiston} , false);
     Pis tsukasa({intakePiston}, false);
     
-    Lift lift(&liftMotor, &rotationSensor, {
+    Lift lift(&liftMotor, &rotationSensor, &optical, &redirect, {
         .kp = 1,
         .ki = 0,
         .kd = 0,

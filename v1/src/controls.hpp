@@ -12,7 +12,7 @@ using namespace robot;
 bool lock = false;
 
 void init() {
-    lift.initTask();
+    // lift.initTask();
     // lift.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 

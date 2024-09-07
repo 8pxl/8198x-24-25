@@ -2,6 +2,9 @@
 
 #include "main.h"
 #include "keejLib/lib.h"
+#include "pros/optical.hpp"
+// #include "robot.hpp"
+#include <cstdlib>
 // #include "keejLib/angles.hpp"
 // #include "keejLib/
 using namespace keejLib; 
@@ -22,17 +25,20 @@ class Lift {
     private:
         pros::Motor *lift;
         pros::Rotation *rot;
+        pros::Optical *optical;
         pros::Task *task = nullptr;
+        keejLib::Pis *redirect;
         PID pid;
         double target = 0;
         double prevAngle;
         double angle = 0;
+        std::pair<int, int> color;
         
         state currState = resting;
         state nextState = raised;
     
     public:
-        Lift(pros::Motor *lift, pros::Rotation *rot, PIDConstants constants) : lift(lift), rot(rot) {
+        Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, keejLib::Pis *redirect, PIDConstants constants) : lift(lift), rot(rot), optical(optical), redirect(redirect) {
             pid = PID(constants);
         }
         void initTask() {
@@ -52,14 +58,25 @@ class Lift {
         
         void control() {
             double error = target - (angle);
-            if (fabs(error) > 200 && fabs(error) < 400 && currState == resting) {
-                lift -> move(-40);
+            if (fabs(error) > 100 && fabs(error) < 400 && currState == resting) {
+                lift -> move(-80);
             }
-            else if (fabs(error) < 200 && currState == resting) {
+            else if (fabs(error) < 100 && currState == resting) {
                 lift -> move(0);
             }
             else {
                 lift -> move(pid.out(error));
+            }
+            double hue = optical->get_hue();
+            
+            if (currState != resting && redirect ->getState()) {
+                optical -> set_led_pwm(100);
+                if (hue >= color.first && hue <= color.second) {
+                    setState(resting);
+                }
+            }
+            else {
+                optical -> set_led_pwm(0);
             }
         }
         
@@ -67,7 +84,7 @@ class Lift {
             target = t;
         }
         
-        void setSate(state s) {
+        void setState(state s) {
             nextState = currState;
             currState = s;
             setTarget(stateVal[s]);
@@ -75,10 +92,10 @@ class Lift {
         
         void toggle() {
             if (currState == resting) {
-                setSate(nextState);
+                setState(nextState);
             }
             else {
-                setSate(resting);
+                setState(resting);
             }
         }
         
@@ -103,6 +120,15 @@ class Lift {
             else {
                 s = getNext(currState);
             }
-            setSate(s);
+            setState(s);
+        }
+        
+        void setColor(Color clr) {
+            if (clr == red) {
+                color = {6, 17};
+            }
+            else {
+                color =  {200, 230};
+            }
         }
 };

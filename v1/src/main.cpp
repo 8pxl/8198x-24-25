@@ -10,15 +10,17 @@
 std::vector<Controller::driveMode> driveModes = {keejLib::Controller::driveMode::arcade, keejLib::Controller::driveMode::tank, keejLib::Controller::driveMode::reverseArcade, keejLib::Controller::driveMode::curvature};
 // - globals
 void (*auton)();
-Color color = blue;
 keejLib::Controller::driveMode mode = keejLib::Controller::arcade;
 
 void initialize() {
-    init();
-    imu.reset(true);
+    lift.initTask();
+    // init();
+    imu.reset(false);
     robot:chass.startTracking();
     mode = driveModes[cont.select(DRIVEMODE_NAMES)];
-    // color = cont.select({"red", "blue"});
+    int clr = cont.select({"red", "blue"});
+    Color color = clr ? blue : red;
+    lift.setColor(color);
     // color = 
     // chass.setAng(chassAng);
     // auto x = chass.measureOffsets(10);
@@ -38,5 +40,6 @@ void opcontrol() {
         if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             test();
         }
+        // robot::prosController.print(0,0, "%f", robot::optical.get_hue());
     }
 }
