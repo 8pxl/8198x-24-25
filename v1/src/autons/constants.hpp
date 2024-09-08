@@ -66,12 +66,21 @@ PIDConstants _5 {
     .integralThreshold = 1,
 };
 
+PIDConstants _linSmall {
+    .kp = 0.3,
+    .ki = 0.05,
+    .kd = 0.03,
+    .maxIntegral = 300,
+    .tolerance = 20,
+    .integralThreshold = 100,
+};
+
 PIDConstants _lin {
-    .kp = 0.13,
-    .ki = 0.1,
-    .kd = 0,
+    .kp = 0.155,
+    .ki = 0,
+    .kd = 0.03,
     .maxIntegral = 0,
-    .tolerance = 40,
+    .tolerance = 20,
     .integralThreshold = 0,
 };
 
