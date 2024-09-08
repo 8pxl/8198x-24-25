@@ -77,4 +77,14 @@ void Chassis::setLin(PIDConstants linear) {
 void Chassis::setAng(PIDConstants ang) {
     angConsts = ang;
 }
+
+void Chassis::waitUntilSettled() {
+    while (moving) {
+        pros::delay(10);
+    }
+}
+
+bool Chassis::isSettled() {
+    return !moving;
+}
 }

@@ -39,13 +39,14 @@ namespace keejLib {
         int timeout;
         double vMin;
         double settleRange;
+        double settleTime;
         Exit* exit;
         double mtpRotBias;
         double vStart;
         double rotationCut;
         bool reverse;
     };
-    
+
     class Chassis {
         private: 
             DriveTrain *dt;
@@ -58,6 +59,7 @@ namespace keejLib {
             Pose pose;
             pros::Task* odomTask = nullptr;
             PrevOdom prev;
+            bool moving = false;
         public:
             Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc);
             void update();
@@ -65,7 +67,9 @@ namespace keejLib {
             void setConstants(PIDConstants linear, PIDConstants angular);
             void setLin(PIDConstants linear);
             void setAng(PIDConstants angular);
+            void waitUntilSettled();
             
+            bool isSettled();
             std::pair<double, double> measureOffsets(int iterations);
             double getTheta();
             std::pair<double, double> pidMTPVel(Pt target, MotionParams params, PID* lCont, PID* rCont, double absDist);
