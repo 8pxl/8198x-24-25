@@ -14,10 +14,10 @@ void Chassis::turn(double angle, MotionParams params = {.async = false, .timeout
     }
     Angle targ = Angle(angle, HEADING);
     Exit* timeout = new exit::Timeout(params.timeout);
-    Exit* range = new exit::Range(params.settleRange, params.settleTime);
+    // Exit* range = new exit::Range(params.settleRange, params.settleTime);
     PID cont = PID(this -> angConsts);
     double error = targ.error(Angle(imu -> get_rotation(), HEADING));
-    while (!range -> exited({.error = fabs(error)}) && !timeout -> exited({})) {
+    while (!params.exit -> exited({.error = fabs(error)}) && !timeout -> exited({})) {
         error = targ.error(Angle(imu -> get_rotation(), HEADING));
         double vel = cont.out(error);
         this -> dt -> spinVolts(vel, -vel);
