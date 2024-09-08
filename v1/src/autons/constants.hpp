@@ -22,12 +22,12 @@ PIDConstants _135 {
 };
 
 PIDConstants _90 {
-    .kp = 6.3,
-    .ki = 0.7,
-    .kd = 56.5,
+    .kp = 6.7,
+    .ki = 0.5,
+    .kd = 66,
     .maxIntegral = 100,
     .tolerance = 0.001,
-    .integralThreshold = 1,
+    .integralThreshold = 2.5,
 };
 
 PIDConstants _45 {
@@ -68,7 +68,7 @@ PIDConstants _5 {
 
 PIDConstants _lin {
     .kp = 0.13,
-    .ki = 0,
+    .ki = 0.1,
     .kd = 0,
     .maxIntegral = 0,
     .tolerance = 40,
