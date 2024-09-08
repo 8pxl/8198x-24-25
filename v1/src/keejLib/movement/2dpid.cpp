@@ -9,6 +9,7 @@ namespace keejLib {
 
 
 void Chassis::driveAngle(double dist, double angle, MotionParams params) {
+    moving = true;
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { driveAngle(dist, angle, params);});
@@ -22,7 +23,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params) {
     PID angCont = PID(this -> angConsts);
     double linError;
     this -> dt -> tare_position();
-    while (params.exit -> exited({.error = linError}) || timeout -> exited({})) {
+    while (!params.exit -> exited({.error = linError}) && !timeout -> exited({})) {
         linError = dist - (this -> dt -> getAvgPosition());
         double angularError = targ.error(Angle(imu -> get_rotation(), HEADING));
     
@@ -36,8 +37,10 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params) {
           vl = (127 - std::abs(va)) * sign(vl);
         }
         
-        this -> dt -> spinVolts(vl - va, vl + va);
+        this -> dt -> spinVolts(vl + va, vl - va);
     }
+    this -> dt -> spinVolts(0, 0);
+    moving = true;
 }
 
 void Chassis::mtpoint(Pt target, MotionParams params) {
