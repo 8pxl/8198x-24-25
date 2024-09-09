@@ -47,6 +47,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
 }
 
 void Chassis::mtpoint(Pt target, MotionParams params) {
+    moving = true;
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { mtpoint(target, params);});
@@ -76,9 +77,10 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         int side = pose.pos.y < (- 1 / m) * (pose.pos.x - target.x) + target.y;
         if (side == 0) side = -1;
         dir = side * (params.reverse ? -1 : 1);
-        angularVel = angCont.out(angularError);
         if (close) {
-            angularVel = std::clamp(angularVel, -30.0, 30.0);
+            if (std::fabs(angularError) > 80) {
+                angularError = 0;
+            }
             // angularVel = 0;
             double tx = (m *(target.y - pose.pos.y + pose.pos.x*m + target.x/m)) / (m*m + 1);
             double ty = -m * (tx - target.x) + target.y;
@@ -87,13 +89,15 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         else {
             linearError = pose.pos.dist(target);
         }
+        linearError *= cos(toRad(angularError));
+        angularVel = angCont.out(angularError);
         prevLin = linearError;
         // std::cout << close << std::endl;
         
         if (linearError < params.settleRange && !close) close = true;
         // std::cout << angularVel << std::endl;
         // std::cout << linearError << std::endl;
-        double linearVel = cos(toRad(angularError)) * dir * linCont.out(linearError);
+        double linearVel = dir * linCont.out(linearError);
         
         // linearVel = std::clamp(linearVel, -params.vMin, params.vMin);
         if (std::abs(linearVel) + std::abs(angularVel) > 127) {
@@ -106,6 +110,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         pros::delay(10);
         // std::cout << lVel << " " << rVel << std::endl;
     }
+    moving = false;
 }
 void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
     if (params.async) {
