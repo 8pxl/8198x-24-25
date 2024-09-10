@@ -1,5 +1,6 @@
 #pragma once
 
+#include "keejLib/util.h"
 #include "main.h"
 #include "keejLib/lib.h"
 #include "pros/optical.hpp"
@@ -36,6 +37,8 @@ class Lift {
         
         state currState = resting;
         state nextState = raised;
+        
+        Stopwatch sw;
     
     public:
         Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, keejLib::Pis *redirect, PIDConstants constants) : lift(lift), rot(rot), optical(optical), redirect(redirect) {
@@ -46,6 +49,14 @@ class Lift {
                 task = new pros::Task{[=] {
                     prevAngle = rot -> get_angle();
                     while (true) {
+                        if (currState == resting) {
+                            if (sw.elapsed() > 3000 && fabs(angle) <= 9) {
+                                rot -> reset_position();
+                            }
+                        }
+                        else {
+                            sw.reset();
+                        }
                         angle -= angError((rot -> get_angle()) / 100.0, prevAngle);
                         prevAngle = rot -> get_angle()/100.0;
                         control();
@@ -58,10 +69,10 @@ class Lift {
         
         void control() {
             double error = target - (angle);
-            if (fabs(error) > 100 && fabs(error) < 400 && currState == resting) {
+            if (fabs(error) > 150 && fabs(error) < 400 && currState == resting) {
                 lift -> move(-80);
             }
-            else if (fabs(error) < 100 && currState == resting) {
+            else if (fabs(error) < 150 && currState == resting) {
                 lift -> move(0);
             }
             else {
@@ -78,6 +89,7 @@ class Lift {
             else {
                 optical -> set_led_pwm(0);
             }
+            
         }
         
         void setTarget(double t) {
