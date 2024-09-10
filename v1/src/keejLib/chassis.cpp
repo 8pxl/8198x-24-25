@@ -87,4 +87,8 @@ void Chassis::waitUntilSettled() {
 bool Chassis::isSettled() {
     return !moving;
 }
+
+Pose Chassis::getPose() {
+    return pose;
+}
 }

@@ -69,6 +69,7 @@ namespace keejLib {
             void setAng(PIDConstants angular);
             void waitUntilSettled();
             
+            Pose getPose();
             bool isSettled();
             std::pair<double, double> measureOffsets(int iterations);
             double getTheta();
