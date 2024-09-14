@@ -44,6 +44,7 @@ namespace keejLib {
         double mtpRotBias;
         double vStart;
         double rotationCut;
+        double drift;
         bool reverse;
     };
 
@@ -56,9 +57,14 @@ namespace keejLib {
             ChassConstants chassConsts;
             PIDConstants linConsts;
             PIDConstants angConsts;
+            
+            PIDConstants turnConsts;
+            
+            PIDConstants mtpLin;
+            PIDConstants mtpAng;
             Pose pose;
             pros::Task* odomTask = nullptr;
-            PrevOdom prev;
+            PrevOdom prev = {0,0};
             bool moving = false;
         public:
             Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc);
@@ -67,6 +73,8 @@ namespace keejLib {
             void setConstants(PIDConstants linear, PIDConstants angular);
             void setLin(PIDConstants linear);
             void setAng(PIDConstants angular);
+            void setMTP(PIDConstants lin, PIDConstants ang);
+            void setTurn(PIDConstants turn);
             void waitUntilSettled();
             
             Pose getPose();
@@ -75,6 +83,7 @@ namespace keejLib {
             double getTheta();
             std::pair<double, double> pidMTPVel(Pt target, MotionParams params, PID* lCont, PID* rCont, double absDist);
             void turn(double angle, MotionParams params);
+            void turnTo(Pt target, MotionParams params);
             void driveAngle(double dist, double angle, MotionParams params);
             void mtpose(Pose target, double dLead, MotionParams params);
             void mtpoint(Pt target, MotionParams params);
