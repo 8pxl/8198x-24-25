@@ -1,3 +1,4 @@
+#pragma once
 #include "robot.hpp"
 
 using namespace robot;

@@ -5,7 +5,7 @@
 #include "pros/misc.h"
 #include "robot.hpp"
 #include "controls.hpp"
-#include "autons/test.hpp"
+#include "autons/autons.hpp"
 
 std::vector<Controller::driveMode> driveModes = {keejLib::Controller::driveMode::arcade, keejLib::Controller::driveMode::tank, keejLib::Controller::driveMode::reverseArcade, keejLib::Controller::driveMode::curvature};
 // - globals
@@ -15,16 +15,19 @@ keejLib::Controller::driveMode mode = keejLib::Controller::arcade;
 void initialize() {
     lift.initTask();
     // init();
-    imu.reset(false);
+    imu.reset(true);
+    
+    // chass.setAng(chassAng);
+    // auto x = chass.measureOffsets(10);
+    // std::cout << x.first << " " << x.second << std::endl;
     robot:chass.startTracking();
     mode = driveModes[cont.select(DRIVEMODE_NAMES)];
     int clr = cont.select({"red", "blue"});
     Color color = clr ? blue : red;
     lift.setColor(color);
+    chass.setLin(_lin);
     // color = 
     // chass.setAng(chassAng);
-    // auto x = chass.measureOffsets(10);
-    // std::cout << x.first << " " << x.second << std::endl;
 }
 
 void autonomous() {auton();}
@@ -38,7 +41,12 @@ void opcontrol() {
         pros::delay(20);
         
         if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-            test();
+            awp2();
+            // test();
+        }
+        if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+            triangulatePoint();
+            // test();
         }
         // robot::prosController.print(0,0, "%f", robot::optical.get_hue());
     }

@@ -11,9 +11,9 @@ void Chassis::startTracking() {
         odomTask = new pros::Task{[=] {
             while (true) {
                 update();
-                // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
-                std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
-                pros::delay(10);
+                std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
+                // std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
+                pros::delay(5);
             }
         }};
     }
@@ -23,7 +23,7 @@ void Chassis::update() {
     Angle currTheta = Angle(imu -> get_rotation(), AngleType::HEADING);
     // std::cout << "heading: " << currTheta.heading() << std::endl;
     double currVert = (vertEnc -> get_position() / 100.0);
-    double currHoriz = (horizEnc -> get_position()/ 100.0);
+    double currHoriz = (horizEnc -> get_position() / 100.0);
     // std::cout << "currVert: " << currVert << " currHoriz: " << currHoriz << std::endl;
     double dTheta = toRad(currTheta.error(prev.theta));
     // std::cout << toDeg(dTheta) << std::endl;

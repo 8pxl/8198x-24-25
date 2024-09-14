@@ -12,7 +12,6 @@ bool exit::Timeout::exited(exitParams params) {
 exit::Range::Range(double range, int timeout) : range(range), timeout(timeout), sw(Stopwatch()) {};
 
 bool exit::Range::exited(exitParams params) {
-    std::cout << sw.elapsed() << " " << timeout << std::endl;
     if (params.error > range) {
         sw.reset();
     }
