@@ -93,20 +93,38 @@ PIDConstants _ang {
     .integralThreshold = 0,
 };
 
-// PIDConstants chassLin = {
-//     .kp = 4,
-//     .ki = 0,
-//     .kd = 0,
-//     .maxIntegral = 1000,
-//     .tolerance = 0,
-//     .integralThreshold = 3,
-// };
+PIDConstants _chassLin = {
+    .kp = 5.7,
+    .ki = 0,
+    .kd = 0,
+    .maxIntegral = 1000,
+    .tolerance = 0,
+    .integralThreshold = 3,
+};
 
-// PIDConstants chassAng = {
-//     .kp = 1.4,
-//     .ki = 0,
-//     .kd = 0,
-//     .maxIntegral = 1000,
-//     .tolerance = 0,
-//     .integralThreshold = 3,
-// };
+PIDConstants _chassAng = {
+    .kp = 1.6,
+    .ki = 0,
+    .kd = 0,
+    .maxIntegral = 1000,
+    .tolerance = 0,
+    .integralThreshold = 3,
+};
+
+PIDConstants mposeLin = {
+    .kp = 8.3,
+    .ki = 0,
+    .kd = 0,
+    .maxIntegral = 1000,
+    .tolerance = 0,
+    .integralThreshold = 3,
+};
+
+PIDConstants mposeAng = {
+    .kp = 8,
+    .ki = 0,
+    .kd = 0,
+    .maxIntegral = 1000,
+    .tolerance = 0,
+    .integralThreshold = 3,
+};
