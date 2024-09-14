@@ -81,10 +81,13 @@ namespace keejLib {
             Angle operator/(double b);
             bool operator==(double b);
             
+            Angle reverseDir();
+            
             double rad();
             double deg();
             double heading();
             double error(Angle other);
+            
     };
     
     struct Pose {
@@ -105,4 +108,7 @@ namespace keejLib {
     double fromStandard(double rad);
     double reverseDir(double heading);
     Angle absoluteAngleToPoint(const Pt& pos, const Pt& point);
+    double curvature(Pose pose, Pose other);
+    
+    Pt triangulate(Pose a, Pose b);
 }
