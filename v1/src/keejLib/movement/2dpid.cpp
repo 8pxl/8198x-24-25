@@ -9,13 +9,14 @@ namespace keejLib {
 
 
 void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin = 0}) {
-    moving = true;
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { driveAngle(dist, angle, params);});
         pros::delay(10);
         return;
     }
+    this -> waitUntilSettled();
+    moving = true;
     Angle targ = Angle(angle, HEADING);
     
     Exit* timeout = new exit::Timeout(params.timeout);
@@ -47,13 +48,14 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
 }
 
 void Chassis::mtpoint(Pt target, MotionParams params) {
-    moving = true;
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { mtpoint(target, params);});
         pros::delay(10);
         return;
     }
+    this -> waitUntilSettled();
+    moving = true;
 
     Exit* timeout = new exit::Timeout(params.timeout);
     PID linCont(mtpLin);
@@ -66,6 +68,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
     double angularVel;
     int prevSide = -2;
     int side;
+    double maxSlipSpeed;
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) || !params.exit -> exited({.error = pose.pos.dist(target), .pose = pose })) {
         Angle currHeading = pose.heading;
@@ -122,6 +125,12 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         // std::cout << linearError << std::endl;
         double linearVel = dir * linCont.out(linearError);
         
+        double radius = 1 / fabs(curvature(pose, {target, Angle(0, RAD)}));
+        if (params.drift == 0) maxSlipSpeed = 127;
+        else maxSlipSpeed = sqrt(params.drift * radius * 9.8);
+        // double maxSlipSpeed = 127 - std::min(127.0, (fabs(angularError) * params.drift));
+        linearVel = std::clamp(linearVel, -maxSlipSpeed, maxSlipSpeed);
+        
         linearVel = std::max(fabs(linearVel), params.vMin) * sign(linearVel);
         if (std::abs(linearVel) + std::abs(angularVel) > 127) {
             linearVel = (127 - std::abs(angularVel)) * sign(linearVel);
@@ -133,16 +142,18 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         pros::delay(10);
         // std::cout << lVel << " " << rVel << std::endl;
     }
+    dt -> spinVolts(0,0);
     moving = false;
 }
 void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
-    moving = true;
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { mtpose(target, dLead, params);});
         pros::delay(10);
         return;
     }
+    this -> waitUntilSettled();
+    moving = true;
 
     Exit* timeout = new exit::Timeout(params.timeout);
     PID linCont(linConsts);
@@ -187,7 +198,7 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
             
             linearError *= cos(toRad(angularError));
             // std::cout << tx << " " << ty << std::endl;
-            std::printf("(%.3f, %.3f, %.3f, (%.3f, %.3f), %f),", pose.pos.x, pose.pos.y, toDeg(adjHeading), tx, ty, radius);
+            // std::printf("(%.3f, %.3f, %.3f, (%.3f, %.3f), %f),", pose.pos.x, pose.pos.y, toDeg(adjHeading), tx, ty, radius);
         }
         else {
             adjTarg = carrot;
@@ -198,7 +209,7 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
             // double h = pose.heading.heading();
             // if (h > 180) h = - (360 - h);
             // h = toRad(h);
-            std::printf("(%.3f, %.3f, %.3f, (%.3f, %.3f), %f),", pose.pos.x, pose.pos.y, toDeg(adjHeading), carrot.x, carrot.y, radius);
+            // std::printf("(%.3f, %.3f, %.3f, (%.3f, %.3f), %f),", pose.pos.x, pose.pos.y, toDeg(adjHeading), carrot.x, carrot.y, radius);
             int side = pose.pos.y < (- 1 / m) * (pose.pos.x - carrot.x) + carrot.y;
             if (side == 0) side = -1;
             if (adjHeading < 0) side = -side;
