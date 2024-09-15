@@ -93,6 +93,15 @@ PIDConstants _ang {
     .integralThreshold = 0,
 };
 
+PIDConstants _angBig {
+    .kp = 1.9,
+    .ki = 0,
+    .kd = 0,
+    .maxIntegral = 0,
+    .tolerance = 0,
+    .integralThreshold = 0,
+};
+
 PIDConstants _chassLin = {
     .kp = 5.7,
     .ki = 0,

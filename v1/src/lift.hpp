@@ -38,6 +38,7 @@ class Lift {
         state currState = resting;
         state nextState = raised;
         
+        bool off = false;
         Stopwatch sw;
     
     public:
@@ -68,6 +69,10 @@ class Lift {
         }
         
         void control() {
+            if (off) {
+                lift -> move(0);
+                return;
+            }
             double error = target - (angle);
             if (fabs(error) > 150 && fabs(error) < 400 && currState == resting) {
                 lift -> move(-80);
@@ -142,5 +147,9 @@ class Lift {
             else {
                 color =  {200, 230};
             }
+        }
+        
+        void toggleControl() {
+            off = !off;
         }
 };

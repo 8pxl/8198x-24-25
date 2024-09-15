@@ -23,7 +23,7 @@ namespace robot {
     pros::ADIDigitalOut intakePiston('D');
     
     pros::Rotation rotationSensor(19);
-    pros::Rotation vertTracker(11, true);
+    pros::Rotation vertTracker(11, false);
     pros::Rotation horizTracker(6, true);
     pros::Optical optical(1);
     
@@ -31,11 +31,11 @@ namespace robot {
     
     
     /*
-    .horizWidth = 0.71768,
+    .horizWidth = 0.756774,
     .vertWidth = 1.48165, */
     Chassis chass = keejLib::Chassis(&dt, {
-        .horizWidth = -0.71768,
-        .vertWidth = 1.48165,
+        .horizWidth = -0.75768,
+        .vertWidth = 0.536951,
         .trackDia = 4.0,
         .wheelDia = 2.125,
         .gearRatio = 0.75,

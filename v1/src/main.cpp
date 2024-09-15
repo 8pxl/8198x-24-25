@@ -18,13 +18,16 @@ void initialize() {
     imu.reset(true);
     
     // chass.setAng(chassAng);
+    // chass.setTurn(_90);
     // auto x = chass.measureOffsets(10);
     // std::cout << x.first << " " << x.second << std::endl;
     robot:chass.startTracking();
+    auton = autons.autonsList[cont.select(autons.names)];
     mode = driveModes[cont.select(DRIVEMODE_NAMES)];
     int clr = cont.select({"red", "blue"});
     Color color = clr ? blue : red;
     lift.setColor(color);
+    
     chass.setLin(_lin);
     // color = 
     // chass.setAng(chassAng);
@@ -41,7 +44,8 @@ void opcontrol() {
         pros::delay(20);
         
         if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-            awp2();
+            auton();
+            // awp2();
             // test();
         }
         if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {

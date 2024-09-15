@@ -22,7 +22,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
     Exit* timeout = new exit::Timeout(params.timeout);
     PID linCont = PID(this -> linConsts);
     PID angCont = PID(this -> angConsts);
-    double linError;
+    double linError = dist;
     this -> dt -> tare_position();
     while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
         linError = dist - (this -> dt -> getAvgPosition());
@@ -70,7 +70,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
     int side;
     double maxSlipSpeed;
     //https://www.desmos.com/calculator/cnp2vnubnx
-    while (!timeout -> exited({}) || !params.exit -> exited({.error = pose.pos.dist(target), .pose = pose })) {
+    while (!timeout -> exited({}) || !params.exit -> exited({.error = dist, .pose = pose })) {
         Angle currHeading = pose.heading;
         Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
         if (dir < 0) targetHeading = Angle(reverseDir(targetHeading.heading()), HEADING);
@@ -114,6 +114,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
                 break;
             }
         }
+        dist = linearError;
         prevSide = side;
         
         if (linearError < params.settleRange && !close) close = true;

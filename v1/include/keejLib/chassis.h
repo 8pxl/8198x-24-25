@@ -36,16 +36,16 @@ namespace keejLib {
     
     struct MotionParams {
         bool async;
-        int timeout;
-        double vMin;
+        int timeout = 3000;
+        double vMin = 0;
         double settleRange;
         double settleTime;
         Exit* exit;
         double mtpRotBias;
         double vStart;
         double rotationCut;
-        double drift;
-        bool reverse;
+        double drift = 0;
+        bool reverse = false;
     };
 
     class Chassis {
