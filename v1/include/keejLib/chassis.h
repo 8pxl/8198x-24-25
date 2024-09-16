@@ -46,6 +46,7 @@ namespace keejLib {
         double rotationCut;
         double drift = 0;
         bool reverse = false;
+        double within = 0;
     };
 
     class Chassis {
@@ -87,6 +88,7 @@ namespace keejLib {
             void driveAngle(double dist, double angle, MotionParams params);
             void mtpose(Pose target, double dLead, MotionParams params);
             void mtpoint(Pt target, MotionParams params);
+            void moveWithin(Pt targ, double dist, MotionParams params);
             
     };
 }

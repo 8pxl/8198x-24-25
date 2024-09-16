@@ -7,6 +7,45 @@
 
 namespace keejLib {
 
+    void Chassis::moveWithin(Pt target, double dist, MotionParams params) {
+        if (params.async) {
+            params.async = false;
+            pros::Task task([&]() { moveWithin(target, dist, params);});
+            pros::delay(10);
+            return;
+        }
+        this -> waitUntilSettled();
+        moving = true;
+        Exit* timeout = new exit::Timeout(params.timeout);
+        
+        PID linCont(mtpLin);
+        PID angCont = PID(angConsts);
+        
+        double linError = pose.pos.dist(target);
+        Angle heading = Angle(imu->get_heading(), HEADING);
+        while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
+            linError = pose.pos.dist(target) - dist;
+            double angularError = heading.error(Angle(imu -> get_rotation(), HEADING));
+        
+            if (std::abs(angularError) < this -> angConsts.tolerance) {
+                angularError = 0;
+            }
+            double va = angCont.out(angularError);
+            double vl = linCont.out(linError);
+            if (std::abs(vl) < params.vMin) {
+                vl = params.vMin * sign(vl);
+            }
+            
+            if (std::abs(vl) + std::abs(va) > 127) {
+              vl = (127 - std::abs(va)) * sign(vl);
+            }
+            
+            this -> dt -> spinVolts(vl + va, vl - va);
+        }
+        this -> dt -> spinVolts(0,0);
+        moving = false;
+    }
+    
 
 void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin = 0}) {
     if (params.async) {
@@ -26,6 +65,8 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
     this -> dt -> tare_position();
     while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
         linError = dist - (this -> dt -> getAvgPosition());
+        
+        if (params.vMin > 0 && linError < 0) break;
         double angularError = targ.error(Angle(imu -> get_rotation(), HEADING));
     
         if (std::abs(angularError) < this -> angConsts.tolerance) {
@@ -71,6 +112,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
     double maxSlipSpeed;
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) || !params.exit -> exited({.error = dist, .pose = pose })) {
+        std::cout << timeout -> exited({}) << std::endl;
         Angle currHeading = pose.heading;
         Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
         if (dir < 0) targetHeading = Angle(reverseDir(targetHeading.heading()), HEADING);
@@ -114,9 +156,9 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
                 break;
             }
         }
+        if (params.within > 0) linearError -= params.within;
         dist = linearError;
         prevSide = side;
-        
         if (linearError < params.settleRange && !close) close = true;
         linearError *= cos(toRad(angularError));
         angularVel = angCont.out(angularError);
