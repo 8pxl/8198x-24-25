@@ -95,6 +95,12 @@ namespace keejLib {
         keejLib::Angle heading;
     };
     
+    enum CompState {
+        autonomous,
+        teleop,
+        initialize
+    };
+    
     template <typename T>
     int sign(T x) {
         return(x > 0 ? 1 : -1);

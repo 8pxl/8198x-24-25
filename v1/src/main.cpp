@@ -10,10 +10,13 @@
 std::vector<Controller::driveMode> driveModes = {keejLib::Controller::driveMode::arcade, keejLib::Controller::driveMode::tank, keejLib::Controller::driveMode::reverseArcade, keejLib::Controller::driveMode::curvature};
 // - globals
 void (*auton)();
+
+keejLib::CompState compState = keejLib::initialize;
+
 keejLib::Controller::driveMode mode = keejLib::Controller::arcade;
 
 void initialize() {
-    lift.initTask();
+    lift.initTask(&compState);
     // init();
     imu.reset(true);
     
@@ -33,9 +36,12 @@ void initialize() {
     // chass.setAng(chassAng);
 }
 
-void autonomous() {auton();}
+void autonomous() {
+    compState = keejLib::autonomous;
+    auton();}
 
 void opcontrol() {
+    compState = keejLib::teleop;
     Angle a = Angle(0, keejLib::DEG);
     Angle b = Angle(M_PI/2, keejLib::RAD);
     while (true) {
@@ -44,7 +50,9 @@ void opcontrol() {
         pros::delay(20);
         
         if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+            compState = keejLib::autonomous;
             auton();
+                compState = keejLib::teleop;
             // awp2();
             // test();
         }

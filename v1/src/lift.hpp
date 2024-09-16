@@ -40,12 +40,15 @@ class Lift {
         
         bool off = false;
         Stopwatch sw;
+        
+        CompState *compState = nullptr;
     
     public:
         Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, keejLib::Pis *redirect, PIDConstants constants) : lift(lift), rot(rot), optical(optical), redirect(redirect) {
             pid = PID(constants);
         }
-        void initTask() {
+        void initTask(CompState *s ) {
+            compState = s;
             if (task == nullptr) {
                 task = new pros::Task{[=] {
                     prevAngle = rot -> get_angle();
@@ -83,6 +86,8 @@ class Lift {
             else {
                 lift -> move(pid.out(error));
             }
+            if (*compState == keejLib::autonomous) return;
+            
             double hue = optical->get_hue();
             
             if (currState != resting && redirect ->getState()) {
