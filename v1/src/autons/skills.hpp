@@ -1,10 +1,4 @@
-#include "../robot.hpp"
 #include "constants.hpp"
-#include "keejLib/control.h"
-#include "keejLib/util.h"
-#include "pros/rtos.hpp"
-#include "../clamp.hpp"
-#include "funcs.hpp"
 
 void skills() {
     chass.setTurn(_90);

@@ -2,6 +2,15 @@
 
 #include "keejLib/control.h"
 #include "keejLib/lib.h"
+#include "../robot.hpp"
+#include "constants.hpp"
+#include "keejLib/control.h"
+#include "keejLib/util.h"
+#include "pros/rtos.hpp"
+#include "../clamp.hpp"
+#include "funcs.hpp"
+using namespace robot;
+using namespace exit;
 
 using namespace keejLib;
 
