@@ -6,15 +6,9 @@
 #include "robot.hpp"
 #include "controls.hpp"
 #include "autons/autons.hpp"
+#include "globals.hpp"
 
-std::vector<Controller::driveMode> driveModes = {keejLib::Controller::driveMode::arcade, keejLib::Controller::driveMode::tank, keejLib::Controller::driveMode::reverseArcade, keejLib::Controller::driveMode::curvature};
-// - globals
-void (*auton)();
-
-keejLib::CompState compState = keejLib::initialize;
-
-keejLib::Controller::driveMode mode = keejLib::Controller::arcade;
-
+using namespace glb;
 void initialize() {
     lift.initTask(&compState);
     // init();
@@ -28,7 +22,7 @@ void initialize() {
     auton = autons.autonsList[cont.select(autons.names)];
     mode = driveModes[cont.select(DRIVEMODE_NAMES)];
     int clr = cont.select({"red", "blue"});
-    Color color = clr ? blue : red;
+    color = clr ? blue : red;
     lift.setColor(color);
     
     chass.setLin(_lin);
@@ -37,6 +31,7 @@ void initialize() {
 }
 
 void autonomous() {
+    lift.setOff(false);
     compState = keejLib::autonomous;
     auton();}
 
@@ -44,6 +39,7 @@ void opcontrol() {
     compState = keejLib::teleop;
     Angle a = Angle(0, keejLib::DEG);
     Angle b = Angle(M_PI/2, keejLib::RAD);
+    lift.setOff(false);
     while (true) {
         // std::cout << "horiz: " <<  robot::horizTracker.get_angle() << std::endl;
         driver(mode);

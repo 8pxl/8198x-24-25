@@ -20,8 +20,8 @@ class Lift {
         
         std::unordered_map<state, double> stateVal = {
             {resting, 0},
-            {mid, 600},
-            {raised, 800},
+            {mid, 550},
+            {raised, 700},
         };
     private:
         pros::Motor *lift;
@@ -33,6 +33,7 @@ class Lift {
         double target = 0;
         double prevAngle;
         double angle = 0;
+        double trim = 0;
         std::pair<int, int> color;
         
         state currState = resting;
@@ -76,7 +77,7 @@ class Lift {
                 lift -> move(0);
                 return;
             }
-            double error = target - (angle);
+            double error = (target+trim) - (angle);
             if (fabs(error) > 150 && fabs(error) < 400 && currState == resting) {
                 lift -> move(-80);
             }
@@ -96,9 +97,6 @@ class Lift {
                     setState(resting);
                 }
             }
-            else {
-                optical -> set_led_pwm(0);
-            }
             
         }
         
@@ -107,8 +105,14 @@ class Lift {
         }
         
         void setState(state s) {
+            if (s == resting) optical -> set_led_pwm(0);
             nextState = currState;
             currState = s;
+            if (nextState == currState) {
+                nextState = raised;
+                setTarget(stateVal[raised]);
+                return;
+            }
             setTarget(stateVal[s]);
         }
         
@@ -156,5 +160,13 @@ class Lift {
         
         void toggleControl() {
             off = !off;
+        }
+        
+        void setOff(bool state) {
+            off = state;
+        }
+        
+        void addTrim(int t) {
+            trim += t;
         }
 };

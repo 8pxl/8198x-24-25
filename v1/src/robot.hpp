@@ -8,19 +8,19 @@
 using namespace keejLib;
 
 namespace robot {
-    DriveTrain dt = keejLib::DriveTrain({-16,18,-17}, {15,-13,3});
+    DriveTrain dt = keejLib::DriveTrain({-16,18,-17}, {15,-13,12});
     
     
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController);
     
     pros::Motor intake(20);
-    pros::Motor liftMotor(12);
+    pros::Motor liftMotor(3);
     
-    pros::ADIDigitalOut clampPiston('A');
+    pros::ADIDigitalOut clampPiston('D');
     pros::ADIDigitalOut tiltPiston('B');
     pros::ADIDigitalOut redirPiston('C');
-    pros::ADIDigitalOut intakePiston('D');
+    pros::ADIDigitalOut intakePiston('A');
     
     pros::Rotation rotationSensor(19);
     pros::Rotation vertTracker(11, false);

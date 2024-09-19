@@ -47,7 +47,7 @@ namespace keejLib {
     }
     
 
-void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin = 0}) {
+void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin = 0}, bool absolute) {
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { driveAngle(dist, angle, params);});
@@ -62,11 +62,11 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
     PID linCont = PID(this -> linConsts);
     PID angCont = PID(this -> angConsts);
     double linError = dist;
-    this -> dt -> tare_position();
+    if (!absolute) this -> dt -> tare_position();
     while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
         linError = dist - (this -> dt -> getAvgPosition());
         
-        if (params.vMin > 0 && linError < 0) break;
+        if (params.vMin > 0 && linError * sign(dist) < 0) break;
         double angularError = targ.error(Angle(imu -> get_rotation(), HEADING));
     
         if (std::abs(angularError) < this -> angConsts.tolerance) {
