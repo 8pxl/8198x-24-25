@@ -10,20 +10,36 @@
 using namespace robot;
 
 bool lock = false;
+bool liftOff = false;
 
 keejLib::Stopwatch shiftSw;
 void shifted(std::vector<bool> &state) {
-    if (state[NR1]) {
-        lift.toggle();
+    if (liftOff) {
+        if (state[NR1]) {
+            liftMotor.move(127);
+        }
+        
+        if (state[NL1]) {
+            liftMotor.move(-127);
+        }
+        
+        else {
+            liftMotor.brake();
+        }
+    }
+    else {
+        if (state[NR1]) {
+            lift.toggle();
+        }
+        
+        if (state[NL1]) {
+            lift.switchState();
+        }  
     }
     
     if (state[NR2]) {
         tsukasa.toggle();
-    }
-    
-    if (state[NL1]) {
-        lift.switchState();
-    }   
+    } 
     
     if (state[NX]) {
         prosController.rumble("-");
@@ -32,6 +48,11 @@ void shifted(std::vector<bool> &state) {
     else if (state[NB]) {
         prosController.rumble(".");
         lift.addTrim(-20);
+    }
+    
+    if (state[NA]) {
+        liftOff = !liftOff;
+        lift.setOff(liftOff);
     }
     // if (shiftSw.elapsed() > 600) {
     //     lift.setSate(Lift::state::resting);
