@@ -11,11 +11,6 @@ using namespace robot;
 
 bool lock = false;
 
-void init() {
-    // lift.initTask();
-    // lift.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-}
-
 keejLib::Stopwatch shiftSw;
 void shifted(std::vector<bool> &state) {
     if (state[NR1]) {
@@ -29,6 +24,13 @@ void shifted(std::vector<bool> &state) {
     if (state[NL1]) {
         lift.switchState();
     }   
+    
+    if (state[NX]) {
+        lift.addTrim(20);
+    }
+    else if (state[NB]) {
+        lift.addTrim(-20);
+    }
     // if (shiftSw.elapsed() > 600) {
     //     lift.setSate(Lift::state::resting);
     //     shiftSw.reset();
@@ -52,6 +54,14 @@ void normal(std::vector<bool> &state) {
     if (state[NL1]) {
         redirect.toggle();
     }
+    
+    if (state[NA]) {
+        clamp::tilt();
+    }
+    
+    if (state[NB]) {
+        clamp::clamp();
+    }
 }
 
 void driver(Controller::driveMode mode) {
@@ -66,14 +76,6 @@ void driver(Controller::driveMode mode) {
     else {
         shiftSw.reset();
         normal(state);
-    }
-    
-    if (state[NA]) {
-        clamp::tilt();
-    }
-    
-    if (state[NB]) {
-        clamp::clamp();
     }
     
     if (state[NUP]) {

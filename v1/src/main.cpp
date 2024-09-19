@@ -9,9 +9,9 @@
 #include "globals.hpp"
 
 using namespace glb;
+
 void initialize() {
     lift.initTask(&compState);
-    // init();
     imu.reset(true);
     
     // chass.setAng(chassAng);
@@ -23,9 +23,12 @@ void initialize() {
     mode = driveModes[cont.select(DRIVEMODE_NAMES)];
     int clr = cont.select({"red", "blue"});
     color = clr ? blue : red;
-    lift.setColor(color);
     
+    isMatch = cont.select({"match", "test"});
+    
+    lift.setColor(color);
     chass.setLin(_lin);
+    chass.setColor(color);
     // color = 
     // chass.setAng(chassAng);
 }
@@ -33,28 +36,30 @@ void initialize() {
 void autonomous() {
     lift.setOff(false);
     compState = keejLib::autonomous;
-    auton();}
+    auton();
+}
 
 void opcontrol() {
     compState = keejLib::teleop;
-    Angle a = Angle(0, keejLib::DEG);
-    Angle b = Angle(M_PI/2, keejLib::RAD);
     lift.setOff(false);
     while (true) {
         // std::cout << "horiz: " <<  robot::horizTracker.get_angle() << std::endl;
         driver(mode);
         pros::delay(20);
         
-        if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-            compState = keejLib::autonomous;
-            auton();
+        if (!isMatch) {
+            if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+                compState = keejLib::autonomous;
+                auton();
                 compState = keejLib::teleop;
-            // awp2();
-            // test();
-        }
-        if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
-            triangulatePoint();
-            // test();
+                // awp2();
+                // test();
+            }
+            
+            if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+                triangulatePoint();
+                // test();
+            }
         }
         // robot::prosController.print(0,0, "%f", robot::optical.get_hue());
     }

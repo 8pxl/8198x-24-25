@@ -72,4 +72,8 @@ Pt triangulate(Pose a, Pose b) {
     
     return {x,y};
 }
+
+Pt translate(Pt a) {
+    return {-a.x, a.y};
+}
 }

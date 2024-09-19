@@ -16,6 +16,7 @@ namespace keejLib {
         }
         this -> waitUntilSettled();
         moving = true;
+        if (clr == blue) target = translate(target);
         Exit* timeout = new exit::Timeout(params.timeout);
         
         PID linCont(mtpLin);
@@ -57,7 +58,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
     this -> waitUntilSettled();
     moving = true;
     Angle targ = Angle(angle, HEADING);
-    
+    if (clr == blue) angle = neg(angle);
     Exit* timeout = new exit::Timeout(params.timeout);
     PID linCont = PID(this -> linConsts);
     PID angCont = PID(this -> angConsts);
@@ -97,6 +98,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
     }
     this -> waitUntilSettled();
     moving = true;
+    if (clr == blue) target = translate(target);
 
     Exit* timeout = new exit::Timeout(params.timeout);
     PID linCont(mtpLin);
@@ -197,7 +199,7 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
     }
     this -> waitUntilSettled();
     moving = true;
-
+    
     Exit* timeout = new exit::Timeout(params.timeout);
     PID linCont(linConsts);
     PID angCont(angConsts);

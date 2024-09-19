@@ -1,3 +1,5 @@
+#pragma once
+
 #include "keejLib/control.h"
 #include "keejLib/lib.h"
 

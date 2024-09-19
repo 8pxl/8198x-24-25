@@ -100,4 +100,9 @@ bool Chassis::isSettled() {
 Pose Chassis::getPose() {
     return pose;
 }
+
+void Chassis::setColor(Color c) {
+    clr = c;
+}
+
 }

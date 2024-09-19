@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../robot.hpp"
 #include "../globals.hpp"
 

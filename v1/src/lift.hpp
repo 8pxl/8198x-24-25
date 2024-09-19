@@ -21,7 +21,7 @@ class Lift {
         std::unordered_map<state, double> stateVal = {
             {resting, 0},
             {mid, 550},
-            {raised, 700},
+            {raised, 740},
         };
     private:
         pros::Motor *lift;
@@ -55,7 +55,7 @@ class Lift {
                     prevAngle = rot -> get_angle();
                     while (true) {
                         if (currState == resting) {
-                            if (sw.elapsed() > 3000 && fabs(angle) <= 9) {
+                            if (sw.elapsed() > 3000 && fabs(angle) <= 50) {
                                 rot -> reset_position();
                             }
                         }
@@ -77,7 +77,8 @@ class Lift {
                 lift -> move(0);
                 return;
             }
-            double error = (target+trim) - (angle);
+            double error = (target) - (angle);
+            if (currState != resting) error += trim;
             if (fabs(error) > 150 && fabs(error) < 400 && currState == resting) {
                 lift -> move(-80);
             }

@@ -67,6 +67,7 @@ namespace keejLib {
             pros::Task* odomTask = nullptr;
             PrevOdom prev = {0,0};
             bool moving = false;
+            Color clr = red;
         public:
             Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc);
             void update();
@@ -76,7 +77,9 @@ namespace keejLib {
             void setAng(PIDConstants angular);
             void setMTP(PIDConstants lin, PIDConstants ang);
             void setTurn(PIDConstants turn);
+            void setColor(Color c);
             void waitUntilSettled();
+            // void resetOdom();
             
             Pose getPose();
             bool isSettled();
@@ -89,6 +92,5 @@ namespace keejLib {
             void mtpose(Pose target, double dLead, MotionParams params);
             void mtpoint(Pt target, MotionParams params);
             void moveWithin(Pt targ, double dist, MotionParams params);
-            
     };
 }

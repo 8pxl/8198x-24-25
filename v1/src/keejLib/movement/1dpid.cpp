@@ -13,6 +13,7 @@ void Chassis::turn(double angle, MotionParams params = {.async = false, .timeout
     }
     this -> waitUntilSettled();
     moving = true;
+    if (clr == blue) angle = neg(angle);
     Angle targ = Angle(angle, HEADING);
     Exit* timeout = new exit::Timeout(params.timeout);
     // Exit* range = new exit::Range(params.settleRange, params.settleTime);
@@ -37,6 +38,7 @@ void Chassis::turnTo(Pt target, MotionParams params) {
     }
     this -> waitUntilSettled();
     moving = true;
+    if (clr == blue) target = translate(target);
     Angle targ = absoluteAngleToPoint(pose.pos, target);
     if (params.reverse) targ = targ.reverseDir();
     Exit* timeout = new exit::Timeout(params.timeout);
