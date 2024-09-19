@@ -26,9 +26,11 @@ void shifted(std::vector<bool> &state) {
     }   
     
     if (state[NX]) {
+        prosController.rumble("-");
         lift.addTrim(20);
     }
     else if (state[NB]) {
+        prosController.rumble(".");
         lift.addTrim(-20);
     }
     // if (shiftSw.elapsed() > 600) {
@@ -52,14 +54,17 @@ void normal(std::vector<bool> &state) {
     }
     
     if (state[NL1]) {
+        prosController.rumble("-");
         redirect.toggle();
     }
     
     if (state[NA]) {
+        prosController.rumble("-");
         clamp::tilt();
     }
     
     if (state[NB]) {
+        prosController.rumble(".");
         clamp::clamp();
     }
 }
