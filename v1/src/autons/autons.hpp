@@ -115,7 +115,7 @@ void triangulatePoint() {
 
 void awp2() {
     //14.4
-    Pt allianceStake = {15.5, -10.0531};
+    Pt allianceStake = {15.6, -10.0531};
     // Pt firstGoal = {-4, 23};
     Pt firstGoal = {-3, 23};
     Pt firstRing = {-33, 35};
@@ -147,31 +147,30 @@ void awp2() {
     chass.driveAngle(-200, 62, {.async = true, .timeout = 2000, .exit = new Range(20, 100)});
     pros::delay(80);
     lift.setState(Lift::resting);
-    pros::delay(1500);
+    pros::delay(1650);
     chass.waitUntilSettled();
     lift.setState(Lift::mid);
     intake.move(-127);
     chass.turnTo(allianceStake, {.timeout=3000, .exit = new Range(2.2, 100)});
-    chass.mtpoint(allianceStake, {.timeout = 2000, .vMin = 0, .settleRange = 20, .exit = new exit::Range(20, 30), .drift = 5, .within = 14.5});
+    chass.moveWithin(allianceStake, 7.8, {.timeout = 2000, .exit = new exit::Range(10, 200)});
     // chass.driveAngle(400, imu.get_heading(), {.timeout = 2000, .exit = new Range(10, 50)});
     lift.setState(Lift::resting);
     pros::delay(300);
-    
-    chass.driveAngle(-300, imu.get_heading(), {.timeout = 2000, .exit = new Range(20, 50)});
     
     // chass.turnTo(firstGoal, {.timeout=3000, .exit = new Range(2, 30), .reverse = true});
     
     // chass.mtpoint(firstGoal, {.timeout = 4000, .vMin = 20, .settleRange = 3, .exit = new exit::Range(3, 400)});
     chass.setLin(_lin);
-    // chass.driveAngle(-1000, imu.get_heading(), {.timeout = 2000, .vMin = 28, .exit = new Range(50, 10)});
-    chass.mtpoint(firstGoal, {.timeout = 4000, .vMin = 30, .settleRange = 3, .exit = new exit::Range(30, 20), .within = 25} );
-    chass.driveAngle(-440, 150, {.async = true, .timeout = 2000, .exit = new Range(50, 100)});
-    pros::delay(400);
+    chass.driveAngle(-500, 170, {.timeout = 2000, .vMin = 70, .exit = new Range(50, 10)});
+    chass.mtpoint({1.9, 17}, {.timeout = 900, .vMin = 70, .settleRange = 3, .exit = new exit::Range(50, 10), .drift = 24});
+    chass.driveAngle(-700, 150, {.async = false, .timeout = 3000, .vMin = 40, .exit = new Range(80, 10)});
+    clamp::clamp();
+    chass.driveAngle(-700, 150, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(20, 5)}, true);
     clamp::tilt();
-    chass.waitUntilSettled();
+    
     redirect.toggle();
     intake.move(127);
-    chass.turnTo(firstRing, {.timeout=3000, .exit = new Range(10, 30)});
+    chass.turnTo(firstRing, {.timeout=600, .exit = new Range(15, 20)});
     chass.mtpoint(firstRing, {.timeout = 700, .vMin = 0, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 5});
     // chass.mtpoint({-10, 20}, {.timeout = 8000, .vMin = 30, .settleRange = 8, .exit = new exit::Range(3, 400), .drift = 15});
     chass.setLin(_lin);
@@ -184,9 +183,9 @@ void awp2() {
     clamp::tilt();
     pros::delay(90);
     clamp::clamp();
-    chass.driveAngle(500, neg(50), {.timeout = 800, .vMin = 1, .exit = new Range(80, 10)});
+    chass.driveAngle(470, neg(50), {.timeout = 800, .vMin = 1, .exit = new Range(80, 10)});
     // chass.driveAngle(-1000, neg(90), {.timeout = 3000, .vMin = 30, .exit = new Range(20, 40)});
-    chass.turnTo(secondGoal, {.timeout=3000, .exit = new Range(15, 10), .reverse = true});
+    chass.turnTo(secondGoal, {.timeout=3000, .exit = new Range(5, 10), .reverse = true});
     chass.driveAngle(-1100, neg(150), {.async = true, .timeout = 2000, .exit = new Range(23, 40)});
     pros::delay(600);
     clamp::tilt();
