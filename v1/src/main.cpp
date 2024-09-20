@@ -37,6 +37,7 @@ void autonomous() {
     lift.setOff(false);
     compState = keejLib::autonomous;
     auton();
+    compState = keejLib::teleop;
 }
 
 void opcontrol() {

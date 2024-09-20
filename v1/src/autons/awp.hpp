@@ -1,4 +1,5 @@
 #include "constants.hpp"
+#include "funcs.hpp"
 
 void soloAwp() {
     //14.4
@@ -84,9 +85,11 @@ void soloAwp() {
     stopOnColor();
     chass.turn(neg(65), {.timeout=3000, .exit = new Range(5, 10)});
     intake.move(127);
+    spitColor();
     chass.driveAngle(1600, neg(70), {.async = true, .timeout = 2000, .exit = new Range(30, 20)});
-    while (!chass.isSettled()) {
-        intake.move(127);
-    }
+    // while (!chass.isSettled()) {
+    //     intake.move(127);
+    // }
     lift.setOff(true);
+    robot::tsukasa.setState(false);
 }

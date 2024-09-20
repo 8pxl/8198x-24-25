@@ -59,34 +59,12 @@ void negElims(){
     intake.move(127);
     chass.turnTo(firstRing, {.timeout=600, .exit = new Range(15, 20)});
     chass.mtpoint(firstRing, {.timeout = 700, .vMin = 30, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 5});
+    
     // chass.mtpoint({-10, 20}, {.timeout = 8000, .vMin = 30, .settleRange = 8, .exit = new exit::Range(3, 400), .drift = 15});
     chass.setLin(_lin);
     // chass.turn(neg(60), {.timeout = 100, .exit = new Range(5, 20)});
     chass.setAng(_angBig);
-    chass.driveAngle(-2400, neg(65), {.timeout = 3000, .vMin = 67, .exit = new Range(20, 10)});
+    chass.driveAngle(-2700, neg(65), {.timeout = 3000, .vMin = 67, .exit = new Range(20, 10)});
     chass.setAng(_ang);
-    chass.driveAngle(-600, neg(50), {.async = true, .timeout = 3000, .vMin = 20, .exit = new Range(20, 40)});
-    pros::delay(200);
-    clamp::tilt();
-    pros::delay(90);
-    clamp::clamp();
-    chass.driveAngle(410, neg(50), {.timeout = 800, .vMin = 1, .exit = new Range(80, 10)});
-    // chass.driveAngle(-1000, neg(90), {.timeout = 3000, .vMin = 30, .exit = new Range(20, 40)});
-    chass.turnTo(secondGoal, {.timeout=3000, .exit = new Range(5, 10), .reverse = true});
-    chass.driveAngle(-1100, neg(150), {.async = true, .timeout = 2000, .exit = new Range(23, 40)});
-    pros::delay(600);
-    clamp::tilt();
-    
-    intake.move(127); 
-    chass.turnTo(secondRing, {.timeout=3000, .exit = new Range(10, 10)});
-    chass.mtpoint(secondRing, {.timeout = 700, .vMin = 0, .settleRange = 9, .exit = new exit::Range(9, 50), .drift = 30});
-    lift.setState(Lift::mid);
-    stopOnColor();
-    chass.turn(neg(65), {.timeout=3000, .exit = new Range(5, 10)});
-    intake.move(127);
-    chass.driveAngle(1600, neg(70), {.async = true, .timeout = 2000, .exit = new Range(30, 20)});
-    while (!chass.isSettled()) {
-        intake.move(127);
-    }
-    lift.setOff(true);
+    chass.driveAngle(-900, neg(94), {.async = true, .timeout = 3000, .vMin = 20, .exit = new Range(20, 40)});
 }
