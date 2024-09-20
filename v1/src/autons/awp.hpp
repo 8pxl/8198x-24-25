@@ -3,7 +3,7 @@
 
 void soloAwp() {
     //14.4
-    Pt allianceStake = {16.8, -10.0531};
+    Pt allianceStake = {16.85, -10.0531};
     // Pt firstGoal = {-4, 23};
     Pt firstGoal = {-3, 23};
     Pt firstRing = {-33, 35};
@@ -39,8 +39,8 @@ void soloAwp() {
     chass.waitUntilSettled();
     lift.setState(Lift::mid);
     intake.move(-127);
-    chass.turnTo(allianceStake, {.timeout=3000, .exit = new Range(1, 100)});
-    chass.moveWithin(allianceStake, 11.2, {.timeout = 2000, .exit = new exit::Range(5, 200)});
+    chass.turnTo(allianceStake, {.timeout=1300, .exit = new Range(1, 100)});
+    chass.moveWithin(allianceStake, 11.25, {.timeout = 2000, .exit = new exit::Range(5, 200)});
     // chass.driveAngle(400, imu.get_heading(), {.timeout = 2000, .exit = new Range(10, 50)});
     lift.setState(Lift::resting);
     pros::delay(300);
@@ -49,8 +49,11 @@ void soloAwp() {
     
     // chass.mtpoint(firstGoal, {.timeout = 4000, .vMin = 20, .settleRange = 3, .exit = new exit::Range(3, 400)});
     chass.setLin(_lin);
+    chass.setAng(_angBig);
     chass.driveAngle(-320, 170, {.timeout = 2000, .vMin = 70, .exit = new Range(50, 10)});
-    chass.mtpoint({1.9, 14.5}, {.timeout = 900, .vMin = 70, .settleRange = 3, .exit = new exit::Range(50, 10), .drift = 24});
+    chass.setAng(_ang);
+    // chass.mtpoint({1.9, 14.5}, {.timeout = 900, .vMin = 70, .settleRange = 3, .exit = new exit::Range(50, 10), .drift = 24});
+    chass.mtpoint({1.9, 16.5}, {.timeout = 900, .vMin = 70, .settleRange = 3, .exit = new exit::Range(50, 10), .drift = 24});
     chass.driveAngle(-700, 150, {.async = false, .timeout = 3000, .vMin = 40, .exit = new Range(80, 10)});
     clamp::clamp();
     chass.driveAngle(-700, 150, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(20, 5)}, true);
@@ -87,6 +90,9 @@ void soloAwp() {
     intake.move(127);
     spitColor();
     chass.driveAngle(1600, neg(70), {.async = true, .timeout = 2000, .exit = new Range(30, 20)});
+    pros::delay(200);
+    robot::tsukasa.setState(false);
+    chass.waitUntilSettled();
     // while (!chass.isSettled()) {
     //     intake.move(127);
     // }

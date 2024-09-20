@@ -3,6 +3,7 @@
 #include "keejLib/util.h"
 #include "main.h"
 #include "keejLib/lib.h"
+#include "pros/motors.h"
 #include "pros/optical.hpp"
 // #include "robot.hpp"
 #include <cstdlib>
@@ -74,7 +75,7 @@ class Lift {
         
         void control() {
             if (off) {
-                lift -> move(0);
+                lift -> set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
                 return;
             }
             double error = (target) - (angle);
@@ -161,10 +162,12 @@ class Lift {
         
         void toggleControl() {
             off = !off;
+            if (off) lift -> move(0);
         }
         
         void setOff(bool state) {
             off = state;
+            if (off) lift -> move(0);
         }
         
         void addTrim(int t) {

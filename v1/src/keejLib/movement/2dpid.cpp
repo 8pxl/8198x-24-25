@@ -26,6 +26,7 @@ namespace keejLib {
         Angle heading = Angle(imu->get_heading(), HEADING);
         while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
             linError = pose.pos.dist(target) - dist;
+            if (linError < 0 && params.vMin != 0) break;
             double angularError = heading.error(Angle(imu -> get_rotation(), HEADING));
         
             if (std::abs(angularError) < this -> angConsts.tolerance) {
@@ -40,6 +41,7 @@ namespace keejLib {
             if (std::abs(vl) + std::abs(va) > 127) {
               vl = (127 - std::abs(va)) * sign(vl);
             }
+            if (params.reverse) vl = -vl;
             
             this -> dt -> spinVolts(vl + va, vl - va);
         }
@@ -57,13 +59,14 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
     }
     this -> waitUntilSettled();
     moving = true;
-    Angle targ = Angle(angle, HEADING);
     if (clr == blue) angle = neg(angle);
+    Angle targ = Angle(angle, HEADING);
     Exit* timeout = new exit::Timeout(params.timeout);
     PID linCont = PID(this -> linConsts);
     PID angCont = PID(this -> angConsts);
     double linError = dist;
     if (!absolute) this -> dt -> tare_position();
+    double prev=0;
     while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
         linError = dist - (this -> dt -> getAvgPosition());
         
@@ -82,6 +85,8 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
         if (std::abs(vl) + std::abs(va) > 127) {
           vl = (127 - std::abs(va)) * sign(vl);
         }
+        if (params.slew != 0) vl = std::min(prev + params.slew, vl);
+        prev = vl;
         
         this -> dt -> spinVolts(vl + va, vl - va);
     }

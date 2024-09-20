@@ -26,9 +26,12 @@ void triangulatePoint() {
 }
 
 void test() {
-    robot::intake.move(127);
-    stopOnColor();
+    // robot::intake.move(127);
+    // stopOnColor();
+    spitColor();
+    pros::delay(10000);
 }
 
-keejLib::Autons autons = {{soloAwp, posAwp, skills, test},
-                    {"solo awp", "posAwp", "skills", "test"}};
+void match() {}
+keejLib::Autons autons = {{match, soloAwp, posAwp, skills, test},
+                    {"match", "solo awp", "posAwp", "skills", "test"}};

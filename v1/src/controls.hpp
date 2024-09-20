@@ -2,6 +2,7 @@
 
 #include "keejLib/lib.h"
 // #include "lift.hpp"
+#include "pros/motors.h"
 #include "robot.hpp"
 #include "main.h"
 #include "clamp.hpp"
@@ -15,15 +16,16 @@ bool liftOff = false;
 keejLib::Stopwatch shiftSw;
 void shifted(std::vector<bool> &state) {
     if (liftOff) {
-        if (state[NR1]) {
+        if (state[R1]) {
             liftMotor.move(127);
         }
         
-        if (state[NL1]) {
+        else if (state[L1]) {
             liftMotor.move(-127);
         }
         
         else {
+            liftMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
             liftMotor.brake();
         }
     }
@@ -42,7 +44,7 @@ void shifted(std::vector<bool> &state) {
     } 
     
     if (state[NX]) {
-        prosController.rumble("-");
+        prosController.rumble(".");
         lift.addTrim(20);
     }
     else if (state[NB]) {
@@ -51,6 +53,7 @@ void shifted(std::vector<bool> &state) {
     }
     
     if (state[NA]) {
+        prosController.rumble(".");
         liftOff = !liftOff;
         lift.setOff(liftOff);
     }
@@ -105,6 +108,7 @@ void driver(Controller::driveMode mode) {
     }
     
     if (state[NUP]) {
+        prosController.rumble(".");
         if (lock) {
             prosController.clear();
         }

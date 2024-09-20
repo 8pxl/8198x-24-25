@@ -1,4 +1,5 @@
 #include "constants.hpp"
+#include "funcs.hpp"
 
 void skills() {
     chass.setTurn(_90);
@@ -74,6 +75,7 @@ void skills() {
     lift.switchState();
     chass.driveAngle(-1400, 90, {.timeout = 2000, .vMin = 0, .exit = new Range(20, 80)});
     clamp::clamp();
+    robot::intake.move(0);
     
     Pt goal2 = {-10, 120};
     chass.mtpoint(goal2, {.timeout = 1500, .vMin = 0, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 17});
@@ -90,7 +92,16 @@ void skills() {
     chass.turnTo(blueStake, {.timeout=3000, .exit = new Range(0.8, 30)});
     chass.mtpoint(blueStake, {.timeout = 2000, .vMin = 0, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 17, .within = 14.5});
     lift.toggle();
+    redirect.toggle();
 
-
-    
+    chass.mtpoint({-9, 86}, {.timeout = 2000, .vMin = 30, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 17, .within = 14.5});
+    chass.driveAngle(-350, 135, { .timeout = 3000, .vMin = 20, .exit = new Range(20, 40)});
+    robot::intake.move(127);
+    chass.mtpoint({16, 70}, {.timeout = 2000, .vMin = 20, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 17, .within = 14.5});
+    pros::delay(900);
+    chass.mtpoint({23, 34}, {.timeout = 2000, .vMin = 20, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 17, .within = 14.5});
+    chass.driveAngle(1800, 135, { .timeout = 3000, .vMin = 0, .exit = new Range(20, 40)});
+    chass.turn(neg(45), {.timeout=3000, .exit = new Range(15, 30)});
+    chass.driveAngle(-1200, neg(45), { .timeout = 3000, .vMin = 0, .exit = new Range(20, 40)});
+    clamp::tilt();
 }

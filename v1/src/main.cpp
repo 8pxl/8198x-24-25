@@ -24,8 +24,6 @@ void initialize() {
     int clr = cont.select({"red", "blue"});
     color = clr ? blue : red;
     
-    isMatch = cont.select({"match", "test"});
-    
     lift.setColor(color);
     chass.setLin(_lin);
     chass.setColor(color);
@@ -48,20 +46,18 @@ void opcontrol() {
         driver(mode);
         pros::delay(20);
         
-        if (!isMatch) {
-            if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-                compState = keejLib::autonomous;
-                auton();
-                compState = keejLib::teleop;
-                // awp2();
-                // test();
-            }
-            
-            if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
-                triangulatePoint();
-                // test();
-            }
+        if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+            compState = keejLib::autonomous;
+            auton();
+            compState = keejLib::teleop;
+            // awp2();
+            // test();
         }
+            
+            // if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+            //     triangulatePoint();
+            //     // test();
+            // }
         // robot::prosController.print(0,0, "%f", robot::optical.get_hue());
     }
 }

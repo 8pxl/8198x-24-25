@@ -47,6 +47,7 @@ namespace keejLib {
         double drift = 0;
         bool reverse = false;
         double within = 0;
+        double slew = 0;
     };
 
     class Chassis {
