@@ -80,6 +80,7 @@ void posAwp() {
     // chass.mtpoint({20, -30}, {.timeout=3000, .exit = new Range(0.8, 20)});
     
     chass.driveAngle(-1580, 20, {.async = false, .timeout = 1500, .vMin = 38, .exit = new Range(80, 10)});
+    redirect.toggle();
     chass.driveAngle(-890, neg(45), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(20, 10)});
 }
 

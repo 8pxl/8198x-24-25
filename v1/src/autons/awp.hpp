@@ -5,7 +5,7 @@ void soloAwp() {
     //14.4
     Pt allianceStake = {16.85, -10.0531};
     // Pt firstGoal = {-4, 23};
-    Pt firstGoal = {-3, 23};
+    Pt firstGoal = {-3, 25};
     Pt firstRing = {-33, 35};
     // Pt secondGoal = {32, 23};
     Pt secondGoal = {35, 33};
@@ -40,7 +40,8 @@ void soloAwp() {
     lift.setState(Lift::mid);
     intake.move(-127);
     chass.turnTo(allianceStake, {.timeout=1300, .exit = new Range(1, 100)});
-    chass.moveWithin(allianceStake, 11.25, {.timeout = 2000, .exit = new exit::Range(5, 200)});
+    //11.8
+    chass.moveWithin(allianceStake, 12.7, {.timeout = 2000, .exit = new exit::Range(5, 200)});
     // chass.driveAngle(400, imu.get_heading(), {.timeout = 2000, .exit = new Range(10, 50)});
     lift.setState(Lift::resting);
     pros::delay(300);

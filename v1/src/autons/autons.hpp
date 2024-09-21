@@ -14,6 +14,11 @@
 using namespace robot;
 using namespace exit;
 
+
+void printPoint() {
+    Pt point = chass.getPose().pos;
+    prosController.print(0, 0, "%f, %f", point.x, point.y);
+}
 void triangulatePoint() {
     std::vector<Pose> poses;
     while (poses.size() < 2) {

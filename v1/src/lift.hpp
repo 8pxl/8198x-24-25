@@ -21,8 +21,8 @@ class Lift {
         
         std::unordered_map<state, double> stateVal = {
             {resting, 0},
-            {mid, 550},
-            {raised, 740},
+            {mid, 440},
+            {raised, 620},
         };
     private:
         pros::Motor *lift;
@@ -75,9 +75,9 @@ class Lift {
         
         void control() {
             if (off) {
-                lift -> set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
                 return;
             }
+            lift -> set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
             double error = (target) - (angle);
             if (currState != resting) error += trim;
             if (fabs(error) > 150 && fabs(error) < 400 && currState == resting) {
