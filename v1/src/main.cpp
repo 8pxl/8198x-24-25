@@ -30,6 +30,7 @@ void initialize() {
     lift.setColor(color);
     chass.setLin(_lin);
     chass.setColor(color);
+    intake.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     // color = 
     // chass.setAng(chassAng);
 }
@@ -45,7 +46,6 @@ void opcontrol() {
     compState = keejLib::teleop;
     lift.setOff(false);
     redirect.setState(false);
-    intake.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     while (true) {
         // std::cout << "horiz: " <<  robot::horizTracker.get_angle() << std::endl;
         driver(mode);
