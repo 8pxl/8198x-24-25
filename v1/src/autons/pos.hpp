@@ -1,7 +1,7 @@
 #include "constants.hpp"
 #include "funcs.hpp"
 
-void posShared() {
+void posBlueShared() {
     chass.setTurn(_90);
     chass.setAng(_ang);
     chass.setLin(_linSmall);
@@ -84,7 +84,7 @@ void posShared() {
     robot::intake.move(127);
 }
 void posAwpBlue() {
-    posShared();
+    posBlueShared();
     
     // chass.mtpoint({20, -30}, {.timeout=3000, .exit = new Range(0.8, 20)});
     
@@ -93,7 +93,7 @@ void posAwpBlue() {
     redirect.toggle();
 }
 
-void posAwpRed() {
+void posRedShared() {
     chass.setTurn(_90);
     chass.setAng(_ang);
     chass.setLin(_linSmall);
@@ -176,13 +176,20 @@ void posAwpRed() {
     lift.toggle();
     pros::delay(390);
     robot::intake.move(127);
-    
+}
+
+void posAwpRed() {
+    posRedShared();
     chass.driveAngle(-1580, 20, {.async = false, .timeout = 1500, .vMin = 38, .exit = new Range(80, 10)});
     chass.driveAngle(-890, neg(45), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(20, 10)});
     redirect.toggle();
 }
 
-void posELims() {
-    posShared();
-    chass.driveAngle(-1800, 90, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(20, 50)});
+void posRedElims() {
+    posRedShared();
+    chass.mtpoint({0, -45}, {.timeout = 3000, .vMin = 0, .exit = new Range(5, 40)});
+}
+void posBlueElims() {
+    posBlueShared();
+    chass.mtpoint({0, -45}, {.timeout = 3000, .vMin = 0, .exit = new Range(5, 40)});
 }
