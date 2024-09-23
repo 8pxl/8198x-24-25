@@ -38,5 +38,5 @@ void test() {
 }
 
 void match() {}
-keejLib::Autons autons = {{match, soloBlue, soloAwp, posAwpBlue, posAwpRed, skills, test, negRed, negBlue},
-                    {"match", "solo blue", "solo awp", "posAwpBlue", "posAwpRed", "skills", "test", "neg red elims", "neg blue elims"}};
+keejLib::Autons autons = {{match, soloBlue, soloAwp, posAwpBlue, posAwpRed, skills, test, negRed, negBlue, posRedElims, posBlueElims, posBlueNoStake, posRedSafe},
+                    {"match", "solo blue", "solo awp", "posAwpBlue", "posAwpRed", "skills", "test", "neg red elims", "neg blue elims", "pos red elims", "pos blue elims", "posBlueNoStake", "posRedSafe"}};

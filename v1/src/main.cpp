@@ -31,6 +31,11 @@ void initialize() {
     chass.setLin(_lin);
     chass.setColor(color);
     intake.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    if (color == blue && (auton == posBlueNoStake || auton == posBlueElims)) {
+        prosController.print(0, 0, "HEllo");
+        Pose p = chass.getPose();
+        chass.setPose({-p.pos.x, p.pos.y, p.heading});
+    }
     // color = 
     // chass.setAng(chassAng);
 }

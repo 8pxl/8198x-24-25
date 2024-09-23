@@ -4,7 +4,7 @@
 void soloBlue () {
     //14.4
     //12.5
-    Pt allianceStake = {12.2, -10.0531};
+    Pt allianceStake = {12.1, -10.0531};
     // Pt firstGoal = {-4, 23};
     Pt firstGoal = {-3.5, 25};
     Pt firstRing = {-33, 35};
@@ -42,7 +42,8 @@ void soloBlue () {
     intake.move(-127);
     chass.turnTo(allianceStake, {.timeout=1000, .exit = new Range(1, 100)});
     //11.5
-    chass.moveWithin(allianceStake, 11.45, {.timeout = 1400, .exit = new exit::Range(5, 200)});
+    //11.45
+    chass.moveWithin(allianceStake, 11, {.timeout = 1400, .exit = new exit::Range(5, 200)});
     // chass.driveAngle(400, imu.get_heading(), {.timeout = 2000, .exit = new Range(10, 50)});
     lift.setState(Lift::resting);
     pros::delay(300);
@@ -69,17 +70,19 @@ void soloBlue () {
     chass.setLin(_lin);
     // chass.turn(neg(60), {.timeout = 100, .exit = new Range(5, 20)});
     chass.setAng(_angBig);
-    chass.driveAngle(-2400, neg(65), {.timeout = 1360, .vMin = 67, .exit = new Range(20, 10)});
+    // chass.driveAngle(-2400, neg(65), {.timeout = 1360, .vMin = 67, .exit = new Range(20, 10)});
+    chass.driveAngle(-1200, neg(65), {.timeout = 1360, .vMin = 67, .exit = new Range(20, 10)});
+    chass.driveAngle(-660, neg(90), {.timeout = 1360, .vMin = 30, .exit = new Range(20, 10)});
     chass.setAng(_ang);
-    chass.driveAngle(-600, neg(50), {.async = true, .timeout = 800, .vMin = 20, .exit = new Range(20, 40)});
+    chass.driveAngle(-900, neg(50), {.async = true, .timeout = 800, .vMin = 20, .exit = new Range(20, 40)});
     pros::delay(200);
     clamp::tilt();
     pros::delay(90);
     clamp::clamp();
-    chass.driveAngle(410, neg(50), {.timeout = 400, .vMin = 1, .exit = new Range(80, 10)});
+    chass.driveAngle(410, neg(50), {.timeout = 350, .vMin = 1, .exit = new Range(80, 10)});
     // chass.driveAngle(-1000, neg(90), {.timeout = 3000, .vMin = 30, .exit = new Range(20, 40)});
     chass.turnTo(secondGoal, {.timeout=990, .exit = new Range(5, 10), .reverse = true});
-    chass.driveAngle(-1100, neg(150), {.async = true, .timeout = 2000, .exit = new Range(23, 40)});
+    chass.driveAngle(-900, neg(150), {.async = true, .timeout = 900, .exit = new Range(23, 40)});
     pros::delay(600);
     clamp::tilt();
     

@@ -80,6 +80,7 @@ namespace keejLib {
             void setTurn(PIDConstants turn);
             void setColor(Color c);
             void waitUntilSettled();
+            void setPose(Pose p);
             // void resetOdom();
             
             Pose getPose();

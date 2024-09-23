@@ -23,7 +23,7 @@ void spitColor() {
             if (hue >= clr.first && hue <= clr.second) {
                 robot::tsukasa.toggle();
                 robot::intake.move(-127);
-                pros::delay(300);
+                pros::delay(490);
                 robot::intake.move(127);
                 // robot::tsukasa.toggle();
                 break;

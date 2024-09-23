@@ -105,4 +105,7 @@ void Chassis::setColor(Color c) {
     clr = c;
 }
 
+void Chassis::setPose(Pose p) {
+    pose = p;
+}
 }
