@@ -118,7 +118,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
     int side;
     double maxSlipSpeed;
     //https://www.desmos.com/calculator/cnp2vnubnx
-    while (!timeout -> exited({}) || !params.exit -> exited({.error = dist, .pose = pose })) {
+    while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {
         std::cout << timeout -> exited({}) << std::endl;
         Angle currHeading = pose.heading;
         Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
@@ -216,7 +216,7 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
     double angularVel = 0;
     double radius = 0;
     
-    while (!timeout -> exited({}) || !params.exit -> exited({.error = pose.pos.dist(target.pos), .pose = pose })) {
+    while (!timeout -> exited({}) && !params.exit -> exited({.error = pose.pos.dist(target.pos), .pose = pose })) {
         if (!close) {
             double h = std::hypot(pose.pos.x - target.pos.x, pose.pos.y - target.pos.y);
             carrot = {target.pos.x - (h * sin(toRad(target.heading.heading())) * dLead), target.pos.y - (h * cos(toRad(target.heading.heading())) * dLead)};
