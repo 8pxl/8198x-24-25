@@ -20,13 +20,17 @@ void initialize() {
     // auto x = chass.measureOffsets(10);
     // std::cout << x.first << " " << x.second << std::endl;
     robot:chass.startTracking();
-    auton = autons.autonsList[cont.select(autons.names)];
+    // auton = autons.autonsList[cont.select(autons.names)];
+    auton = skills;
     // mode = driveModes[cont.select(DRIVEMODE_NAMES)];
     mode = keejLib::Controller::arcade;
-    int clr = cont.select({"red", "blue"});
-    color = clr ? blue : red;
     
-    isMatch = !cont.select({"match", "test"});
+    // int clr = cont.select({"red", "blue"});
+    // color = clr ? blue : red;
+    color = red;
+    
+    // isMatch = !cont.select({"match", "test"});
+    isMatch = false;
     lift.setColor(color);
     chass.setLin(_lin);
     chass.setColor(color);
