@@ -6,9 +6,9 @@
 #include "../clamp.hpp"
 #include "funcs.hpp"
 
-#include "awp.hpp"
-#include "neg.hpp"
-#include "pos.hpp"
+#include "rawp.hpp"
+#include "rneg.hpp"
+#include "rpos.hpp"
 #include "skills.hpp"
 
 using namespace robot;
@@ -38,5 +38,7 @@ void test() {
 }
 
 void match() {}
-keejLib::Autons autons = {{match, soloBlue, soloAwp, posAwpBlue, posAwpRed, skills, test, negRed, negBlue, posRedElims, posBlueElims, posBlueNoStake, posRedSafe},
-                    {"match", "solo blue", "solo awp", "posAwpBlue", "posAwpRed", "skills", "test", "neg red elims", "neg blue elims", "pos red elims", "pos blue elims", "posBlueNoStake", "posRedSafe"}};
+// keejLib::Autons autons = {{match, soloBlue, soloAwp, posAwpBlue, posAwpRed, skills, test, negRed, negBlue, posRedElims, posBlueElims, posBlueNoStake, posRedSafe},
+//                     {"match", "solo blue", "solo awp", "posAwpBlue", "posAwpRed", "skills", "test", "neg red elims", "neg blue elims", "pos red elims", "pos blue elims", "posBlueNoStake", "posRedSafe"}};
+keejLib::Autons autons = {{rposNew}, {"pos awp red"}};
+//                     {"match", "solo blue", "solo awp", "posAwpBlue", "posAwpRed", "skills", "test", "neg red elims", "neg blue elims", "pos red elims", "pos blue elims", "posBlueNoStake", "posRedSafe"}};

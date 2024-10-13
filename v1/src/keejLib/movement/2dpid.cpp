@@ -24,6 +24,7 @@ namespace keejLib {
         
         double linError = pose.pos.dist(target);
         Angle heading = Angle(imu->get_heading(), HEADING);
+        double prev = 0;
         while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
             linError = pose.pos.dist(target) - dist;
             if (linError < 0 && params.vMin != 0) break;
@@ -41,9 +42,13 @@ namespace keejLib {
             if (std::abs(vl) + std::abs(va) > 127) {
               vl = (127 - std::abs(va)) * sign(vl);
             }
+            //only slews when accelerating
+            if (params.slew != 0) vl = std::min(prev + params.slew, vl);
+            prev = vl;
             if (params.reverse) vl = -vl;
             
             this -> dt -> spinVolts(vl + va, vl - va);
+            pros::delay(10);
         }
         this -> dt -> spinVolts(0,0);
         moving = false;
