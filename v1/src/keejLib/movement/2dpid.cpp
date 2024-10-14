@@ -7,7 +7,7 @@
 
 namespace keejLib {
 
-    void Chassis::moveWithin(Pt target, double dist, MotionParams params) {
+    void Chassis::moveWithin(Pt target, double dist, MotionParams params, double angle) {
         if (params.async) {
             params.async = false;
             pros::Task task([&]() { moveWithin(target, dist, params);});
@@ -23,7 +23,9 @@ namespace keejLib {
         PID angCont = PID(angConsts);
         
         double linError = pose.pos.dist(target);
-        Angle heading = Angle(imu->get_heading(), HEADING);
+        Angle heading;
+        if (angle == -1) heading = Angle(imu->get_heading(), HEADING);
+        else heading = Angle(angle, HEADING);
         double prev = 0;
         while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
             linError = pose.pos.dist(target) - dist;

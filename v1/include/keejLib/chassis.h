@@ -93,6 +93,6 @@ namespace keejLib {
             void driveAngle(double dist, double angle, MotionParams params, bool absolute = false);
             void mtpose(Pose target, double dLead, MotionParams params);
             void mtpoint(Pt target, MotionParams params);
-            void moveWithin(Pt targ, double dist, MotionParams params);
+            void moveWithin(Pt targ, double dist, MotionParams params, double angle=-1);
     };
 }
