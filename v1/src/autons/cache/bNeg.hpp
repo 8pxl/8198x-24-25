@@ -4,12 +4,12 @@
 void rnegElims(){
     //14.4
     Pt allianceStake = {-16.8, -10.0531};
-    // Pt firstGoal = {4.0, 23.0};
-    Pt firstGoal = {3.0, 23.0};
-    Pt firstRing = {33.0, 35.0};
-    // Pt secondGoal = {-32.0, 23.0};
-    Pt secondGoal = {-35.0, 33.0};
-    Pt secondRing = {-63.0, 36.0};
+    // Pt firstGoal = {-4, 23};
+    Pt firstGoal = {-3, 23};
+    Pt firstRing = {-33, 35};
+    // Pt secondGoal = {32, 23};
+    Pt secondGoal = {35, 33};
+    Pt secondRing = {63, 36};
     chass.setTurn(_90);
     chass.setAng(_ang);
     chass.setLin(_linSmall);
@@ -23,7 +23,7 @@ void rnegElims(){
     robot::tsukasa.toggle();
     lift.setState(Lift::mid);
     chass.driveAngle(570, neg(62), {.async = true, .timeout = 2000, .vMin = 0, .exit = new Range(20, 50)});
-    // chass.mtpoint({-4.0, 8.0}, {
+    // chass.mtpoint({4,8}, {
     //     .async = false,
     //     .timeout = 6000,
     //     .settleRange = 4,
@@ -60,7 +60,7 @@ void rnegElims(){
     chass.turnTo(firstRing, {.timeout=600, .exit = new Range(15, 20)});
     chass.mtpoint(firstRing, {.timeout = 700, .vMin = 30, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 5});
     
-    // chass.mtpoint({10.0, 20.0}, {.timeout = 8000, .vMin = 30, .settleRange = 8, .exit = new exit::Range(3, 400), .drift = 15});
+    // chass.mtpoint({-10, 20}, {.timeout = 8000, .vMin = 30, .settleRange = 8, .exit = new exit::Range(3, 400), .drift = 15});
     chass.setLin(_lin);
     // chass.turn(60, {.timeout = 100, .exit = new Range(5, 20)});
     chass.setAng(_angBig);
@@ -77,7 +77,7 @@ void negRed() {
     
     robot::intake.move(127);
     stopOnColor();
-    chass.moveWithin({-0.0, -17.0}, 14.9, {.timeout = 3000, .vMin = 30, .exit = new Range(5, 40), .reverse = true});
+    chass.moveWithin({0, -17}, 14.9, {.timeout = 3000, .vMin = 30, .exit = new Range(5, 40), .reverse = true});
     chass.setAng(_angBig);
     chass.driveAngle(-780, 30, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(120, 10)});
     clamp::clamp();
@@ -86,11 +86,11 @@ void negRed() {
     chass.driveAngle(1200, 135, {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
     chass.turn(100, {.timeout=1000, .exit = new Range(1, 20)});
     chass.driveAngle(700, 100, {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
-    chass.mtpoint({-0.0, -17.0}, {.timeout = 3000, .exit = new Range(7, 40), .reverse = true});
+    chass.mtpoint({0,-17}, {.timeout = 3000, .exit = new Range(7, 40), .reverse = true});
     chass.driveAngle(1200, 90, {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
     chass.driveAngle(-2000, 108, {.timeout = 1700, .vMin = 0, .exit = new Range(20, 40)});
     robot::intake.move(0);
-    chass.turnTo({34.0, 0.0}, {.timeout = 3000, .exit = new Range(7, 40)});
+    chass.turnTo({-34, 0}, {.timeout = 3000, .exit = new Range(7, 40)});
 }
 
 // void negBlue() {
@@ -101,7 +101,7 @@ void negRed() {
     
 //     robot::intake.move(127);
 //     stopOnColor();
-//     chass.moveWithin({-0.0, -17.0}, 14.9, {.timeout = 3000, .vMin = 30, .exit = new Range(5, 40), .reverse = true});
+//     chass.moveWithin({0, -17}, 14.9, {.timeout = 3000, .vMin = 30, .exit = new Range(5, 40), .reverse = true});
 //     chass.setAng(_angBig);
 //     chass.driveAngle(-780, 30, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(120, 10)});
 //     clamp::clamp();
@@ -110,9 +110,9 @@ void negRed() {
 //     chass.driveAngle(1200, 135, {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
 //     chass.turn(100, {.timeout=1000, .exit = new Range(1, 20)});
 //     chass.driveAngle(700, 100, {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
-//     chass.mtpoint({-0.0, -17.0}, {.timeout = 3000, .exit = new Range(7, 40), .reverse = true});
+//     chass.mtpoint({0,-17}, {.timeout = 3000, .exit = new Range(7, 40), .reverse = true});
 //     chass.driveAngle(1200, 90, {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
 //     chass.driveAngle(-2000, 108, {.timeout = 1700, .vMin = 0, .exit = new Range(20, 40)});
 //     robot::intake.move(0);
-//     chass.turnTo({34.0, 0.0}, {.timeout = 3000, .exit = new Range(7, 40)});
+//     chass.turnTo({-34, 0}, {.timeout = 3000, .exit = new Range(7, 40)});
 // }

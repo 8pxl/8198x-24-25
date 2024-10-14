@@ -5,12 +5,12 @@
 //     //14.4
 //     //12.5
 //     Pt allianceStake = {-12.1, -10.0531};
-//     // Pt firstGoal = {4.0, 23.0};
-//     Pt firstGoal = {3.5, 25.0};
-//     Pt firstRing = {33.0, 35.0};
-//     // Pt secondGoal = {-32.0, 23.0};
-//     Pt secondGoal = {-35.0, 33.0};
-//     Pt secondRing = {-63.0, 36.0};
+//     // Pt firstGoal = {-4, 23};
+//     Pt firstGoal = {-3.5, 25};
+//     Pt firstRing = {-33, 35};
+//     // Pt secondGoal = {32, 23};
+//     Pt secondGoal = {35, 33};
+//     Pt secondRing = {63, 36};
 //     chass.setTurn(_90);
 //     chass.setAng(_ang);
 //     chass.setLin(_linSmall);
@@ -24,7 +24,7 @@
 //     robot::tsukasa.toggle();
 //     lift.setState(Lift::mid);
 //     chass.driveAngle(570, neg(62), {.async = true, .timeout = 2000, .vMin = 0, .exit = new Range(20, 50)});
-//     // chass.mtpoint({-4.0, 8.0}, {
+//     // chass.mtpoint({4,8}, {
 //     //     .async = false,
 //     //     .timeout = 6000,
 //     //     .settleRange = 4,
@@ -55,7 +55,7 @@
 //     chass.driveAngle(-250, neg(170), {.timeout = 2000, .vMin = 70, .exit = new Range(50, 10)});
 //     chass.setAng(_ang);
 //     // chass.mtpoint({-1.9, 14.5}, {.timeout = 900, .vMin = 70, .settleRange = 3, .exit = new exit::Range(50, 10), .drift = 24});
-//     chass.mtpoint({2.0, 16.5}, {.timeout = 1000, .vMin = 70, .settleRange = 3, .exit = new exit::Range(50, 10), .drift = 24});
+//     chass.mtpoint({-2, 16.5}, {.timeout = 1000, .vMin = 70, .settleRange = 3, .exit = new exit::Range(50, 10), .drift = 24});
 //     chass.driveAngle(-700, neg(150), {.async = false, .timeout = 3000, .vMin = 40, .exit = new Range(80, 10)});
 //     clamp::clamp();
 //     chass.driveAngle(-700, neg(150), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(20, 5)}, true);
@@ -65,7 +65,7 @@
 //     intake.move(127);
 //     chass.turnTo(firstRing, {.timeout=500, .exit = new Range(15, 20)});
 //     chass.mtpoint(firstRing, {.timeout = 700, .vMin = 30, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 5});
-//     // chass.mtpoint({10.0, 20.0}, {.timeout = 8000, .vMin = 30, .settleRange = 8, .exit = new exit::Range(3, 400), .drift = 15});
+//     // chass.mtpoint({-10, 20}, {.timeout = 8000, .vMin = 30, .settleRange = 8, .exit = new exit::Range(3, 400), .drift = 15});
 //     chass.setLin(_lin);
 //     // chass.turn(60, {.timeout = 100, .exit = new Range(5, 20)});
 //     chass.setAng(_angBig);
@@ -107,13 +107,13 @@
 void rsoloAwp() {
     //14.4
     Pt allianceStake = {-16.85, -10.0531};
-    // Pt firstGoal = {4.0, 23.0};
-    //     Pt firstGoal = {3.0, 25.0};
-    Pt firstGoal = {1.6, 25.0};
-    Pt firstRing = {33.0, 34.0};
-    // Pt secondGoal = {-32.0, 23.0};
-    Pt secondGoal = {-35.0, 33.0};
-    Pt secondRing = {-63.0, 36.0};
+    // Pt firstGoal = {-4, 23};
+    //     Pt firstGoal = {-3, 25};
+    Pt firstGoal = {-1.6, 25};
+    Pt firstRing = {-33, 34};
+    // Pt secondGoal = {32, 23};
+    Pt secondGoal = {35, 33};
+    Pt secondRing = {63, 36};
     chass.setTurn(_90);
     chass.setAng(_ang);
     chass.setLin(_linSmall);
@@ -127,7 +127,7 @@ void rsoloAwp() {
     robot::tsukasa.toggle();
     lift.setState(Lift::mid);
     chass.driveAngle(570, neg(62), {.async = true, .timeout = 2000, .vMin = 0, .exit = new Range(20, 50)});
-    // chass.mtpoint({-4.0, 8.0}, {
+    // chass.mtpoint({4,8}, {
     //     .async = false,
     //     .timeout = 6000,
     //     .settleRange = 4,
@@ -168,7 +168,7 @@ void rsoloAwp() {
     intake.move(127);
     chass.turnTo(firstRing, {.timeout=500, .exit = new Range(15, 20)});
     chass.mtpoint(firstRing, {.timeout = 700, .vMin = 30, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 5});
-    // chass.mtpoint({10.0, 20.0}, {.timeout = 8000, .vMin = 30, .settleRange = 8, .exit = new exit::Range(3, 400), .drift = 15});
+    // chass.mtpoint({-10, 20}, {.timeout = 8000, .vMin = 30, .settleRange = 8, .exit = new exit::Range(3, 400), .drift = 15});
     chass.setLin(_lin);
     // chass.turn(60, {.timeout = 100, .exit = new Range(5, 20)});
     chass.setAng(_angBig);
