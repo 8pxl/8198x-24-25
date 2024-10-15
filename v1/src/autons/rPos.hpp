@@ -426,19 +426,21 @@ void rposNew() {
     chass.waitUntilSettled();
     pros::delay(1100);
     redirect.toggle();
-    chass.turn(70, {.timeout=900, .exit = new Range(4, 20)});
+    chass.turn(67, {.timeout=900, .exit = new Range(4, 20)});
     chass.setAng(_angBig);
-    chass.driveAngle(800, 70, {.timeout=550, .exit = new Range(20, 50)});
+    chass.driveAngle(770, 70, {.timeout=550, .exit = new Range(20, 50)});
     chass.setAng(_ang);
     chass.driveAngle(-600, 70, {.timeout=1200, .exit = new Range(20, 50)});
     chass.turn(180, {.timeout = 300, .exit = new Range(30, 10)});
     chass.mtpoint({10.3, 13.3}, {.async = true, .timeout = 1400, .vMin = 20, .settleRange = 9, .exit = new exit::Range(10, 50), .drift = 20});
     pros::delay(400);
     lift.switchState();
-    chass.driveAngle(-900, neg(130), {.timeout=300, .exit = new Range(40, 20)});
+    chass.driveAngle(-870, neg(130), {.timeout=300, .exit = new Range(40, 20)});
     clamp::clamp();
-    chass.driveAngle(-980, neg(130), {.timeout=400, .exit = new Range(40, 20)}, true);
-    chass.driveAngle(240, neg(130), {.timeout=1000, .exit = new Range(20, 20)});
+    chass.driveAngle(-870, neg(130), {.timeout=400, .exit = new Range(40, 20)}, true);
+// chass.moveWithin({12.43,16.66}, 0, {.timeout=2100, .exit = new Range(3, 100)}, neg(135));
+//14, 16.66
+chass.mtpoint({17,10}, {.async = false, .timeout = 1800, .vMin = 0, .settleRange = 6, .exit = new exit::Range(3, 100), .drift = 10});
     robot::intake.move(-127);
     // chass.turnTo(Pt target, MotionParams params)
     tsukasa.toggle();
@@ -486,7 +488,7 @@ chass.turn(neg(45), {.timeout=900, .exit = new Range(4, 30)});
     // lift.toggle();
     //61.8
     //62.5
-    chass.turnTo({62.8, 31}, {.timeout=900, .exit = new Range(2, 80)});
+    chass.turnTo({62, 30}, {.timeout=900, .exit = new Range(2, 80)});
     robot::intake.move(127);
     spitColor();
     // chass.mtpoint({36, 16}, {.timeout=1000, .exit = new Range(5, 20), .within = 14.5});
@@ -497,14 +499,16 @@ chass.turn(neg(45), {.timeout=900, .exit = new Range(4, 30)});
     //12.4
     //12.9
     //62.5
-    chass.moveWithin({62.85,31}, 13.1, {.timeout=2100, .exit = new Range(5, 100)});
-    chass.turnTo({62.85, 31}, {.timeout=900, .exit = new Range(2, 80)});
+
+    chass.moveWithin({62,30}, 12.5, {.timeout=2100, .exit = new Range(5, 100)});
+    //66,30
+    chass.turnTo({62, 30}, {.timeout=900, .exit = new Range(2, 80)});
     lift.toggle();
     pros::delay(390);
     spitColor();
 
     chass.driveAngle(-1580, 20, {.async = false, .timeout = 1500, .vMin = 38, .exit = new Range(80, 10)});
-    chass.driveAngle(-890, neg(45), {.async = false, .timeout = 1000, .vMin = 0, .exit = new Range(20, 10)});
+    chass.driveAngle(-1100, neg(45), {.async = false, .timeout = 1000, .vMin = 0, .exit = new Range(20, 10)});
     redirect.toggle();
     // {10.43, 13.3};
 }
