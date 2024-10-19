@@ -30,6 +30,7 @@ class Lift {
         pros::Optical *optical;
         pros::Task *task = nullptr;
         keejLib::Pis *redirect;
+        keejLib::Pis *holder;
         PID pid;
         double target = 0;
         double prevAngle;
@@ -46,7 +47,7 @@ class Lift {
         CompState *compState = nullptr;
     
     public:
-        Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, keejLib::Pis *redirect, PIDConstants constants) : lift(lift), rot(rot), optical(optical), redirect(redirect) {
+        Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, keejLib::Pis *redirect, keejLib::Pis *holder,  PIDConstants constants) : lift(lift), rot(rot), optical(optical), redirect(redirect), holder(holder) {
             pid = PID(constants);
         }
         void initTask(CompState *s ) {
@@ -107,7 +108,13 @@ class Lift {
         }
         
         void setState(state s) {
-            if (s == resting) optical -> set_led_pwm(0);
+            if (s == resting) {
+                optical -> set_led_pwm(0);
+                holder ->setState(false);
+            }
+            else {
+                holder ->setState(true);
+            }
             nextState = currState;
             currState = s;
             if (nextState == currState) {

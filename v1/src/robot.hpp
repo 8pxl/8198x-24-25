@@ -3,6 +3,7 @@
 #include "keejLib/lib.h"
 // #include "pros/misc.hpp"
 #include "lift.hpp"
+#include "pros/adi.hpp"
 #include "pros/optical.hpp"
 // #include "pros/rotation.hpp"
 using namespace keejLib;
@@ -21,6 +22,7 @@ namespace robot {
     pros::ADIDigitalOut tiltPiston('B');
     pros::ADIDigitalOut redirPiston('C');
     pros::ADIDigitalOut intakePiston('A');
+    pros::ADIDigitalOut holderPiston('E');
     
     pros::Rotation rotationSensor(19);
     pros::Rotation vertTracker(11, false);
@@ -45,8 +47,9 @@ namespace robot {
     Pis tilt({tiltPiston}, false);
     Pis redirect({redirPiston} , false);
     Pis tsukasa({intakePiston}, false);
+    Pis holder({holderPiston}, false);
     
-    Lift lift(&liftMotor, &rotationSensor, &optical, &redirect, {
+    Lift lift(&liftMotor, &rotationSensor, &optical, &redirect, &holder, {
         .kp = 1,
         .ki = 0,
         .kd = 0,
