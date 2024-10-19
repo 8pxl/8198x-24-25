@@ -431,13 +431,14 @@ void rposNew() {
     pros::delay(200);
     chass.turn(65, {.timeout=900, .exit = new Range(4, 20)});
     redirect.toggle();
+    clamp::tilt();
     chass.setAng(_angBig);
     chass.driveAngle(400, 65, {.timeout=550, .exit = new Range(20, 50)});
     chass.setAng(_ang);
     chass.driveAngle(-300, 65, {.timeout=500, .exit = new Range(20, 50)});
     chass.turn(150, {.timeout = 300, .exit = new Range(30, 10)});
     chass.mtpoint({10.3, 13.3}, {.async = true, .timeout = 1400, .vMin = 20, .settleRange = 9, .exit = new exit::Range(10, 50), .drift = 20});
-    clamp::tilt();
+    // clamp::tilt();
     pros::delay(300);
     // clamp::clamp();
     lift.switchState();

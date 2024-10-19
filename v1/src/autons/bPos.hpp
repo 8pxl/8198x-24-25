@@ -32,6 +32,7 @@ void bposNew() {
     pros::delay(200);
     chass.turn(neg(55), {.timeout=900, .exit = new Range(4, 20)});
     redirect.toggle();
+    clamp::tilt();
     chass.setAng(_angBig);
     chass.driveAngle(400, neg(55), {.timeout=550, .exit = new Range(20, 50)});
     chass.setAng(_ang);
@@ -39,7 +40,7 @@ void bposNew() {
     
     chass.turn(neg(140), {.timeout = 700, .exit = new Range(10, 30)});
     chass.mtpoint({-10.3, 13.3}, {.async = true, .timeout = 1400, .vMin = 20, .settleRange = 9, .exit = new exit::Range(5, 50), .drift = 20});
-    clamp::tilt();
+    // clamp::tilt();
     pros::delay(300);
     // clamp::clamp();
     lift.switchState();
