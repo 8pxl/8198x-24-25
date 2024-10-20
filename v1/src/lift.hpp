@@ -28,8 +28,10 @@ class Lift {
         pros::Motor *lift;
         pros::Rotation *rot;
         pros::Optical *optical;
+        // pros::Mutex *colorMutex;
         pros::Task *task = nullptr;
         keejLib::Pis *redirect;
+        keejLib::Pis *holder;
         PID pid;
         double target = 0;
         double prevAngle;
@@ -46,7 +48,7 @@ class Lift {
         CompState *compState = nullptr;
     
     public:
-        Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, keejLib::Pis *redirect, PIDConstants constants) : lift(lift), rot(rot), optical(optical), redirect(redirect) {
+        Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, keejLib::Pis *redirect, keejLib::Pis *holder, PIDConstants constants) : lift(lift), rot(rot), optical(optical), redirect(redirect), holder(holder){
             pid = PID(constants);
         }
         void initTask(CompState *s ) {
@@ -91,10 +93,14 @@ class Lift {
             }
             if (*compState == keejLib::autonomous) return;
             
+            //colorMutex -> take();
             double hue = optical->get_hue();
+            //colorMutex -> give();
             
             if (currState != resting && redirect ->getState()) {
+                //colorMutex -> take();
                 optical -> set_led_pwm(100);
+                //colorMutex -> give();
                 if (hue >= color.first && hue <= color.second) {
                     setState(resting);
                 }
@@ -107,7 +113,15 @@ class Lift {
         }
         
         void setState(state s) {
-            if (s == resting) optical -> set_led_pwm(0);
+            if (s == resting) {
+                //colorMutex -> take();
+                optical -> set_led_pwm(0);
+                //colorMutex -> give();
+                holder ->setState(false);
+            }
+            else {
+                holder ->setState(true);
+            }
             nextState = currState;
             currState = s;
             if (nextState == currState) {

@@ -16,4 +16,6 @@ Color color;
 
 bool isMatch;
 
+pros::Mutex colorMutex;
+
 }

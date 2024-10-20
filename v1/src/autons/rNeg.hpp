@@ -1,7 +1,7 @@
 #include "constants.hpp"
 #include "funcs.hpp"
 
-void negElims(){
+void rnegElims(){
     //14.4
     Pt allianceStake = {16.8, -10.0531};
     // Pt firstGoal = {-4, 23};
@@ -94,26 +94,26 @@ void negRed() {
     chass.turnTo({-34, 0}, {.timeout = 3000, .exit = new Range(7, 40)});
 }
 
-void negBlue() {
-    chass.setTurn(_90);
-    chass.setAng(_ang);
-    chass.setLin(_lin);
-    chass.setMTP(_chassLin, _chassAng);
+// void negBlue() {
+//     chass.setTurn(_90);
+//     chass.setAng(_ang);
+//     chass.setLin(_lin);
+//     chass.setMTP(_chassLin, _chassAng);
     
-    robot::intake.move(127);
-    stopOnColor();
-    chass.moveWithin({0, -17}, 14.9, {.timeout = 3000, .vMin = 30, .exit = new Range(5, 40), .reverse = true});
-    chass.setAng(_angBig);
-    chass.driveAngle(-780, neg(30), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(120, 10)});
-    clamp::clamp();
-    chass.driveAngle(-780, neg(30), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(20, 5)}, true);
-    chass.turn(neg(135), {.timeout=1000, .exit = new Range(1, 20)});
-    chass.driveAngle(1200, neg(135), {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
-    chass.turn(neg(100), {.timeout=1000, .exit = new Range(1, 20)});
-    chass.driveAngle(700, neg(100), {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
-    chass.mtpoint({0,-17}, {.timeout = 3000, .exit = new Range(7, 40), .reverse = true});
-    chass.driveAngle(1200, neg(90), {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
-    chass.driveAngle(-2000, neg(108), {.timeout = 1700, .vMin = 0, .exit = new Range(20, 40)});
-    robot::intake.move(0);
-    chass.turnTo({-34, 0}, {.timeout = 3000, .exit = new Range(7, 40)});
-}
+//     robot::intake.move(127);
+//     stopOnColor();
+//     chass.moveWithin({0, -17}, 14.9, {.timeout = 3000, .vMin = 30, .exit = new Range(5, 40), .reverse = true});
+//     chass.setAng(_angBig);
+//     chass.driveAngle(-780, neg(30), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(120, 10)});
+//     clamp::clamp();
+//     chass.driveAngle(-780, neg(30), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(20, 5)}, true);
+//     chass.turn(neg(135), {.timeout=1000, .exit = new Range(1, 20)});
+//     chass.driveAngle(1200, neg(135), {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
+//     chass.turn(neg(100), {.timeout=1000, .exit = new Range(1, 20)});
+//     chass.driveAngle(700, neg(100), {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
+//     chass.mtpoint({0,-17}, {.timeout = 3000, .exit = new Range(7, 40), .reverse = true});
+//     chass.driveAngle(1200, neg(90), {.timeout = 1200, .vMin = 0, .exit = new Range(20, 40)});
+//     chass.driveAngle(-2000, neg(108), {.timeout = 1700, .vMin = 0, .exit = new Range(20, 40)});
+//     robot::intake.move(0);
+//     chass.turnTo({-34, 0}, {.timeout = 3000, .exit = new Range(7, 40)});
+// }

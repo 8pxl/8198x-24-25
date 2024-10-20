@@ -20,6 +20,7 @@ void Chassis::startTracking() {
 }
 
 void Chassis::update() {
+    // chassMutex.take();
     double rot = imu -> get_rotation();
     Angle currTheta;
     if (rot == PROS_ERR_F) {
@@ -65,6 +66,7 @@ void Chassis::update() {
     pose.pos.x += locY * sin(avgHeading) - (locX * cos(avgHeading));
     pose.pos.y += locY * cos(avgHeading) + (locX * sin(avgHeading));
     pose.heading = currTheta;
+    // chassMutex.give()
 }
 
 }
