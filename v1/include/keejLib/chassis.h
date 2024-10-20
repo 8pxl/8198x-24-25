@@ -1,6 +1,7 @@
 #pragma once
 #include "main.h"
 #include "pros/rotation.hpp"
+#include "pros/rtos.hpp"
 #include "util.h"
 #include "control.h"
 

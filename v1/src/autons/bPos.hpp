@@ -16,11 +16,13 @@ void bposNew() {
     chass.setAng(_angBig);
     prosController.print(0,0, "%f", imu.get_heading());
     //-20
-    chass.moveWithin({-3.0, -20}, 0, {.timeout = 1500, .vMin=0, .exit = new Range(5, 100), .reverse=true, .slew = 1.8, }, 9.5);
+    //-20.3
+    chass.moveWithin({-3.0, -21.3}, 0, {.timeout = 1500, .vMin=0, .exit = new Range(5, 100), .reverse=true, .slew = 2, }, 8.9);
     //turn to face goal and grab
-    chass.driveAngle(-800, 30, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(120, 5), .slew = 2});
+    chass.driveAngle(-750, 30, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(80, 5)});
     clamp::clamp();
-    chass.driveAngle(-800, 30, {.async = false, .timeout = 600, .vMin = 0, .exit = new Range(32, 5)}, true);
+    //800
+    chass.driveAngle(-750, 30, {.async = false, .timeout = 600, .vMin = 0, .exit = new Range(39, 5)}, true);
     chass.setAng(_ang);
     chass.driveAngle(550, 30, {.async = true, .timeout = 700, .vMin = 0, .exit = new Range(20, 40)});
     pros::delay(290);
@@ -41,7 +43,7 @@ void bposNew() {
     chass.turn(neg(140), {.timeout = 700, .exit = new Range(10, 30)});
     chass.mtpoint({-10.3, 13.3}, {.async = true, .timeout = 1400, .vMin = 20, .settleRange = 9, .exit = new exit::Range(5, 50), .drift = 20});
     // clamp::tilt();
-    pros::delay(300);
+    pros::delay(700);
     // clamp::clamp();
     lift.switchState();
     chass.waitUntilSettled();
@@ -54,18 +56,19 @@ void bposNew() {
 //-5
 //-4.5
 // -6.5
-chass.mtpoint({-8.5, 13.0}, {.async = false, .timeout = 600, .vMin = 0, .settleRange = 6, .exit = new exit::Range(3, 30), .drift = 10});
+chass.mtpoint({-8.8, 13.0}, {.async = false, .timeout = 600, .vMin = 0, .settleRange = 6, .exit = new exit::Range(3, 30), .drift = 10});
     robot::intake.move(-127);
     // chass.turnTo(Pt target, MotionParams params)
     tsukasa.toggle();
 
 
-chass.turn(45, {.timeout=700, .exit = new Range(4, 30)});
+chass.turn(45, {.timeout=550, .exit = new Range(4, 30)});
     chass.driveAngle(900, 45, {.async = true, .timeout = 600, .vMin = 20, .exit = new Range(20, 40)});
     pros::delay(550);
     robot::intake.move(127);
     robot::tsukasa.toggle();
     chass.waitUntilSettled();
+    pros::delay(200);
     
     chass.driveAngle(-400, 45, {.timeout = 500, .vMin = 0, .exit = new Range(20, 40)});
     
@@ -91,18 +94,19 @@ chass.turn(45, {.timeout=700, .exit = new Range(4, 30)});
         // 25.8
         // 26.8 RIGHT
         // 26 LEFT
-        chass.mtpoint({-28, 2.0}, {.async = false, .timeout = 2000, .vMin = 0, .settleRange = 9, .exit = new exit::Range(5, 50), .drift = 6, .within=0});
+        // 28.4
+        chass.mtpoint({-28.3, 2.0}, {.async = false, .timeout = 2000, .vMin = 0, .settleRange = 9, .exit = new exit::Range(5, 50), .drift = 6, .within=0});
     
     // chass.mtpoint({-10.0, -29.0}, {.async = false, .timeout = 2000, .vMin = 20, .settleRange = 9, .exit = new exit::Range(9, 100), .drift = 20, .within=0});
     // 
-    chass.turn(30, {.timeout = 300, .exit = new Range(3, 40)});
+    chass.turn(30, {.timeout = 200, .exit = new Range(3, 40)});
     robot::intake.move(-30);
-    chass.driveAngle(-1200, 30, {.async = true, .timeout = 1000, .vMin = 0, .exit = new Range(80, 10),.slew = 1.8});
+    chass.driveAngle(-900, 30, {.async = true, .timeout = 800, .vMin = 0, .exit = new Range(80, 10),.slew = 0.01});
     pros::delay(300);
     robot::intake.move(0);
     chass.waitUntilSettled();
     clamp::clamp();
-    chass.driveAngle(-1200, 30, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(30, 5)}, true);
+    chass.driveAngle(-900, 30, {.async = false, .timeout = 360, .vMin = 0, .exit = new Range(30, 5)}, true);
     clamp::tilt();
     
     //40,20
@@ -125,10 +129,16 @@ chass.turn(45, {.timeout=700, .exit = new Range(4, 30)});
     // 62.5
     // 62.9 RIGHT
     // 62.3 RIGHT
-    Pt allianceStake = {-59, 29.0};
-    chass.turnTo(allianceStake, {.timeout=900, .exit = new Range(2, 80)});
+    // 59 LEFT
+    // 59.7 LEFT
+    // -61 LEFT
+    // -63.5
+    //-61.8
+    //62.3 LEFT
+    //65 LEFT
+    Pt allianceStake = {-65.3, 29.0};
+    chass.turnTo(allianceStake, {.timeout=600, .exit = new Range(2, 80)});
     robot::intake.move(127);
-    robot::tsukasa.toggle();
     spitColor();
     // chass.mtpoint({-36.0, 16.0}, {.timeout=1000, .exit = new Range(5, 20), .within = 14.5});
     // 13.8
@@ -145,17 +155,23 @@ chass.turn(45, {.timeout=700, .exit = new Range(4, 30)});
     //13.8 too far
     //13.6 TOO FAR
     //12.8
-    chass.moveWithin(allianceStake, 10, {.timeout=2100, .exit = new Range(5, 100)});
+    //10 TOO FAR
+    //9.5 CLOSE
+    //10.2 CLOSE
+    chass.moveWithin(allianceStake, 13.7, {.timeout=2100, .exit = new Range(5, 100)});
     //66,30
     chass.turnTo(allianceStake, {.timeout=900, .exit = new Range(2, 80)});
     lift.toggle();
     pros::delay(390);
     spitColor();
 
-    chass.driveAngle(-1580, neg(20), {.async = false, .timeout = 1500, .vMin = 38, .exit = new Range(80, 10)});
+    chass.driveAngle(-1580, neg(20), {.async = false, .timeout = 700, .vMin = 38, .exit = new Range(80, 10)});
     robot::tsukasa.toggle();
-    chass.driveAngle(-1250, 45, {.async = false, .timeout = 880, .vMin = 0, .exit = new Range(20, 10)});
+    chass.driveAngle(-1400, 45, {.async = false, .timeout = 680, .vMin = 0, .exit = new Range(20, 10)});
     redirect.toggle();
+    
+    chass.mtpoint({8, -40}, {.timeout = 1300, .vMin = 0, .settleRange = 10, .exit = new Range(5, 100)});
+    chass.turn(neg(3), {.timeout = 700, .exit = new Range(5, 100)});
     // {-10.43, 13.3};
 }
 // void posBlueElims() {

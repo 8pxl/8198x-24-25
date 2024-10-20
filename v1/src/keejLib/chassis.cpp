@@ -71,20 +71,28 @@ std::pair<double, double> Chassis::measureOffsets(int iterations) {
 }
 
 void Chassis::setLin(PIDConstants linear) {
+    // chassMutex.take();
     linConsts = linear;
+    // chassMutex.give();
 }
 
 void Chassis::setAng(PIDConstants ang) {
+    // chassMutex.take();
     angConsts = ang;
+    // chassMutex.give();
 }
 
 void Chassis::setMTP(PIDConstants lin, PIDConstants ang) {
+    // chassMutex.take();
     mtpLin = lin;
     mtpAng = ang;
+    // chassMutex.give()
 }
 
 void Chassis::setTurn(PIDConstants turn) {
+    // chassMutex.take();
     turnConsts = turn;
+    // chassMutex.give();
 }
 
 void Chassis::waitUntilSettled() {
@@ -94,18 +102,26 @@ void Chassis::waitUntilSettled() {
 }
 
 bool Chassis::isSettled() {
+    // chassMutex.take();
     return !moving;
+    // chassMutex.give();
 }
 
 Pose Chassis::getPose() {
+    // chassMutex.take();
     return pose;
+    // chassMutex.give();
 }
 
 void Chassis::setColor(Color c) {
+    // chassMutex.take();
     clr = c;
+    // chassMutex.give();
 }
 
 void Chassis::setPose(Pose p) {
+    // chassMutex.take();
     pose = p;
+    // chassMutex.give();
 }
 }

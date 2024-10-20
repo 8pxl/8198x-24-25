@@ -439,7 +439,7 @@ void rposNew() {
     chass.turn(150, {.timeout = 300, .exit = new Range(30, 10)});
     chass.mtpoint({10.3, 13.3}, {.async = true, .timeout = 1400, .vMin = 20, .settleRange = 9, .exit = new exit::Range(10, 50), .drift = 20});
     // clamp::tilt();
-    pros::delay(300);
+    pros::delay(700);
     // clamp::clamp();
     lift.switchState();
     chass.turn(neg(130), {.timeout = 300, .exit = new Range(10, 20)});
@@ -528,15 +528,30 @@ chass.turn(neg(45), {.timeout=700, .exit = new Range(4, 30)});
     //62.5
 
     //13.9
-    chass.moveWithin(allianceStake, 14.5, {.timeout=2100, .exit = new Range(5, 100)});
+    //14.1
+    chass.moveWithin(allianceStake, 13.6, {.timeout=2100, .exit = new Range(5, 100)});
     //66,30
     chass.turnTo(allianceStake, {.timeout=900, .exit = new Range(2, 80)});
     lift.toggle();
     pros::delay(390);
     spitColor();
 
-    chass.driveAngle(-1580, 20, {.async = false, .timeout = 1500, .vMin = 38, .exit = new Range(80, 10)});
-    chass.driveAngle(-1100, neg(45), {.async = false, .timeout = 880, .vMin = 0, .exit = new Range(20, 10)});
+    // chass.driveAngle(-1580, 20, {.async = false, .timeout = 1500, .vMin = 38, .exit = new Range(80, 10)});
+    //
+
+    
+    chass.mtpoint({-8, -40}, {.timeout = 1300, .vMin = 0, .settleRange = 10, .exit = new Range(5, 100)});
+    chass.turn(3, {.timeout = 700, .exit = new Range(5, 100)});
+    // 
+    // 
+    // chass.mtpoint({-8, 0}, {.timeout = 1300, .vMin = 0, .settleRange = 10, .exit = new Range(5, 100)});
+    // clamp::clamp();
+    
+    // chass.mtpoint({-8, -40}, {.timeout = 1300, .vMin = 0, .settleRange = 10, .exit = new Range(5, 100)});
+    // chass.turn(3, {.timeout = 700, .exit = new Range(5, 100)});
+
+    
+    // chass.driveAngle(-1100, neg(45), {.async = false, .timeout = 880, .vMin = 0, .exit = new Range(20, 10)});
     redirect.toggle();
     // {10.43, 13.3};
 }
@@ -544,6 +559,6 @@ chass.turn(neg(45), {.timeout=700, .exit = new Range(4, 30)});
 //     rpos();
 //     keejLib::Stopwatch t1;
 //     int time = std::max(300,15000 - t1.elapsed() - 100);
-//     chass.mtpoint({-8, -40}, {.timeout = time, .vMin = 0, .settleRange = 10, .exit = new Range(5, 100)});
+    // chass.mtpoint({-8, -40}, {.timeout = time, .vMin = 0, .settleRange = 10, .exit = new Range(5, 100)});
 //     chass.turnTo({-20, -90}, {.timeout=900, .exit = new Range(0.5, 200), .reverse = true});
 // }

@@ -20,9 +20,11 @@ void Chassis::turn(double angle, MotionParams params = {.async = false, .timeout
     PID cont = PID(this -> turnConsts);
     double error = targ.error(Angle(imu -> get_rotation(), HEADING));
     while (!params.exit -> exited({.error = fabs(error)}) && !timeout -> exited({})) {
+        // chassMutex.take();
         error = targ.error(Angle(imu -> get_rotation(), HEADING));
         double vel = cont.out(error);
         this -> dt -> spinVolts(vel, -vel);
+        // chassMutex.give();
         pros::delay(10);
     }
     this -> dt -> spinVolts(0, 0);
@@ -30,6 +32,7 @@ void Chassis::turn(double angle, MotionParams params = {.async = false, .timeout
 }
 
 void Chassis::turnTo(Pt target, MotionParams params) {
+    // chassMutex.take();
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { turnTo(target, params);});
@@ -56,5 +59,6 @@ void Chassis::turnTo(Pt target, MotionParams params) {
     }
     this -> dt -> spinVolts(0, 0);
     moving = false;
+    // chassMutex.give();
 }
 }

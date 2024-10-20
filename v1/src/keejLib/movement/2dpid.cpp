@@ -8,6 +8,7 @@
 namespace keejLib {
 
     void Chassis::moveWithin(Pt target, double dist, MotionParams params, double angle) {
+        // chassMutex.take();
         if (params.async) {
             params.async = false;
             pros::Task task([&]() { moveWithin(target, dist, params);});
@@ -54,10 +55,12 @@ namespace keejLib {
         }
         this -> dt -> spinVolts(0,0);
         moving = false;
+        // chassMutex.give()
     }
     
 
 void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin = 0}, bool absolute) {
+    // chassMutex.take();
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { driveAngle(dist, angle, params);});
@@ -92,16 +95,18 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
         if (std::abs(vl) + std::abs(va) > 127) {
           vl = (127 - std::abs(va)) * sign(vl);
         }
-        if (params.slew != 0) vl = std::min(prev + params.slew, vl);
+        if (params.slew != 0) vl = keejLib::sign(vl) * std::min(fabs(prev) + params.slew, fabs(vl));
         prev = vl;
         
         this -> dt -> spinVolts(vl + va, vl - va);
     }
     this -> dt -> spinVolts(0, 0);
     moving = false;
+    // chassMutex.give();
 }
 
 void Chassis::mtpoint(Pt target, MotionParams params) {
+    // chassMutex.take();
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { mtpoint(target, params);});
@@ -201,6 +206,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
     }
     dt -> spinVolts(0,0);
     moving = false;
+    // chassMutex.give();
 }
 void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
     if (params.async) {

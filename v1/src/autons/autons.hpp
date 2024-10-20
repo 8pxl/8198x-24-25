@@ -34,12 +34,21 @@ void triangulatePoint() {
 void test() {
     // robot::intake.move(127);
     // stopOnColor();
-    spitColor();
-    pros::delay(10000);
+    // chass.driveAngle(-1200, 30, {.async = true, .timeout = 1000, .vMin = 0, .exit = new Range(80, 10),.slew =0.01});
+    chass.setTurn(_90);
+    chass.setAng(_ang);
+    chass.setLin(_lin);
+    chass.setMTP(_chassLin, _chassAng);
+    chass.mtpoint({-8, -40}, {.timeout = 700, .vMin = 0, .settleRange = 10, .exit = new Range(5, 100)});
+    chass.turn(neg(3), {.timeout = 700, .exit = new Range(5, 100)});
+    
+    pros::delay(300);
+    robot::intake.move(0);
+    chass.waitUntilSettled();
 }
 
 void match() {}
 // keejLib::Autons autons = {{match, soloBlue, soloAwp, posAwpBlue, posAwpRed, skills, test, negRed, negBlue, posRedElims, posBlueElims, posBlueNoStake, posRedSafe},
 //                     {"match", "solo blue", "solo awp", "posAwpBlue", "posAwpRed", "skills", "test", "neg red elims", "neg blue elims", "pos red elims", "pos blue elims", "posBlueNoStake", "posRedSafe"}};
-keejLib::Autons autons = {{rposNew, bposNew, rsoloAwp, skills}, {"pos awp red", "pos awp blue", "rsolo awp", "skills"}};
+keejLib::Autons autons = {{rposNew, bposNew, rsoloAwp, test, skills}, {"pos awp red", "pos awp blue", "rsolo awp", "test", "skills"}};
 //                     {"match", "solo blue", "solo awp", "posAwpBlue", "posAwpRed", "skills", "test", "neg red elims", "neg blue elims", "pos red elims", "pos blue elims", "posBlueNoStake", "posRedSafe"}};
