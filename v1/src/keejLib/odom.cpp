@@ -25,7 +25,7 @@ void Chassis::update() {
     Angle currTheta;
     if (rot == PROS_ERR_F) {
         currTheta= prev.theta;
-        std::cout << "imu disconnected!" << std::endl;
+        // std::cout << "imu disconnected!" << std::endl;
     }
     else currTheta = Angle(imu -> get_rotation(), AngleType::HEADING);
     // std::cout << "heading: " << currTheta.heading() << std::endl;

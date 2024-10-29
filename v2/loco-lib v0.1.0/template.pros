@@ -1,0 +1,21 @@
+{
+    "py/object": "pros.conductor.templates.external_template.ExternalTemplate",
+    "py/state": {
+        "metadata": {},
+        "name": "locolib",
+        "supported_kernels": "^4.1.0",
+        "system_files": [
+            "include/localization/distance.h",
+            "include/localization/utils.h",
+            "firmware/locolib.a",
+            "include/localization/config.h",
+            "include/localization/particleFilter.h",
+            "include/localization/gps.h",
+            "include/localization/sensorModel.h",
+            "include/localization/line.h"
+        ],
+        "target": "v5",
+        "user_files": [],
+        "version": "0.1.0"
+    }
+}

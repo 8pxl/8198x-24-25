@@ -32,6 +32,11 @@ void triangulatePoint() {
 }
 
 void test() {
+    
+    // chass.drive(12);
+    // chass.mtpoint({20,70});
+    // chass.drive(-12);
+    
     // robot::intake.move(127);
     // stopOnColor();
     // chass.driveAngle(-1200, 30, {.async = true, .timeout = 1000, .vMin = 0, .exit = new Range(80, 10),.slew =0.01});

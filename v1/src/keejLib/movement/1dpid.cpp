@@ -4,7 +4,7 @@
 
 namespace keejLib {
     
-void Chassis::turn(double angle, MotionParams params = {.async = false, .timeout = 2000, .vMin = 0}) {
+void Chassis::turn(double angle, MotionParams params) {
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { turn(angle, params);});
@@ -16,15 +16,13 @@ void Chassis::turn(double angle, MotionParams params = {.async = false, .timeout
     if (clr == blue) angle = neg(angle);
     Angle targ = Angle(angle, HEADING);
     Exit* timeout = new exit::Timeout(params.timeout);
-    // Exit* range = new exit::Range(params.settleRange, params.settleTime);
     PID cont = PID(this -> turnConsts);
     double error = targ.error(Angle(imu -> get_rotation(), HEADING));
+
     while (!params.exit -> exited({.error = fabs(error)}) && !timeout -> exited({})) {
-        // chassMutex.take();
         error = targ.error(Angle(imu -> get_rotation(), HEADING));
         double vel = cont.out(error);
         this -> dt -> spinVolts(vel, -vel);
-        // chassMutex.give();
         pros::delay(10);
     }
     this -> dt -> spinVolts(0, 0);
@@ -62,3 +60,8 @@ void Chassis::turnTo(Pt target, MotionParams params) {
     // chassMutex.give();
 }
 }
+
+
+    chass.drive(12);
+    chass.mtpoint({20,70});
+    chass.drive(-12);
