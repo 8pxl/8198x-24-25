@@ -5,9 +5,9 @@
 using namespace keejLib;
 
 namespace robot {
-    DriveTrain dt = keejLib::DriveTrain({-16,18,-17}, {15,-13,12});
+    DriveTrain dt = keejLib::DriveTrain({-10,9,8}, {-20,10,18});
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController); 
-    pros::Motor intake(20);
+    pros::Motor intake(7);
     pros::Motor lift(3);
 }
