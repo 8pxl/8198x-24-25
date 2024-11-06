@@ -44,9 +44,18 @@ std::vector<bool> keejLib::Controller::getAll(std::vector<pros::controller_digit
         out.push_back(cont -> get_digital(button));
         out.push_back(cont -> get_digital_new_press(button));
     }
+    prev = curr;
+    curr = out;
     return(out);
 }
 
+std::vector<bool> keejLib::Controller::getReleased() {
+    std::vector<bool> out;
+    for (int i = 0; i < out.size(); i++) {
+        out.push_back(prev[i] && !curr[i]);
+    }
+    return out;
+}
 //https://www.desmos.com/calculator/puepnlubzh
 double keejLib::Controller::curve(double x, double scale) {
     if (scale != 0) {
