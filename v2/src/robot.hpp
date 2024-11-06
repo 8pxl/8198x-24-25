@@ -1,13 +1,30 @@
 #pragma once
 
 #include "keejLib/lib.h"
+#include "lift/lift.h"
+#include "pros/optical.hpp"
+#include "pros/rotation.hpp"
 
 using namespace keejLib;
 
 namespace robot {
-    DriveTrain dt = keejLib::DriveTrain({-10,9,8}, {-20,10,18});
+    
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController); 
-    pros::Motor intake(7);
-    pros::Motor lift(3);
+    pros::Motor intake(-12);
+    pros::Motor liftMotor(6);
+    
+    pros::ADIDigitalOut clampPiston('a');
+    pros::Rotation rotationSensor(21, true);
+    pros::Optical opticalSensor(20);
+    Pis clamp({clampPiston}, false);
+    
+    lift::Lift lb(&liftMotor, &rotationSensor, &opticalSensor, {
+        .kp = 0.02,
+        .ki= 0.9,
+        .maxIntegral = 1000000,
+        .tolerance = 0,
+        .integralThreshold = 50,
+    });
+    DriveTrain dt = keejLib::DriveTrain({-15,-13,-14}, {3,2,1});
 }
