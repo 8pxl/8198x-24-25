@@ -1,11 +1,10 @@
-#include "common.h"
 #include "Intake.h"
 #include "states.h"
 
 namespace intake {
 
 Intake::Intake(pros::Motor *motor, pros::Optical *optical) : motor(motor), optical(optical) {
-    currentState = &One::getInstance();
+    currentState = &Idle::getInstance();
 }
 
 void Intake::startControl() {

@@ -1,96 +1,68 @@
 #include "states.h"
-#include "common.h"
-#include "intake.h"
+#include "vStates.h"
 
 namespace intake {
 
 //idle state
-void Idle::enter(Intake* intake) {
-    intake ->setTarget(1);
+void Idle::enter(Intake *intake) {
+    intake ->setTarget(0);
 }
-void Idle::next(Intake* intake) {
-    intake -> setState(One::getInstance());
+void Idle::exit(Intake *intake) {
 }
-void Idle::prev(Intake* intake) {
-    intake -> setState(Lowest::getInstance());
+void Idle::next(Intake *intake) {
+    intake -> setState(On::getInstance());
+}
+void Idle::prev(Intake *intake) {
+    intake -> setState(On::getInstance());
+}
+void Idle::control(Intake *intake) {
+}
+Idle::State Idle::getState() {
+    return idle;
 }
 IntakeState& Idle::getInstance() {
     static Idle singleton;
     return singleton;
 }
 
-//one ring state
-void One::enter(Intake* intake) {
-    intake ->setTarget(2);
+//On state
+void On::enter(Intake *intake) {
 }
-void One::next(Intake* intake) {
-    intake -> setState(Two::getInstance());
+void On::exit(Intake *intake) {
 }
-void One::prev(Intake* intake) {
+void On::next(Intake *intake) {
+    
+}
+void On::prev(Intake *intake) {
     intake -> setState(Idle::getInstance());
 }
-IntakeState& One::getInstance() {
-    static One singleton;
+void On::control(Intake *intake) {
+}
+On::State On::getState() {
+    return on;
+}
+IntakeState& On::getInstance() {
+    static On singleton;
     return singleton;
 }
-
-//two ring state
-void Two::enter(Intake* intake) {
-    intake ->setTarget(3);
+//Sort state
+void Sort::enter(Intake *intake) {
 }
-void Two::next(Intake* intake) {
-    intake -> setState(Prime::getInstance());
+void Sort::exit(Intake *intake) {
 }
-void Two::prev(Intake* intake) {
-    intake -> setState(One::getInstance());
+void Sort::next(Intake *intake) {
+    intake -> setState(On::getInstance());
 }
-IntakeState& Two::getInstance() {
-    static Two singleton;
-    return singleton;
+void Sort::prev(Intake *intake) {
+    intake -> setState(On::getInstance());
 }
-
-//prime state
-void Prime::enter(Intake* intake) {
-    intake ->setTarget(4);
+void Sort::control(Intake *intake) {
 }
-void Prime::next(Intake* intake) {
-    intake -> setState(Lower::getInstance());
+Sort::State Sort::getState() {
+    return sort;
 }
-void Prime::prev(Intake* intake) {
-    intake -> setState(Two::getInstance());
-}
-IntakeState& Prime::getInstance() {
-    static Prime singleton;
-    return singleton;
-}
-
-//lower state (score normal stakes)
-void Lower::enter(Intake* intake) {
-    intake ->setTarget(5);
-}
-void Lower::next(Intake* intake) {
-    intake -> setState(Lowest::getInstance());
-}
-void Lower::prev(Intake* intake) {
-    intake -> setState(Prime::getInstance());
-}
-IntakeState& Lower::getInstance() {
-    static Lower singleton;
-    return singleton;
-}
-
-//lowest state (score alliance stakes)
-void Lowest::enter(Intake* intake) {
-    intake ->setTarget(1);
-}
-void Lowest::next(Intake* intake) {
-    intake -> setState(Idle::getInstance());
-}
-void Lowest::prev(Intake* intake) {
-    intake -> setState(Lower::getInstance());
-}
-IntakeState& Lowest::getInstance() {
-    static Lowest singleton;
+IntakeState& Sort::getInstance() {
+    static Sort singleton;
     return singleton;
 }
 }

@@ -1,9 +1,14 @@
+#pragma once
+
 #include "main.h"
 #include "keejLib/lib.h"
-#include "common.h"
+#include "vStates.h"
+
 using namespace keejLib;
 
 namespace intake {
+    
+class IntakeState;
 
 class Intake{
     public:

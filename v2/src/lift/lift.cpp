@@ -41,13 +41,11 @@ void Lift::prev() {
 
 void Lift::score() {
     switch (currentState -> getState()) {
-        case LiftState::prime:
-            setState(Lower::getInstance());
-            break;
         case LiftState::lower:
             setState(Lowest::getInstance());
             break;
         default:
+            setState(Lower::getInstance());
             break;
     }
     setRebound(true);

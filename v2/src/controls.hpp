@@ -17,5 +17,5 @@ void driver() {
     // else lift.move(0);
     
     if (state[NRIGHT]) lb.score();
-    // if (state[NY]) clamp.toggle();
+    if (state[NY]) clamp.toggle();
 }
