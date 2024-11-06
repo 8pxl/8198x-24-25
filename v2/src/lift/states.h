@@ -26,6 +26,8 @@ class Idle : public LiftState {
         void prev(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
+        State getState() override;
+
         static LiftState& getInstance();
     private:
     	Idle() {}
@@ -40,6 +42,7 @@ class One : public LiftState {
         void prev(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
+        State getState() override;
         static LiftState& getInstance();
     private:
     	One() {}
@@ -54,6 +57,7 @@ class Two : public LiftState {
         void prev(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
+        State getState() override;
         static LiftState& getInstance();
     private:
     	Two() {}
@@ -68,6 +72,7 @@ class Prime : public LiftState {
         void prev(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
+        State getState() override;
         static LiftState& getInstance();
     private:
     	Prime() {}
@@ -82,6 +87,7 @@ class Lower : public LiftState {
         void prev(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
+        State getState() override;
         static LiftState& getInstance();
     private:
     	Lower() {}
@@ -96,6 +102,7 @@ class Lowest : public LiftState {
         void prev(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
+        State getState() override;
         static LiftState& getInstance();
     private:
     	Lowest() {}

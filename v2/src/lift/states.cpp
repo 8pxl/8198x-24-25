@@ -1,6 +1,5 @@
-#pragma once
-
 #include "states.h"
+#include "vStates.h"
 // #include "common.h"
 // #include "lift.h"
 
@@ -19,6 +18,9 @@ void Idle::prev(Lift *lift) {
     lift -> setState(Lowest::getInstance());
 }
 void Idle::control(Lift *lift) {
+}
+Idle::State Idle::getState() {
+    return idle;
 }
 LiftState& Idle::getInstance() {
     static Idle singleton;
@@ -39,6 +41,9 @@ void One::prev(Lift *lift) {
 }
 void One::control(Lift *lift) {
 }
+One::State One::getState() {
+    return one;
+}
 LiftState& One::getInstance() {
     static One singleton;
     return singleton;
@@ -58,6 +63,9 @@ void Two::prev(Lift *lift) {
 }
 void Two::control(Lift *lift) {
 }
+Two::State Two::getState() {
+    return two;
+}
 LiftState& Two::getInstance() {
     static Two singleton;
     return singleton;
@@ -76,6 +84,9 @@ void Prime::prev(Lift *lift) {
     lift -> setState(Two::getInstance());
 }
 void Prime::control(Lift *lift) {
+}
+Prime::State Prime::getState() {
+    return prime;
 }
 LiftState& Prime::getInstance() {
     static Prime singleton;
@@ -102,6 +113,9 @@ void Lower::control(Lift *lift) {
         }
     }
 }
+Lower::State Lower::getState() {
+    return lower;
+}
 LiftState& Lower::getInstance() {
     static Lower singleton;
     return singleton;
@@ -126,6 +140,9 @@ void Lowest::control(Lift *lift) {
             lift->setState(One::getInstance());
         }
     }
+}
+Lowest::State Lowest::getState() {
+    return lowest;
 }
 LiftState& Lowest::getInstance() {
     static Lowest singleton;

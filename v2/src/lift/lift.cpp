@@ -1,6 +1,4 @@
-#pragma once
-
-#include "common.h"
+// #include "common.h"
 #include "lift.h"
 #include "states.h"
 
@@ -21,6 +19,7 @@ void Lift::startControl() {
         }};
     }
 }
+
 void Lift::control() {
     motor -> move(pid.out(rot -> get_position() - target));
     std::cout << "target: " << target/100.0 << " | actual: " << rot ->get_position()/100.0 << " | error: " << pid.out(rot -> get_position() - target) << std::endl;
@@ -40,6 +39,20 @@ void Lift::prev() {
     currentState->prev(this);
 }
 
+void Lift::score() {
+    switch (currentState -> getState()) {
+        case LiftState::prime:
+            setState(Lower::getInstance());
+            break;
+        case LiftState::lower:
+            setState(Lowest::getInstance());
+            break;
+        default:
+            break;
+    }
+    setRebound(true);
+}
+
 void Lift::setTarget(double target) {
     this->target = target*100;
 }
@@ -50,5 +63,9 @@ double Lift::getDerivative() {
 
 bool Lift::getReboud() {
     return rebound;
+}
+
+void Lift::setRebound(bool rebound) {
+    this->rebound = rebound;
 }
 }

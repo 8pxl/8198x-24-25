@@ -15,13 +15,14 @@ class Lift{
        	inline LiftState* getCurrentState() const { return currentState; }
        	void next();
         void prev();
+        void score();
        	void setState(LiftState& newState);
         void setTarget(double target);
         void startControl();
         
         double getDerivative();
         bool getReboud();
-        bool setRebound(bool rebound);
+        void setRebound(bool rebound);
     
     private:
         pros::Motor *motor;
