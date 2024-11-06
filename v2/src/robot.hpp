@@ -1,5 +1,6 @@
 #pragma once
 
+#include "intake/vStates.h"
 #include "keejLib/lib.h"
 #include "lift/lift.h"
 #include "pros/optical.hpp"
@@ -11,7 +12,7 @@ namespace robot {
     
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController); 
-    pros::Motor intake(-12);
+    pros::Motor intakeMotor(-12);
     pros::Motor liftMotor(6);
     
     pros::ADIDigitalOut clampPiston('a');
@@ -26,5 +27,6 @@ namespace robot {
         .tolerance = 0,
         .integralThreshold = 50,
     });
+    ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::none);
     DriveTrain dt = keejLib::DriveTrain({-15,-13,-14}, {3,2,1});
 }
