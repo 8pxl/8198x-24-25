@@ -1,9 +1,10 @@
 #include "Intake.h"
+#include "keejLib/util.h"
 #include "states.h"
 
-namespace intake {
+namespace ifsm {
 
-Intake::Intake(pros::Motor *motor, pros::Optical *optical) : motor(motor), optical(optical) {
+Intake::Intake(pros::Motor *motor, pros::Optical *optical, Color color) : motor(motor), optical(optical), color(color) {
     currentState = &Idle::getInstance();
 }
 
@@ -19,6 +20,8 @@ void Intake::startControl() {
 }
 
 void Intake::control() {
+    motor->move(speed);
+    currentState->control(this);
 }
 
 void Intake::setState(IntakeState& state) {
@@ -29,5 +32,32 @@ void Intake::setState(IntakeState& state) {
 
 void Intake::next() {
     currentState->next(this);
+}
+
+void Intake::move(double speed) {
+    if (speed == 0) {
+        setState(Idle::getInstance());
+    }
+    
+    this->speed = speed;
+}
+
+double Intake::getSpeed() {
+    return speed;
+}
+
+Color Intake::getOptical() {
+    return none;
+}
+
+Color Intake::getColorToSort() {
+    switch (color) {
+        case red:
+            return blue;
+        case blue:
+            return red;
+        case none:
+            return none;
+    }
 }
 }

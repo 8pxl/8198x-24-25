@@ -1,7 +1,7 @@
 #pragma once
 
 #include "intake.h"
-namespace intake {
+namespace ifsm {
 
 class Intake;
 

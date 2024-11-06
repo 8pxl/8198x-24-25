@@ -37,7 +37,8 @@ namespace keejLib {
     
     enum Color {
         blue,
-        red
+        red,
+        none
     };
     
     class Stopwatch {

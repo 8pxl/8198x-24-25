@@ -1,35 +1,38 @@
 #pragma once
 
+#include "keejLib/util.h"
 #include "main.h"
 #include "keejLib/lib.h"
 #include "vStates.h"
 
 using namespace keejLib;
 
-namespace intake {
+namespace ifsm {
     
 class IntakeState;
 
-class Intake{
+class Intake {
     public:
-        Intake(pros::Motor *intake, pros::Optical *optical);
+        Intake(pros::Motor *intake, pros::Optical *optical, Color sort);
        	inline IntakeState* getCurrentState() const { return currentState; }
        	void next();
        	void setState(IntakeState& newState);
-        void setTarget(double target);
-        
+        void move(double speed);
         void startControl();
+        double getSpeed();
+        Color getOptical();
+        Color getColorToSort();
+        
     
     private:
         pros::Motor *motor;
         pros::Optical *optical;
         pros::Task *task = nullptr;
         
-        PID pid;
-        double target;
-        
+        double speed;
        	IntakeState* currentState;
         
         void control();
+        Color color;
 };
 }

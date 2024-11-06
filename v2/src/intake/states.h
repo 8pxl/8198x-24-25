@@ -1,5 +1,6 @@
 #pragma once
 
+#include "keejLib/util.h"
 #include "main.h"
 #include "keejLib/lib.h"
 #include "intake.h"
@@ -8,7 +9,7 @@
 
 using namespace keejLib;
 
-namespace intake {
+namespace ifsm {
 class Intake;
 
 class Idle : public IntakeState {
@@ -53,6 +54,8 @@ class Sort : public IntakeState {
         static IntakeState& getInstance();
     private:
     	Sort() {}
+        keejLib::Stopwatch s1;
+        double prevVel = 0;
     	Sort(const Sort& other);
     	Sort& operator=(const Sort& other);
 };
