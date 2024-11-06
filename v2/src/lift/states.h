@@ -11,11 +11,11 @@ using namespace keejLib;
 
 namespace lift {
     
-#define ONE_RING 115
-#define TWO_RING 152
-#define PRIME 433.57
-#define LOWER 586.59
-#define LOWEST 756.39
+#define ONE_RING 70
+#define TWO_RING 115
+#define PRIME 350.57
+#define LOWER 550.59
+#define LOWEST 740.39
 
 class Lift;
 
@@ -24,6 +24,7 @@ class Idle : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void control(Lift* lift) override;
         void exit(Lift* lift) override;
         static LiftState& getInstance();
     private:
@@ -37,6 +38,7 @@ class One : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void control(Lift* lift) override;
         void exit(Lift* lift) override;
         static LiftState& getInstance();
     private:
@@ -50,6 +52,7 @@ class Two : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void control(Lift* lift) override;
         void exit(Lift* lift) override;
         static LiftState& getInstance();
     private:
@@ -63,6 +66,7 @@ class Prime : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void control(Lift* lift) override;
         void exit(Lift* lift) override;
         static LiftState& getInstance();
     private:
@@ -76,6 +80,7 @@ class Lower : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void control(Lift* lift) override;
         void exit(Lift* lift) override;
         static LiftState& getInstance();
     private:
@@ -89,6 +94,7 @@ class Lowest : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void control(Lift* lift) override;
         void exit(Lift* lift) override;
         static LiftState& getInstance();
     private:

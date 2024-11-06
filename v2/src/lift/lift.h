@@ -18,6 +18,10 @@ class Lift{
        	void setState(LiftState& newState);
         void setTarget(double target);
         void startControl();
+        
+        double getDerivative();
+        bool getReboud();
+        bool setRebound(bool rebound);
     
     private:
         pros::Motor *motor;
@@ -30,6 +34,7 @@ class Lift{
         
        	LiftState* currentState;
         
+        bool rebound = false;
         void control();
         void updatePID(double error);
         void home();

@@ -43,4 +43,12 @@ void Lift::prev() {
 void Lift::setTarget(double target) {
     this->target = target*100;
 }
+
+double Lift::getDerivative() {
+    return pid.getDerivative();
+}
+
+bool Lift::getReboud() {
+    return rebound;
+}
 }

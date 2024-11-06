@@ -18,6 +18,8 @@ void Idle::next(Lift *lift) {
 void Idle::prev(Lift *lift) {
     lift -> setState(Lowest::getInstance());
 }
+void Idle::control(Lift *lift) {
+}
 LiftState& Idle::getInstance() {
     static Idle singleton;
     return singleton;
@@ -34,6 +36,8 @@ void One::next(Lift *lift) {
 }
 void One::prev(Lift *lift) {
     lift -> setState(Idle::getInstance());
+}
+void One::control(Lift *lift) {
 }
 LiftState& One::getInstance() {
     static One singleton;
@@ -52,6 +56,8 @@ void Two::next(Lift *lift) {
 void Two::prev(Lift *lift) {
     lift -> setState(One::getInstance());
 }
+void Two::control(Lift *lift) {
+}
 LiftState& Two::getInstance() {
     static Two singleton;
     return singleton;
@@ -69,6 +75,8 @@ void Prime::next(Lift *lift) {
 void Prime::prev(Lift *lift) {
     lift -> setState(Two::getInstance());
 }
+void Prime::control(Lift *lift) {
+}
 LiftState& Prime::getInstance() {
     static Prime singleton;
     return singleton;
@@ -79,12 +87,20 @@ void Lower::enter(Lift *lift) {
     lift ->setTarget(LOWER);
 }
 void Lower::exit(Lift *lift) {
+    lift -> setRebound(false);
 }
 void Lower::next(Lift *lift) {
     lift -> setState(Lowest::getInstance());
 }
 void Lower::prev(Lift *lift) {
     lift -> setState(Prime::getInstance());
+}
+void Lower::control(Lift *lift) {
+    if (lift->getReboud()) {
+        if (lift->getDerivative() < 0.1) {
+            lift->setState(One::getInstance());
+        }
+    }
 }
 LiftState& Lower::getInstance() {
     static Lower singleton;
@@ -96,12 +112,20 @@ void Lowest::enter(Lift *lift) {
     lift ->setTarget(LOWEST);
 }
 void Lowest::exit(Lift *lift) {
+    lift -> setRebound(false);
 }
 void Lowest::next(Lift *lift) {
     lift -> setState(Idle::getInstance());
 }
 void Lowest::prev(Lift *lift) {
     lift -> setState(Lower::getInstance());
+}
+void Lowest::control(Lift *lift) {
+    if (lift->getReboud()) {
+        if (lift->getDerivative() < 0.1) {
+            lift->setState(One::getInstance());
+        }
+    }
 }
 LiftState& Lowest::getInstance() {
     static Lowest singleton;
