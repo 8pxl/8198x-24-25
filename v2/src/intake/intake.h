@@ -18,11 +18,12 @@ class Intake {
        	void next();
        	void setState(IntakeState& newState);
         void move(double speed);
+        void setSpeed(double speed);
         void startControl();
         double getSpeed();
         Color getOptical();
-        Color getColorToSort();
-        
+        Color getColor();
+        void setPwm(int pwm);
     
     private:
         pros::Motor *motor;

@@ -1,6 +1,7 @@
 #include "Intake.h"
 #include "keejLib/util.h"
 #include "states.h"
+#include "vStates.h"
 
 namespace ifsm {
 
@@ -17,6 +18,7 @@ void Intake::startControl() {
             }
         }};
     }
+    pros::delay(10);
 }
 
 void Intake::control() {
@@ -35,29 +37,35 @@ void Intake::next() {
 }
 
 void Intake::move(double speed) {
+    if (currentState->getState() == IntakeState::sort) return;
     if (speed == 0) {
-        setState(Idle::getInstance());
+        if (currentState->getState() != IntakeState::idle) setState(Idle::getInstance());
     }
-    
+    else {
+        if (currentState->getState() != IntakeState::on) setState(On::getInstance());
+    }
     this->speed = speed;
 }
 
+void Intake::setSpeed(double speed) {
+    this->speed = speed;
+}
 double Intake::getSpeed() {
     return speed;
 }
 
 Color Intake::getOptical() {
+    double hue = optical->get_hue();
+    if (hue > 190 && hue < 230) return blue;
+    if (hue > 6 && hue < 17) return red;
     return none;
 }
 
-Color Intake::getColorToSort() {
-    switch (color) {
-        case red:
-            return blue;
-        case blue:
-            return red;
-        case none:
-            return none;
-    }
+Color Intake::getColor() {
+    return color;
+}
+
+void Intake::setPwm(int led) {
+    optical->set_led_pwm(led);
 }
 }

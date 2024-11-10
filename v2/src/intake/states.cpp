@@ -6,6 +6,7 @@ namespace ifsm {
 //idle state
 void Idle::enter(Intake *intake) {
     intake -> move(0);
+    intake -> setPwm(0);
 }
 void Idle::exit(Intake *intake) {
 }
@@ -26,6 +27,7 @@ IntakeState& Idle::getInstance() {
 
 //On state
 void On::enter(Intake *intake) {
+    intake->setPwm(100);
 }
 void On::exit(Intake *intake) {
 }
@@ -35,7 +37,7 @@ void On::prev(Intake *intake) {
     intake -> setState(Idle::getInstance());
 }
 void On::control(Intake *intake) {
-    if (intake -> getOptical() != intake->getColorToSort()) {
+    if (intake -> getOptical() != intake->getColor() && intake -> getOptical() != none) {
         intake -> setState(Sort::getInstance());
     }
 }
@@ -50,7 +52,6 @@ IntakeState& On::getInstance() {
 void Sort::enter(Intake *intake) {
     s1.reset();
     prevVel = intake->getSpeed();
-    intake -> move(-127);
 }
 void Sort::exit(Intake *intake) {
 }
@@ -61,8 +62,11 @@ void Sort::prev(Intake *intake) {
     intake -> setState(On::getInstance());
 }
 void Sort::control(Intake *intake) {
-    if (s1.elapsed() > 300) {
-        intake->move(prevVel);
+    if (s1.elapsed() > 50) {
+        intake -> setSpeed(-127);
+    }
+    if (s1.elapsed() > 400) {
+        intake->setSpeed(prevVel);
         intake -> setState(On::getInstance());
     }
 }
