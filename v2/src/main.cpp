@@ -4,7 +4,10 @@
 
 using namespace robot;
 void initialize() {
+    intake.startControl();
     lb.startControl();
+    imu.reset();
+    chass.startTracking();
 }
 
 void disabled() {}

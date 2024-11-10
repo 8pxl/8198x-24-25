@@ -75,10 +75,19 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
     PID linCont = PID(this -> linConsts);
     PID angCont = PID(this -> angConsts);
     double linError = dist;
+    double traveled = 0;
     if (!absolute) this -> dt -> tare_position();
-    double prev=0;
+    // double prev = chassConsts.wheelDia * M_PI * (vertEnc->get_position()/36000.0);
+    double prev = 0;
     while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
-        linError = dist - (this -> dt -> getAvgPosition());
+        // encMutex.take();
+        // traveled += ((chassConsts.wheelDia * M_PI * (vertEnc->get_position()/36000.0)) - prev);
+                linError = dist - (this -> dt -> getAvgPosition());
+
+        // std::cout << vertEnc->get_position() << std::endl;
+        // linError = dist - traveled;
+        // prev = chassConsts.wheelDia * M_PI * (vertEnc->get_position()/36000.0);
+        // encMutex.give();
         
         if (params.vMin > 0 && linError * sign(dist) < 0) break;
         double angularError = targ.error(Angle(imu -> get_rotation(), HEADING));

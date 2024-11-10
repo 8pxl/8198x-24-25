@@ -51,7 +51,14 @@ std::vector<bool> keejLib::Controller::getAll(std::vector<pros::controller_digit
 
 std::vector<bool> keejLib::Controller::getReleased() {
     std::vector<bool> out;
-    for (int i = 0; i < out.size(); i++) {
+    if (prev.size() != curr.size()) {
+        return std::vector<bool>(30, 0);
+    }
+    for (int i = 0; i < curr.size(); i++) {
+        if (prev[i] && !curr[i]) {
+            // std::cout << "hi" << std::endl;
+        }
+        // std::cout << (prev[i] && !curr[i]) << std::endl;
         out.push_back(prev[i] && !curr[i]);
     }
     return out;
