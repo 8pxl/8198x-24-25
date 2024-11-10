@@ -29,14 +29,16 @@ void Chassis::update() {
     }
     else currTheta = Angle(imu -> get_rotation(), AngleType::HEADING);
     // std::cout << "heading: " << currTheta.heading() << std::endl;
+    // encMutex.take();
     double currVert = (vertEnc -> get_position() / 100.0);
     double currHoriz = (horizEnc -> get_position() / 100.0);
+    // encMutex.give();
     // std::cout << "currVert: " << currVert << " currHoriz: " << currHoriz << std::endl;
     double dTheta = toRad(currTheta.error(prev.theta));
     // std::cout << toDeg(dTheta) << std::endl;
     
-    double dVert = (angError(currVert, prev.vert) * M_PI * chassConsts.wheelDia) / 360.0;
-    double dHoriz = (angError(currHoriz, prev.horiz) * M_PI * chassConsts.wheelDia) / 360.0;
+    double dVert = (angError(currVert, prev.vert) * M_PI * chassConsts.vertDia) / 360.0;
+    double dHoriz = (angError(currHoriz, prev.horiz) * M_PI * chassConsts.horizDia) / 360.0;
     // std::cout << "dVert: " << dVert << " dHoriz: " << dHoriz << std::endl;
     // std::cout << "dTheta: " << dTheta*10 << std::endl;
     prev.theta = currTheta;

@@ -63,9 +63,9 @@ std::pair<double, double> Chassis::measureOffsets(int iterations) {
             pros::delay(10);
         }
         double delta = toRad(fabs(angError(imu -> get_heading(), imuStart)));
-        std::cout << delta << std::endl;
-        offsets.first += ((deltaEnc.first * M_PI * chassConsts.wheelDia) / 360) / delta;
-        offsets.second += ((deltaEnc.second * M_PI * chassConsts.wheelDia) / 360) / delta;
+        // std::cout << delta << std::endl;
+        offsets.first += ((deltaEnc.first * M_PI * chassConsts.vertDia) / 360) / delta;
+        offsets.second += ((deltaEnc.second * M_PI * chassConsts.horizDia) / 360) / delta;
     }
     return {offsets.first / iterations, offsets.second / iterations};
 }

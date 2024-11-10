@@ -10,7 +10,8 @@ namespace keejLib {
         double horizWidth;
         double vertWidth;
         double trackDia;
-        double wheelDia;
+        double vertDia;
+        double horizDia;
         double gearRatio;
     };
     
@@ -70,6 +71,7 @@ namespace keejLib {
             PrevOdom prev = {0,0};
             bool moving = false;
             Color clr = red;
+            pros::Mutex encMutex = pros::Mutex();
         public:
             Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc);
             void update();
