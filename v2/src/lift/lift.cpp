@@ -1,11 +1,12 @@
 // #include "common.h"
 #include "lift.h"
 #include "states.h"
+#include "../intake/intake.h"
 
 namespace lift {
 
-Lift::Lift(pros::Motor *motor, pros::Rotation *rot, pros::Optical *optical, PIDConstants constants) : motor(motor), rot(rot), optical(optical) {
-    currentState = &One::getInstance();
+Lift::Lift(pros::Motor *motor, pros::Rotation *rot, pros::Optical *optical, ifsm::Intake *intake, PIDConstants constants) : motor(motor), rot(rot), optical(optical), intake(intake) {
+    currentState = &Idle::getInstance();
     pid = keejLib::PID(constants);
 }
 
@@ -18,11 +19,16 @@ void Lift::startControl() {
             }
         }};
     }
+    pros::delay(10);
 }
 
 void Lift::control() {
-    motor -> move(pid.out(rot -> get_position() - target));
-    std::cout << "target: " << target/100.0 << " | actual: " << rot ->get_position()/100.0 << " | error: " << pid.out(rot -> get_position() - target) << std::endl;
+    error = rot -> get_position() - target;
+    motor -> move(pid.out(error));
+    currentState->control(this);
+    // std::cout << "target: " << target/100.0 << " | actual: " << rot ->get_position()/100.0 << " | error: " << pid.out(rot -> get_position() - target) << std::endl;
+    // //deriative
+    // std::cout << "derivative: " << pid.getDerivative() << std::endl;
 }
 
 void Lift::setState(LiftState& state) {
@@ -65,5 +71,13 @@ bool Lift::getReboud() {
 
 void Lift::setRebound(bool rebound) {
     this->rebound = rebound;
+}
+
+double Lift::getError() {
+    return error;
+}
+
+Color Lift::getColor() {
+    return intake->getOptical();
 }
 }

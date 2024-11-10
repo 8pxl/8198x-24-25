@@ -7,7 +7,7 @@ namespace lift {
 
 //idle state
 void Idle::enter(Lift *lift) {
-    lift ->setTarget(0);
+    lift ->setTarget(10);
 }
 void Idle::exit(Lift *lift) {
 }
@@ -16,6 +16,9 @@ void Idle::next(Lift *lift) {
 }
 void Idle::prev(Lift *lift) {
     lift -> setState(Lowest::getInstance());
+}
+void Idle::toggle(Lift *lift) {
+    lift -> setState(Lower::getInstance());
 }
 void Idle::control(Lift *lift) {
 }
@@ -30,6 +33,7 @@ LiftState& Idle::getInstance() {
 //one ring state
 void One::enter(Lift *lift) {
     lift ->setTarget(ONE_RING);
+    ringSeen = false;
 }
 void One::exit(Lift *lift) {
 }
@@ -39,7 +43,17 @@ void One::next(Lift *lift) {
 void One::prev(Lift *lift) {
     lift -> setState(Idle::getInstance());
 }
+void One::toggle(Lift *lift) {
+    lift -> setState(Lowest::getInstance());
+}
 void One::control(Lift *lift) {
+    if (lift->getColor() != none) {
+        ringSeen = true;
+        ringTimer.reset();
+    }
+    if (ringSeen && ringTimer.elapsed() > 400) {
+        lift->setState(Two::getInstance());
+    }
 }
 One::State One::getState() {
     return one;
@@ -52,6 +66,7 @@ LiftState& One::getInstance() {
 //two ring state
 void Two::enter(Lift *lift) {
     lift ->setTarget(TWO_RING);
+    ringSeen = false;
 }
 void Two::exit(Lift *lift) {
 }
@@ -61,7 +76,17 @@ void Two::next(Lift *lift) {
 void Two::prev(Lift *lift) {
     lift -> setState(One::getInstance());
 }
+void Two::toggle(Lift *lift) {
+    lift -> setState(Lowest::getInstance());
+}
 void Two::control(Lift *lift) {
+    if (lift->getColor() != none) {
+        ringSeen = true;
+        ringTimer.reset();
+    }
+    if (ringSeen && ringTimer.elapsed() > 400) {
+        lift->setState(Prime::getInstance());
+    }
 }
 Two::State Two::getState() {
     return two;
@@ -82,6 +107,9 @@ void Prime::next(Lift *lift) {
 }
 void Prime::prev(Lift *lift) {
     lift -> setState(Two::getInstance());
+}
+void Prime::toggle(Lift *lift) {
+    lift -> setState(Lowest::getInstance());
 }
 void Prime::control(Lift *lift) {
 }
@@ -106,9 +134,12 @@ void Lower::next(Lift *lift) {
 void Lower::prev(Lift *lift) {
     lift -> setState(Prime::getInstance());
 }
+void Lower::toggle(Lift *lift) {
+    lift -> setState(One::getInstance());
+}
 void Lower::control(Lift *lift) {
     if (lift->getReboud()) {
-        if (lift->getDerivative() < 0.1) {
+        if (fabs(lift->getDerivative()) < 0.1 && fabs(lift->getError())  < 30) {
             lift->setState(One::getInstance());
         }
     }
@@ -134,9 +165,12 @@ void Lowest::next(Lift *lift) {
 void Lowest::prev(Lift *lift) {
     lift -> setState(Lower::getInstance());
 }
+void Lowest::toggle(Lift *lift) {
+    lift -> setState(One::getInstance());
+}
 void Lowest::control(Lift *lift) {
     if (lift->getReboud()) {
-        if (lift->getDerivative() < 0.1) {
+        if (fabs(lift->getDerivative()) < 0.1 && fabs(lift->getError())  < 30) {
             lift->setState(One::getInstance());
         }
     }

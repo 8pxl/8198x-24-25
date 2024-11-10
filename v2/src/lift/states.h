@@ -1,5 +1,6 @@
 #pragma once
 
+#include "keejLib/util.h"
 #include "main.h"
 #include "keejLib/lib.h"
 // #include "common.h"
@@ -24,6 +25,7 @@ class Idle : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void toggle(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
         State getState() override;
@@ -40,6 +42,7 @@ class One : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void toggle(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
         State getState() override;
@@ -47,6 +50,8 @@ class One : public LiftState {
     private:
     	One() {}
     	One(const One& other);
+        bool ringSeen = false;
+        keejLib::Stopwatch ringTimer;
     	One& operator=(const One& other);
 };
 
@@ -55,6 +60,7 @@ class Two : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void toggle(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
         State getState() override;
@@ -62,6 +68,8 @@ class Two : public LiftState {
     private:
     	Two() {}
     	Two(const Two& other);
+        bool ringSeen = false;
+        keejLib::Stopwatch ringTimer;
     	Two& operator=(const Two& other);
 };
 
@@ -70,6 +78,7 @@ class Prime : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void toggle(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
         State getState() override;
@@ -85,6 +94,7 @@ class Lower : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void toggle(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
         State getState() override;
@@ -100,6 +110,7 @@ class Lowest : public LiftState {
         void enter(Lift* lift) override;
         void next(Lift* lift) override;
         void prev(Lift* lift) override;
+        void toggle(Lift* lift) override;
         void control(Lift* lift) override;
         void exit(Lift* lift) override;
         State getState() override;

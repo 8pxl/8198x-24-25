@@ -2,6 +2,7 @@
 
 #include "main.h"
 #include "keejLib/lib.h"
+#include "../intake/intake.h"
 #include "vStates.h"
 using namespace keejLib;
 
@@ -11,10 +12,11 @@ class LiftState;
 
 class Lift{
     public:
-        Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, PIDConstants constants);
+        Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, ifsm::Intake *intake, PIDConstants constants);
        	inline LiftState* getCurrentState() const { return currentState; }
        	void next();
         void prev();
+        void toggle();
         void score();
        	void setState(LiftState& newState);
         void setTarget(double target);
@@ -23,15 +25,19 @@ class Lift{
         double getDerivative();
         bool getReboud();
         void setRebound(bool rebound);
+        double getError();
+        Color getColor();
     
     private:
         pros::Motor *motor;
         pros::Rotation *rot;
         pros::Optical *optical;
         pros::Task *task = nullptr;
+        ifsm::Intake *intake;
         
         PID pid;
         double target;
+        double error = 0;
         
        	LiftState* currentState;
         
