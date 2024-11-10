@@ -5,6 +5,7 @@
 #include "lift/lift.h"
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
+#include "pros/vision.hpp"
 
 using namespace keejLib;
 
@@ -23,6 +24,7 @@ namespace robot {
     pros::Rotation vertTracker(6, true);
     pros::Rotation horizTracker(17);
     pros::Optical opticalSensor(5);
+    pros::Vision vision(18);
     pros::Imu imu(16);
     Pis clamp({clampPiston}, false);
     Pis doink({doinkArmPiston}, false);
@@ -50,4 +52,5 @@ namespace robot {
     
     pros::vision_signature_s_t  redRing = pros::Vision::signature_from_utility(1, 1319, 8061, 4690, -893, 327, -284, 1.300, 0);
     pros::vision_signature_s_t blueRing = pros::Vision::signature_from_utility(2, -5121, -3615, -4368, 2049, 7201, 4626, 1.200, 0);
+    
 }   

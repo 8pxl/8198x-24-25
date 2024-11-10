@@ -22,6 +22,7 @@ class Intake {
         void startControl();
         double getSpeed();
         Color getOptical();
+        void setColor(Color c);
         Color getColor();
         void setPwm(int pwm);
         void setSorting(bool state);

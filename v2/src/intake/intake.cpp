@@ -76,4 +76,8 @@ bool Intake::getSorting() {
 void Intake::setSorting(bool state) {
     sort = state;
 }
+
+void Intake::setColor(Color c) {
+    color = c;
+}
 }
