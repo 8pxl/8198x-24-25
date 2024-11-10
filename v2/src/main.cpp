@@ -8,6 +8,11 @@ void initialize() {
     lb.startControl();
     imu.reset();
     chass.startTracking();
+    
+    int clr = cont.select({"red", "blue"});
+    Color color = clr ? blue : red;
+    
+    lb.setColor(color);
 }
 
 void disabled() {}

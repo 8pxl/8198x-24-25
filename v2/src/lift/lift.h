@@ -27,6 +27,8 @@ class Lift{
         void setRebound(bool rebound);
         double getError();
         Color getColor();
+        void setAutoControl(bool on);
+        bool getAutoControl();
     
     private:
         pros::Motor *motor;
@@ -34,6 +36,8 @@ class Lift{
         pros::Optical *optical;
         pros::Task *task = nullptr;
         ifsm::Intake *intake;
+        
+        bool autoControl = true;
         
         PID pid;
         double target;

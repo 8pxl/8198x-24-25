@@ -23,7 +23,7 @@ void driver() {
     if (state[NL1]) lb.next();
     if (state[NL2]) lb.prev();
     
-    if (state[NRIGHT]) lb.score();
+    if (state[NRIGHT]) lb.toggle();
     if (state[NY]) clamp.toggle();
     
     if (state[NB]) doink.toggle();
@@ -32,9 +32,10 @@ void driver() {
     if (state[NDOWN]) {
         // test();
         // rPos();
-        chass.setTurn(_90);
-        auto x = chass.measureOffsets(10);
-        std::cout << x.first << " " << x.second << std::endl;
+        bPos();
+        // chass.setTurn(_90);
+        // auto x = chass.measureOffsets(5);
+        // std::cout << x.first << " " << x.second << std::endl;
     }
     if (state[NLEFT]) {
         auto p = chass.getPose();

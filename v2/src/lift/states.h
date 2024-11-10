@@ -15,7 +15,7 @@ namespace lift {
 #define ONE_RING 70
 #define TWO_RING 115
 #define PRIME 350.57
-#define LOWER 550.59
+#define LOWER 450
 #define LOWEST 740.39
 
 class Lift;

@@ -40,8 +40,8 @@ namespace robot {
     DriveTrain dt = keejLib::DriveTrain({-11,-12,-13}, {3,2,1});
     //4.64907 1.30551
     Chassis chass = keejLib::Chassis(&dt, {
-        .horizWidth = -1.20161,
-        .vertWidth = -1.45133,
+        .horizWidth = -1.70483,
+        .vertWidth = -1.15369,
         .trackDia = 4.0,
         .vertDia = 2.125,
         .horizDia = 2.75,

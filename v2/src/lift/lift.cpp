@@ -57,6 +57,10 @@ void Lift::score() {
     setRebound(true);
 }
 
+void Lift::toggle() {
+    currentState->toggle(this);
+}
+
 void Lift::setTarget(double target) {
     this->target = target*100;
 }
@@ -79,5 +83,13 @@ double Lift::getError() {
 
 Color Lift::getColor() {
     return intake->getOptical();
+}
+
+bool Lift::getAutoControl() {
+    return autoControl;
+}
+
+void Lift::setAutoControl(bool autoControl) {
+    this->autoControl = autoControl;
 }
 }

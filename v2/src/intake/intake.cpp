@@ -68,4 +68,12 @@ Color Intake::getColor() {
 void Intake::setPwm(int led) {
     optical->set_led_pwm(led);
 }
+
+bool Intake::getSorting() {
+    return sort;
+}
+
+void Intake::setSorting(bool state) {
+    sort = state;
+}
 }

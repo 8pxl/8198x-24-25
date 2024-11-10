@@ -76,8 +76,8 @@ PIDConstants _5 {
 };
 
 PIDConstants _linSmall {
-    .kp = 0.3,
-    .ki = 0.05,
+    .kp = 0.09,
+    .ki = 0,
     .kd = 0.03,
     .maxIntegral = 300,
     .tolerance = 20,
@@ -103,7 +103,7 @@ PIDConstants _lin {
 // };
 
 PIDConstants _ang {
-    .kp = 1.8,
+    .kp = 2,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 0,

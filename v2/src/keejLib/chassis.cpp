@@ -55,8 +55,8 @@ std::pair<double, double> Chassis::measureOffsets(int iterations) {
             double currVert = vertEnc -> get_position() / 100.0;
             double currHoriz = horizEnc -> get_position()/ 100.0;
             
-            deltaEnc.first += fabs(angError(currVert, prev.vert));
-            deltaEnc.second += fabs(angError(currHoriz, prev.horiz));
+            deltaEnc.first += fabs((currVert- prev.vert));
+            deltaEnc.second += fabs(currHoriz - prev.horiz);
             std::cout << "vert: " << deltaEnc.first << " horiz: " << deltaEnc.second << std::endl;
             prev.vert = currVert;
             prev.horiz = currHoriz;

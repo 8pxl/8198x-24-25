@@ -2,6 +2,7 @@
 #include "keejLib/lib.h"
 #include "../robot.hpp"
 #include "rPos.hpp"
+#include "bPos.hpp"
 
 using namespace robot;
 using namespace exit;

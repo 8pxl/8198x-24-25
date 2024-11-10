@@ -4,7 +4,7 @@
 #include "pros/rtos.hpp"
 
 using namespace robot;
-void rPos() {
+void bPos() {
     lb.setAutoControl(false);
     chass.setTurn(_90);
     chass.setAng(_angBig);

@@ -62,7 +62,7 @@ void Sort::prev(Intake *intake) {
     intake -> setState(On::getInstance());
 }
 void Sort::control(Intake *intake) {
-    if (s1.elapsed() > 50) {
+    if (s1.elapsed() > 90) {
         intake -> setSpeed(-127);
     }
     if (s1.elapsed() > 400) {

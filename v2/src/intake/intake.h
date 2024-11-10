@@ -24,6 +24,8 @@ class Intake {
         Color getOptical();
         Color getColor();
         void setPwm(int pwm);
+        void setSorting(bool state);
+        bool getSorting();
     
     private:
         pros::Motor *motor;
@@ -32,6 +34,7 @@ class Intake {
         
         double speed;
        	IntakeState* currentState;
+        bool sort = true;
         
         void control();
         Color color;
