@@ -3,4 +3,6 @@
 
 namespace glb {
     keejLib::Color color;
+    
+    void (*auton)();
 }

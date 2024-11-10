@@ -13,4 +13,4 @@ void test() {
     chass.setAng(_ang);
     chass.driveAngle(9, 0, {.timeout = 1500, .vMin=0, .exit = new Range(1, 100), .reverse=false});
 }
-keejLib::Autons autons = {{test, rPos}, {"test", "rPos"}};
+keejLib::Autons autons = {{bPos, rPos, test}, {"bPos", "rPos", "test"}};

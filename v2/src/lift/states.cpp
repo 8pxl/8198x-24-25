@@ -85,7 +85,7 @@ void Two::control(Lift *lift) {
         ringSeen = true;
         ringTimer.reset();
     }
-    if (ringSeen && ringTimer.elapsed() > 400) {
+    if (ringSeen && ringTimer.elapsed() > 700) {
         if (!lift->getAutoControl()) return;
         lift->setState(Prime::getInstance());
     }

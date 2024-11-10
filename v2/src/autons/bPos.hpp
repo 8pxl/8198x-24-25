@@ -26,21 +26,21 @@ void bPos() {
     // chass.driveAngle(500, 30, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(5, 20), .slew = 2});
     chass.driveAngle(-1400, 10, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(800, 40)});
     chass.driveAngle(-1400, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(600, 30)},true);
-    chass.driveAngle(-1400, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 10)}, true);
+    chass.driveAngle(-1400, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(55, 10)}, true);
     claw.toggle();
-    pros::delay(200);
+    // pros::delay(200);
     chass.driveAngle(-460, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
     chass.turn(166, {.timeout=400, .exit = new Range(3, 100)});
     doink.toggle();
-    chass.driveAngle(-940, 166, {.async = false, .timeout = 800, .vMin = 28, .exit = new Range(30, 10)});
+    chass.driveAngle(-850, 166, {.async = false, .timeout = 500, .vMin = 28, .exit = new Range(30, 10)});
     chass.setLin(_linSmall);
     chass.driveAngle(-400, 180, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(5, 20)});
     chass.setLin(_lin);
     clamp.toggle();
     //1490
     //1400
-    chass.driveAngle(1300, 180, {.async = true, .timeout = 800, .vMin = 20, .exit = new Range(5, 20)});
+    chass.driveAngle(1300, 180, {.async = true, .timeout = 800, .vMin = 20, .exit = new Range(30, 20)});
     pros::delay(300);
     intake.move(127);
     chass.driveAngle(1300, neg(135), {.async = false, .timeout = 500, .vMin = 20, .exit = new Range(5, 20)});
@@ -92,11 +92,11 @@ void bPos() {
     intake.move(127);
     chass.driveAngle(1200, neg(48), {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(3, 30)});
     pros::delay(600);
-    chass.driveAngle(-1300, neg(80), {.async = true, .timeout = 400, .vMin = 0, .exit = new Range(5, 20)});
-    // chass.mtpoint({52.0, 40.0}, {.async = true, .timeout = 1700, .vMin = 0, .settleRange = 10, .exit = new exit::Range(5, 50)});
+    chass.driveAngle(-1400, neg(80), {.async = true, .timeout = 400, .vMin = 0, .exit = new Range(5, 20)});
     pros::delay(300);
-    intake.setSorting(false);
-    intake.move(20);
+    // intake.setSorting(false);
+    // intake.move(20);
     chass.waitUntilSettled();
-    chass.driveAngle(-880, neg(135), {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(5, 20)});
+    // chass.driveAngle(-880, neg(135), {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(5, 20)});
+    chass.driveAngle(880, 0, {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(5, 20)});
 }
