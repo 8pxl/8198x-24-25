@@ -35,7 +35,7 @@ class Intake {
         
         double speed;
        	IntakeState* currentState;
-        bool sort = true;
+        bool sort = false;
         
         void control();
         Color color;

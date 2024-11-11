@@ -37,9 +37,9 @@ void On::prev(Intake *intake) {
     intake -> setState(Idle::getInstance());
 }
 void On::control(Intake *intake) {
-    if (intake -> getOptical() != intake->getColor() && intake -> getOptical() != none) {
-        intake -> setState(Sort::getInstance());
-    }
+    // if (intake -> getOptical() != intake->getColor() && intake -> getOptical() != none) {
+    //     intake -> setState(Sort::getInstance());
+    // }
 }
 On::State On::getState() {
     return on;

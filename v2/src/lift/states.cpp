@@ -47,12 +47,13 @@ void One::toggle(Lift *lift) {
     lift -> setState(Lowest::getInstance());
 }
 void One::control(Lift *lift) {
+    lift->setAutoControl(false);
     if (lift->getColor() != none) {
         ringSeen = true;
         ringTimer.reset();
     }
     if (ringSeen && ringTimer.elapsed() > 400) {
-        if (!lift->getAutoControl()) return;
+        if (!lift->getAutoControl())  return;
         lift->setState(Two::getInstance());
     }
 }
@@ -86,7 +87,9 @@ void Two::control(Lift *lift) {
         ringTimer.reset();
     }
     if (ringSeen && ringTimer.elapsed() > 700) {
-        if (!lift->getAutoControl()) return;
+        if (!lift->getAutoControl()) {
+            return;
+        }
         lift->setState(Prime::getInstance());
     }
 }
@@ -142,7 +145,9 @@ void Lower::toggle(Lift *lift) {
 void Lower::control(Lift *lift) {
     if (lift->getReboud()) {
         if (fabs(lift->getDerivative()) < 0.1 && fabs(lift->getError())  < 30) {
-            if (!lift->getAutoControl()) return;
+            if (!lift->getAutoControl()) {
+                return;
+            }
             lift->setState(One::getInstance());
         }
     }
@@ -174,10 +179,14 @@ void Lowest::toggle(Lift *lift) {
 void Lowest::control(Lift *lift) {
     if (lift->getReboud()) {
         if (fabs(lift->getDerivative()) < 0.1 && fabs(lift->getError())  < 30) {
-            if (!lift->getAutoControl()) return;
+            if (!lift->getAutoControl()) {
+                return;
+            }
             lift->setState(One::getInstance());
         }
     }
+    lift->autoControlMutex.give();
+
 }
 Lowest::State Lowest::getState() {
     return lowest;

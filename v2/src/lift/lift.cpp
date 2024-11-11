@@ -25,7 +25,7 @@ void Lift::startControl() {
 void Lift::control() {
     error = rot -> get_position() - target;
     motor -> move(pid.out(error));
-    currentState->control(this);
+    // currentState->control(this);
     // std::cout << "target: " << target/100.0 << " | actual: " << rot ->get_position()/100.0 << " | error: " << pid.out(rot -> get_position() - target) << std::endl;
     // //deriative
     // std::cout << "derivative: " << pid.getDerivative() << std::endl;
@@ -86,10 +86,14 @@ Color Lift::getColor() {
 }
 
 bool Lift::getAutoControl() {
+    autoControlMutex.take();
     return autoControl;
+    autoControlMutex.give();
 }
 
 void Lift::setAutoControl(bool autoControl) {
+    autoControlMutex.take();
     this->autoControl = autoControl;
+    autoControlMutex.give();
 }
 }

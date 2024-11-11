@@ -1,4 +1,5 @@
 #include "main.h"
+#include "lift/states.h"
 #include "pros/misc.h"
 #include "robot.hpp"
 #include "controls.hpp"
@@ -6,6 +7,8 @@
 
 using namespace robot;
 void initialize() {
+    // intake.setSorting(false);
+    intake.setColor(glb::color);
     intake.startControl();
     lb.startControl();
     imu.reset();
@@ -15,7 +18,6 @@ void initialize() {
     glb::color = clr ? blue : red;
     glb::auton = autons.autonsList[cont.select(autons.names)];
     
-    intake.setColor(glb::color);
     
     if (glb::color == blue) {
         Pose p = chass.getPose();
@@ -33,9 +35,21 @@ void autonomous() {
 }
 
 void opcontrol() {
-    intake.setSorting(true);
+    
+    intake.startControl();
+    lb.startControl();
+    
+    lb.setState(lift::Idle::getInstance());
+    pros::delay(180);
+    // intake.setSorting(true);
     lb.setAutoControl(true);
+    // for (int i = 0; i < 100; i++) {
+    //     lb.setAutoControl(true);
+    // }
     while(true) {
+        lb.setAutoControl(true);        
+
+        // std::cout << "his" << std::endl;
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             glb::auton();
             intake.setSorting(true);

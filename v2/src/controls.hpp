@@ -40,6 +40,7 @@ void driver() {
     if (state[NLEFT]) {
         auto p = chass.getPose();
         prosController.print(0, 0, "%.2f, %.2f, %.2f", p.pos.x, p.pos.y, p.heading.heading());
+        triangulatePoint();
     }
 }
 

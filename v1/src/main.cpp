@@ -76,7 +76,7 @@ void opcontrol() {
             }
             
             if(robot::prosController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
-                // triangulatePoint();
+                triangulatePoint();
                 printPoint();   
                 // test();
             }

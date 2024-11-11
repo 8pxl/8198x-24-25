@@ -3,6 +3,7 @@
 #include "main.h"
 #include "keejLib/lib.h"
 #include "../intake/intake.h"
+#include "pros/rtos.hpp"
 #include "vStates.h"
 using namespace keejLib;
 
@@ -29,6 +30,8 @@ class Lift{
         Color getColor();
         void setAutoControl(bool on);
         bool getAutoControl();
+        
+        pros::Mutex autoControlMutex = pros::Mutex();
     
     private:
         pros::Motor *motor;
