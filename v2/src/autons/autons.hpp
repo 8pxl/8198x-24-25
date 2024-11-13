@@ -3,6 +3,7 @@
 #include "../robot.hpp"
 #include "rPos.hpp"
 #include "bPos.hpp"
+#include "skills.hpp"
 
 using namespace robot;
 using namespace exit;
@@ -25,4 +26,16 @@ intake.setSorting(true);
 pros::delay(700);
 
 }
-keejLib::Autons autons = {{bPos, rPos, test}, {"bPos", "rPos", "test"}};
+
+void triangulatePoint() {
+    std::vector<Pose> poses;
+    while (poses.size() < 2) {
+        if (prosController.get_digital_new_press(DIGITAL_A)) {
+            poses.push_back(chass.getPose());
+        }
+    }
+    Pt point = triangulate(poses[0], poses[1]);
+    prosController.print(0, 0, "%f, %f", point.x, point.y);
+}
+
+keejLib::Autons autons = {{skills, bPos, rPos, test}, {"skills", "bPos", "rPos", "test"}};

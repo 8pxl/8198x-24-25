@@ -92,6 +92,15 @@ PIDConstants _lin {
     .tolerance = 20,
     .integralThreshold = 0,
 };
+
+PIDConstants _linBigger {
+    .kp = 0.3,
+    .ki = 0,
+    .kd = 0.03,
+    .maxIntegral = 0,
+    .tolerance = 20,
+    .integralThreshold = 0,
+};
 // // 
 // PIDConstants _lin {
 //     .kp = 0.93,

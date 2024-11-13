@@ -14,15 +14,20 @@ void initialize() {
     imu.reset();
     chass.startTracking();
     
-    int clr = cont.select({"red", "blue"});
-    glb::color = clr ? blue : red;
-    glb::auton = autons.autonsList[cont.select(autons.names)];
+    // int clr = cont.select({"red", "blue"});
+    // glb::color = clr ? blue : red;
+    // glb::auton = autons.autonsList[cont.select(autons.names)];
     
+    int clr = red;
+    glb::auton = skills;
+    // if (glb::auton == skills) {
+    lb.setState(lift::Two::getInstance());
+    // }
     
-    if (glb::color == blue) {
-        Pose p = chass.getPose();
-        chass.setPose({-p.pos.x, p.pos.y, p.heading});
-    }
+    // if (glb::color == blue) {
+    //     Pose p = chass.getPose();
+    //     chass.setPose({-p.pos.x, p.pos.y, p.heading});
+    // }
     
     robot::vision.set_signature(0, &redRing);
     robot::vision.set_signature(1, &blueRing);
