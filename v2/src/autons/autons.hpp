@@ -9,11 +9,14 @@ using namespace robot;
 using namespace exit;
 
 void test() {
+    // Pt wallStake = {38, -65};
+
+    // chass.turnTo(wallPrime1, {.timeout = 600, .exit = new Range(2, 30)});
     // chass.measureOffsets(5);
     // chass.setLin(_lin);
     // chass.setAng(_ang);
     // chass.driveAngle(9, 0, {.timeout = 1500, .vMin=0, .exit = new Range(1, 100), .reverse=false});
-    lb.setAutoControl(false);
+    // lb.setAutoControl(false);
 
 pros::delay(700);
     intake.setSorting(false);

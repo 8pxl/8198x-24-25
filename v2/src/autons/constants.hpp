@@ -139,7 +139,16 @@ PIDConstants _chassLin = {
 };
 
 PIDConstants _chassAng = {
-    .kp = 1.3,
+    .kp = 1.4,
+    .ki = 0,
+    .kd = 0,
+    .maxIntegral = 1000,
+    .tolerance = 0,
+    .integralThreshold = 3,
+};
+
+PIDConstants _chassAngBig = {
+    .kp = 2,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 1000,
