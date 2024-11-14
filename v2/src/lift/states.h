@@ -12,8 +12,8 @@ using namespace keejLib;
 
 namespace lift {
     
-#define ONE_RING 70
-#define TWO_RING 115
+#define ONE_RING 78
+#define TWO_RING 124
 #define PRIME 350.57
 #define LOWER 500
 #define LOWEST 740.39

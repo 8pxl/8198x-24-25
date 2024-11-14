@@ -21,7 +21,8 @@ namespace keejLib {
         Exit* timeout = new exit::Timeout(params.timeout);
         
         PID linCont(mtpLin);
-        PID angCont = PID(angConsts);
+        // PID angCont(angConsts);
+        PID angCont(mtpAng);
         
         double linError = pose.pos.dist(target);
         Angle heading;

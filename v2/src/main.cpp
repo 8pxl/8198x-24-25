@@ -8,10 +8,10 @@
 using namespace robot;
 void initialize() {
     // intake.setSorting(false);
+    imu.reset(true);
     intake.setColor(glb::color);
     intake.startControl();
     lb.startControl();
-    imu.reset();
     chass.startTracking();
     
     // int clr = cont.select({"red", "blue"});

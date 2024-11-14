@@ -173,3 +173,12 @@ PIDConstants mposeAng = {
     .tolerance = 0,
     .integralThreshold = 3,
 };
+
+PIDConstants _ttp {
+    .kp = 8,
+    .ki = 0.5,
+    .kd = 66,
+    .maxIntegral = 100,
+    .tolerance = 0.001,
+    .integralThreshold = 2.5,
+};
