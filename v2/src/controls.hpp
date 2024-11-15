@@ -19,6 +19,9 @@ void driver() {
     else if (state[R2]) intake.move(-127);
     else intake.move(0);
     
+    if (state[NR1] && tsukasa.getState()) {
+        tsukasa.toggle();
+    }
     
     if (state[NL1]) lb.next();
     if (state[NL2]) lb.prev();
@@ -30,12 +33,12 @@ void driver() {
     if (state[NA]) claw.toggle();
     if (state[NUP]) tsukasa.toggle();
     // if (state[NDOWN]) {
-        // test();
-        // rPos();
-        // bPos();
-        // chass.setTurn(_90);
-        // auto x = chass.measureOffsets(5);
-        // std::cout << x.first << " " << x.second << std::endl;
+    //     // test();
+    //     // rPos();
+    //     // bPos();
+    //     chass.setTurn(_90);
+    //     auto x = chass.measureOffsets(5);
+    //     std::cout << x.first << " " << x.second << std::endl;
     // }
     if (state[NLEFT]) {
         auto p = chass.getPose();

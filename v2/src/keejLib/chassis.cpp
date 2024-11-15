@@ -39,28 +39,36 @@ double DriveTrain::getAvgPosition() {
 
 Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : dt(dt), chassConsts(constants), imu(imu), vertEnc(vertEnc), horizEnc(horizEnc) {}
 
+
+Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, std::pair<double, double> alternateOffsets, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : dt(dt), chassConsts(constants), alternateOffsets(alternateOffsets), imu(imu), vertEnc(vertEnc), horizEnc(horizEnc) {}
+
 std::pair<double, double> Chassis::measureOffsets(int iterations) {
     std::pair<double, double> offsets = {0,0};
     for (int i = 0; i < iterations; i++) {
         std::pair<double, double> deltaEnc = {0, 0};
         imu -> reset(true);
         double imuStart = imu -> get_heading();
-        double target = i%2 == 0 ? 90 : 270;
-        this -> turn(target, {.async = true, .timeout=1000, .exit = new exit::Range(0.01, 500)});
+        double vel = i%2 == 0 ? 30 : -30;
+        // this -> turn(target, {.async = true, .timeout=1000, .exit = new exit::Range(0.01, 500)});
+        this->dt->spinVolts(vel, -vel);
         Stopwatch s;
         PrevOdom prev = {0,0};
         vertEnc -> reset_position();
         horizEnc -> reset_position();
-        while (s.elapsed() < 1000) {
+        while (s.elapsed() < 1400) {
             double currVert = vertEnc -> get_position() / 100.0;
             double currHoriz = horizEnc -> get_position()/ 100.0;
             
             deltaEnc.first += fabs((currVert- prev.vert));
             deltaEnc.second += fabs(currHoriz - prev.horiz);
-            std::cout << "vert: " << deltaEnc.first << " horiz: " << deltaEnc.second << std::endl;
+            // std::cout << "vert: " << deltaEnc.first << " horiz: " << deltaEnc.second << std::endl;
             prev.vert = currVert;
             prev.horiz = currHoriz;
             pros::delay(10);
+            
+            if (s.elapsed() > 800) {
+                this->dt->spinVolts(0, 0);
+            }
         }
         double delta = toRad(fabs(angError(imu -> get_heading(), imuStart)));
         // std::cout << delta << std::endl;
@@ -123,5 +131,11 @@ void Chassis::setPose(Pose p) {
     // chassMutex.take();
     pose = p;
     // chassMutex.give();
+}
+
+void Chassis::useAlternateOffsets(bool yes) {
+    alternateMutex.take();
+    useAltOffsets = yes;
+    alternateMutex.give();
 }
 }

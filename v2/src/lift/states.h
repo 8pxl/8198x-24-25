@@ -16,6 +16,7 @@ namespace lift {
 #define TWO_RING 124
 #define PRIME 350.57
 #define LOWER 500
+#define ALLIANCE 554
 #define LOWEST 740.39
 
 class Lift;
@@ -105,6 +106,21 @@ class Lower : public LiftState {
     	Lower& operator=(const Lower& other);
 };
 
+class Alliance : public LiftState {
+    public: 
+        void enter(Lift* lift) override;
+        void next(Lift* lift) override;
+        void prev(Lift* lift) override;
+        void toggle(Lift* lift) override;
+        void control(Lift* lift) override;
+        void exit(Lift* lift) override;
+        State getState() override;
+        static LiftState& getInstance();
+    private:
+    	Alliance() {}
+    	Alliance(const Lower& other);
+    	Alliance& operator=(const Alliance& other);
+};
 class Lowest : public LiftState {
     public: 
         void enter(Lift* lift) override;

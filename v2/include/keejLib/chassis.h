@@ -72,8 +72,14 @@ namespace keejLib {
             bool moving = false;
             Color clr = red;
             pros::Mutex encMutex = pros::Mutex();
+            std::pair<double, double> alternateOffsets;
+            
+            pros::Mutex alternateMutex;
+            bool useAltOffsets = false;
         public:
             Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc);
+            Chassis(DriveTrain *dt, ChassConstants constants, std::pair<double, double> alternateOffsets, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc);
+
             void update();
             void startTracking();
             void setConstants(PIDConstants linear, PIDConstants angular);
@@ -84,6 +90,8 @@ namespace keejLib {
             void setColor(Color c);
             void waitUntilSettled();
             void setPose(Pose p);
+            void setAlternateOffsets(std::pair<double, double> offsets);
+            void useAlternateOffsets(bool yes);
             
             Pose getPose();
             bool isSettled();
@@ -96,5 +104,6 @@ namespace keejLib {
             void mtpose(Pose target, double dLead, MotionParams params);
             void mtpoint(Pt target, MotionParams params);
             void moveWithin(Pt targ, double dist, MotionParams params, double angle = -1);
+            
     };
 }

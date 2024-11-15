@@ -37,8 +37,18 @@ void Chassis::update() {
     double dTheta = toRad(currTheta.error(prev.theta));
     // std::cout << toDeg(dTheta) << std::endl;
     
-    double dVert = (angError(currVert, prev.vert) * M_PI * chassConsts.vertDia) / 360.0;
-    double dHoriz = (angError(currHoriz, prev.horiz) * M_PI * chassConsts.horizDia) / 360.0;
+    alternateMutex.take();
+    double dVert;
+    double dHoriz;
+    if (useAltOffsets) {
+        dVert = (angError(currVert, prev.vert) * M_PI * alternateOffsets.first) / 360.0;
+        dHoriz = (angError(currHoriz, prev.horiz) * M_PI * alternateOffsets.second) / 360.0;
+    }
+    else {
+        dVert = (angError(currVert, prev.vert) * M_PI * chassConsts.vertDia) / 360.0;
+        dHoriz = (angError(currHoriz, prev.horiz) * M_PI * chassConsts.horizDia) / 360.0;   
+    }
+    alternateMutex.give();
     // std::cout << "dVert: " << dVert << " dHoriz: " << dHoriz << std::endl;
     // std::cout << "dTheta: " << dTheta*10 << std::endl;
     prev.theta = currTheta;

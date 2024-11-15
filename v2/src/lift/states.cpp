@@ -134,7 +134,7 @@ void Lower::exit(Lift *lift) {
     lift -> setRebound(false);
 }
 void Lower::next(Lift *lift) {
-    lift -> setState(Lowest::getInstance());
+    lift -> setState(Alliance::getInstance());
 }
 void Lower::prev(Lift *lift) {
     lift -> setState(Prime::getInstance());
@@ -159,6 +159,30 @@ LiftState& Lower::getInstance() {
     static Lower singleton;
     return singleton;
 }
+//prime state
+void Alliance::enter(Lift *lift) {
+    lift ->setTarget(ALLIANCE);
+}
+void Alliance::exit(Lift *lift) {
+}
+void Alliance::next(Lift *lift) {
+    lift -> setState(Lowest::getInstance());
+}
+void Alliance::prev(Lift *lift) {
+    lift -> setState(Lower::getInstance());
+}
+void Alliance::toggle(Lift *lift) {
+    lift -> setState(One::getInstance());
+}
+void Alliance::control(Lift *lift) {
+}
+Alliance::State Alliance::getState() {
+    return prime;
+}
+LiftState& Alliance::getInstance() {
+    static Alliance singleton;
+    return singleton;
+}
 
 //lowest state (score alliance stakes)
 void Lowest::enter(Lift *lift) {
@@ -171,7 +195,7 @@ void Lowest::next(Lift *lift) {
     lift -> setState(Idle::getInstance());
 }
 void Lowest::prev(Lift *lift) {
-    lift -> setState(Lower::getInstance());
+    lift -> setState(Alliance::getInstance());
 }
 void Lowest::toggle(Lift *lift) {
     lift -> setState(One::getInstance());
