@@ -41,4 +41,4 @@ void triangulatePoint() {
     prosController.print(0, 0, "%f, %f", point.x, point.y);
 }
 
-keejLib::Autons autons = {{skills, wall1, bPos, rPos, test}, {"skills", "bPos", "rPos", "test"}};
+keejLib::Autons autons = {{skills, bPos, rPos, test}, {"skills", "bPos", "rPos", "test"}};

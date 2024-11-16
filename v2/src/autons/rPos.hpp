@@ -35,7 +35,7 @@ void rPos() {
     clamp.toggle();
     //1490
     //1400
-    Pt fourStack = {-10, -3.9};
+    Pt fourStack = {-10, -3.7};
     chass.mtpoint(fourStack, {.async = true, .timeout = 1000, .vMin = 30, .settleRange = 14, .exit = new exit::Range(3, 30), .drift = 20});
     // chass.driveAngle(1380, 187, {.async = true, .timeout = 800, .vMin = 20, .exit = new Range(5, 20)});
     pros::delay(300);
@@ -65,6 +65,7 @@ void rPos() {
     pros::delay(300);
     // chass.turn(180, {.timeout=900, .exit = new Range(3, 20)});
     intake.move(0);
+    lb.next();
     lb.next();
     tsukasa.toggle();
     //11.4 > x
@@ -97,16 +98,16 @@ void rPos() {
     // 
     // 
     // QUALS
-    // chass.driveAngle(-400, 90, {.async = true, .timeout = 400, .vMin = 0, .exit = new Range(5, 20)});
-    // Pt corner = {-44, 45 };
-    // chass.turnTo(corner, {.timeout=600, .exit = new Range(5, 10)});
-    // chass.driveAngle(700, imu.get_heading(), {.async = false, .timeout = 1500, .vMin = 0, .exit = new Range(5, 20)});
+    chass.driveAngle(-400, 90, {.async = true, .timeout = 400, .vMin = 0, .exit = new Range(5, 20)});
+    Pt corner = {-44, 45 };
+    chass.turnTo(corner, {.timeout=600, .exit = new Range(5, 10)});
+    chass.driveAngle(900, imu.get_heading(), {.async = false, .timeout = 1500, .vMin = 0, .exit = new Range(5, 20)});
     
     //ELIMS
-    chass.driveAngle(600, 95, {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(5, 20)});
-    pros::delay(400);
-    chass.turn(200,  {.timeout=600, .exit = new Range(3, 10)});
-    //OLD
+    // chass.driveAngle(600, 95, {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(5, 20)});
+    // pros::delay(400);
+    // chass.turn(200,  {.timeout=600, .exit = new Range(3, 10)});
+    
     /* 
     chass.mtpoint({-52, 40}, {.async = true, .timeout = 1700, .vMin = 0, .settleRange = 10, .exit = new exit::Range(5, 50)});
     pros::delay(300);

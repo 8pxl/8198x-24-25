@@ -18,8 +18,8 @@ int keejLib::dirToSpin(double target, double current) {
 }
 
 double keejLib::angError(double target, double current) {
-    double b = std::max(target, current);
-    double s = std::min(target, current);
+    double b = std::fmax(target, current);
+    double s = std::fmin(target, current);
     double diff = b - s;
     
     return((diff <= 180 ? diff : (360-b) + s) * keejLib::dirToSpin(target, current));

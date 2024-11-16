@@ -13,7 +13,7 @@ void Chassis::turn(double angle, MotionParams params) {
     }
     this -> waitUntilSettled();
     moving = true;
-    if (clr == blue) angle = neg(angle);
+    // if (clr == blue) angle = neg(angle);
     Angle targ = Angle(angle, HEADING);
     Exit* timeout = new exit::Timeout(params.timeout);
     PID cont = PID(this -> turnConsts);

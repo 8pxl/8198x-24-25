@@ -31,9 +31,9 @@ void bPos() {
     // pros::delay(200);
     chass.driveAngle(-460, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
-    chass.turn(166, {.timeout=400, .exit = new Range(3, 100)});
+    chass.turn(160, {.timeout=400, .exit = new Range(3, 100)});
     doink.toggle();
-    chass.driveAngle(-850, 166, {.async = false, .timeout = 500, .vMin = 28, .exit = new Range(30, 10)});
+    chass.driveAngle(-1150, 160, {.async = false, .timeout = 700, .vMin = 28, .exit = new Range(30, 10)});
     chass.setLin(_linSmall);
     chass.driveAngle(-400, 180, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(5, 20)});
     chass.setLin(_lin);
@@ -63,15 +63,16 @@ void bPos() {
     //68 < x
     //68.3 < x
     //68,8 < x
-    Pt allianceStake = {69.2, -15.1};
+    Pt allianceStake = {69.8, -15.1};
     chass.turnTo(allianceStake, {.timeout=900, .exit = new Range(5, 20)});
     pros::delay(500);
     // chass.turn(neg(180), {.timeout=900, .exit = new Range(3, 20)});
     intake.move(0);
     lb.next();
+    lb.next();
     tsukasa.toggle();
     //10 < x
-    chass.moveWithin(allianceStake, 10.9, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
+    chass.moveWithin(allianceStake, 12.1, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
     intake.move(127);
     lb.next();
     lb.next();
