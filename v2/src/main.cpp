@@ -34,8 +34,8 @@ void initialize() {
         chass.setPose({-p.pos.x, p.pos.y, p.heading});
     }
     
-    robot::vision.set_signature(0, &redRing);
-    robot::vision.set_signature(1, &blueRing);
+    // robot::vision.set_signature(0, &redRing);
+    // robot::vision.set_signature(1, &blueRing);
     // lb.setState(lift::Idle::getInstance());
 }
 
@@ -47,8 +47,8 @@ void autonomous() {
 
 void opcontrol() {
     
-    intake.startControl();
-    lb.startControl();
+    // intake.startControl();
+    // lb.startControl();
     
     // lb.setState(lift::Idle::getInstance());
     // pros::delay(180);

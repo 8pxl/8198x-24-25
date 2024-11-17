@@ -25,8 +25,9 @@ intake.move(0);
 pros::delay(700);
 intake.move(127);
 lb.next();
-intake.setSorting(true);
+intake.setSorting(false);
 pros::delay(700);
+intake.move(127);
 
 }
 

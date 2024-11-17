@@ -59,4 +59,17 @@ void Chassis::turnTo(Pt target, MotionParams params) {
     moving = false;
     // chassMutex.give();
 }
+
+// void Chassis::linTo(Pt target, MotionParams params) {
+//     if (params.async) {
+//         params.async = false;
+//         pros::Task task([&]() { linTo(target, params);});
+//         pros::delay(10);
+//         return;
+//     }
+//     this -> waitUntilSettled();
+//     moving = true;
+
+//     heading = Angle(angle, HEADING);
+// }
 }

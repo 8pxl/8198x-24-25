@@ -12,12 +12,12 @@ using namespace keejLib;
 
 namespace lift {
     
-#define ONE_RING 78 + 9
-#define TWO_RING 124 + 9
-#define PRIME 350.57 + 9
-#define LOWER 500 + 9
-#define ALLIANCE 554 + 9
-#define LOWEST 740.39 + 9
+#define ONE_RING 78 + 19
+#define TWO_RING 124 + 11
+#define PRIME 350.57 + 19
+#define LOWER 500 + 19
+#define ALLIANCE 554 + 98
+#define LOWEST 740.39 + 19
 
 class Lift;
 

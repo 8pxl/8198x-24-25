@@ -13,7 +13,7 @@ class LiftState;
 
 class Lift{
     public:
-        Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, ifsm::Intake *intake, PIDConstants constants);
+        Lift(pros::Motor *lift, pros::Rotation *rot, pros::Optical *optical, PIDConstants constants);
        	inline LiftState* getCurrentState() const { return currentState; }
        	void next();
         void prev();

@@ -13,7 +13,7 @@ namespace robot {
     
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController); 
-    pros::Motor intakeMotor(-14);
+    pros::Motor intake(-14);
     pros::Motor liftMotor(4);
     
     pros::ADIDigitalOut clampPiston('a');
@@ -31,7 +31,7 @@ namespace robot {
     Pis claw({doinkClawPiston}, false);
     Pis tsukasa({intakePiston}, false);
     
-    ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
+    // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
     lift::Lift lb(&liftMotor, &rotationSensor, &opticalSensor, &intake, {
         .kp = 0.025,
         .ki= 0,
@@ -59,7 +59,7 @@ namespace robot {
         .gearRatio = 0.75,
     }, alternate, &imu, &vertTracker, &horizTracker);
     
-    pros::vision_signature_s_t  redRing = pros::Vision::signature_from_utility(1, 1319, 8061, 4690, -893, 327, -284, 1.300, 0);
-    pros::vision_signature_s_t blueRing = pros::Vision::signature_from_utility(2, -5121, -3615, -4368, 2049, 7201, 4626, 1.200, 0);
+    // pros::vision_signature_s_t  redRing = pros::Vision::signature_from_utility(1, 1319, 8061, 4690, -893, 327, -284, 1.300, 0);
+    // pros::vision_signature_s_t blueRing = pros::Vision::signature_from_utility(2, -5121, -3615, -4368, 2049, 7201, 4626, 1.200, 0);
     
 }   

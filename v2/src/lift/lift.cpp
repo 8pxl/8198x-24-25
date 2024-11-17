@@ -5,7 +5,7 @@
 
 namespace lift {
 
-Lift::Lift(pros::Motor *motor, pros::Rotation *rot, pros::Optical *optical, ifsm::Intake *intake, PIDConstants constants) : motor(motor), rot(rot), optical(optical), intake(intake) {
+Lift::Lift(pros::Motor *motor, pros::Rotation *rot, pros::Optical *optical, PIDConstants constants) : motor(motor), rot(rot), optical(optical)) {
     currentState = &Idle::getInstance();
     pid = keejLib::PID(constants);
 }
@@ -82,7 +82,7 @@ double Lift::getError() {
 }
 
 Color Lift::getColor() {
-    return intake->getOptical();
+    // return intake->getOptical();
 }
 
 bool Lift::getAutoControl() {

@@ -104,6 +104,7 @@ namespace keejLib {
             void mtpose(Pose target, double dLead, MotionParams params);
             void mtpoint(Pt target, MotionParams params);
             void moveWithin(Pt targ, double dist, MotionParams params, double angle = -1);
+            void linTo(Pt targ, MotionParams params);
             
     };
 }

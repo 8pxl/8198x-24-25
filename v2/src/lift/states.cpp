@@ -7,7 +7,7 @@ namespace lift {
 
 //idle state
 void Idle::enter(Lift *lift) {
-    lift ->setTarget(10);
+    lift ->setTarget(18);
 }
 void Idle::exit(Lift *lift) {
 }
