@@ -18,7 +18,7 @@ void Intake::startControl() {
             }
         }};
     }
-    pros::delay(10);
+    pros::delay(20);
 }
 
 void Intake::control() {

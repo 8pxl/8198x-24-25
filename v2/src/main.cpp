@@ -9,9 +9,9 @@ using namespace robot;
 void initialize() {
     // intake.setSorting(false);
     imu.reset(true);
+    lb.startControl();
     intake.setColor(glb::color);
     intake.startControl();
-    lb.startControl();
     chass.startTracking();
     
     // int clr = cont.select({"red", "blue"});
@@ -21,7 +21,6 @@ void initialize() {
     int clr = red;
     // glb::auton = skills;
     // if (glb::auton == skills) {
-    lb.setState(lift::Two::getInstance());
     // }
     
     // if (glb::color == blue) {
@@ -37,6 +36,7 @@ void initialize() {
     
     robot::vision.set_signature(0, &redRing);
     robot::vision.set_signature(1, &blueRing);
+    // lb.setState(lift::Idle::getInstance());
 }
 
 void disabled() {}
@@ -50,15 +50,15 @@ void opcontrol() {
     intake.startControl();
     lb.startControl();
     
-    lb.setState(lift::Idle::getInstance());
-    pros::delay(180);
+    // lb.setState(lift::Idle::getInstance());
+    // pros::delay(180);
     // intake.setSorting(true);
-    lb.setAutoControl(true);
+    // lb.setAutoControl(true);
     // for (int i = 0; i < 100; i++) {
     //     lb.setAutoControl(true);
     // }
     while(true) {
-        lb.setAutoControl(true);        
+        // lb.setAutoControl(true);        
 
         // std::cout << "his" << std::endl;
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {

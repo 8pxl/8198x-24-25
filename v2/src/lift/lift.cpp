@@ -19,7 +19,7 @@ void Lift::startControl() {
             }
         }};
     }
-    pros::delay(10);
+    pros::delay(20);
 }
 
 void Lift::control() {
@@ -86,14 +86,15 @@ Color Lift::getColor() {
 }
 
 bool Lift::getAutoControl() {
-    autoControlMutex.take();
-    return autoControl;
-    autoControlMutex.give();
+    // autoControlMutex.take(300);
+    // return autoControl;
+    // autoControlMutex.give();
+    return false;
 }
 
 void Lift::setAutoControl(bool autoControl) {
-    autoControlMutex.take();
-    this->autoControl = autoControl;
-    autoControlMutex.give();
+    // autoControlMutex.take(300);
+    // this->autoControl = autoControl;
+    // autoControlMutex.give();
 }
 }

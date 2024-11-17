@@ -40,9 +40,13 @@ void rPos() {
     // chass.driveAngle(1380, 187, {.async = true, .timeout = 800, .vMin = 20, .exit = new Range(5, 20)});
     pros::delay(300);
     intake.move(127);
-    chass.driveAngle(1300, 135, {.async = false, .timeout = 610, .vMin = 20, .exit = new Range(5, 20)});
+    chass.setLin(_linSmall);
+
+    chass.driveAngle(1000, 135, {.async = false, .timeout = 610, .vMin = 20, .exit = new Range(5, 20)});
     pros::delay(300);
     chass.driveAngle(-880, 135, {.async = false, .timeout = 600, .vMin = 0, .exit = new Range(5, 200)});
+    chass.setLin(_lin);
+
     pros::delay(300);
     chass.turn(neg(30), {.timeout=490, .exit = new Range(3, 20)});
     clamp.toggle();
@@ -57,12 +61,11 @@ void rPos() {
     lb.next();lb.next();
     tsukasa.toggle();
     // chass.setLin(_linSmall);
-    chass.driveAngle(680, neg(90), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(10, 10)});
+    chass.driveAngle(300, neg(90), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(20, 10)});
     chass.setLin(_lin);
-    chass.driveAngle(-400, neg(90), {.async = false, .timeout = 500, .vMin = 0, .exit = new Range(20, 10)});
-    Pt allianceStake = {-67.4, -15};
+    chass.driveAngle(-180, neg(90), {.async = false, .timeout = 500, .vMin = 0, .exit = new Range(20, 10)});
+    Pt allianceStake = {-66.6, -15};
     chass.turnTo(allianceStake, {.timeout=900, .exit = new Range(5, 20)});
-    pros::delay(300);
     // chass.turn(180, {.timeout=900, .exit = new Range(3, 20)});
     intake.move(0);
     lb.next();
@@ -70,7 +73,7 @@ void rPos() {
     tsukasa.toggle();
     //11.4 > x
     //11.2 > x
-    chass.moveWithin(allianceStake, 11.05, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
+    chass.moveWithin(allianceStake, 11.3, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
     intake.move(127);
     lb.next();
     lb.next();
@@ -84,24 +87,23 @@ void rPos() {
     // chass.driveAngle(-900, neg(140), {.async = true, .timeout = 1000, .vMin = 35, .exit = new Range(5, 20)});
     tsukasa.toggle();
     // intake.setSorting(true);
-    // CHANGED TODAY
     chass.setLin(_linSmall);
     chass.driveAngle(-1000, neg(150), {.async = false, .timeout = 450, .vMin = 0, .exit = new Range(5, 20)});
     chass.setLin(_lin);
     chass.setAng(_ang);
     pros::delay(200);
     clamp.toggle();
-    chass.turnTo({-24, 27.9}, {.timeout=600, .exit = new Range(5, 10)});
+    chass.turnTo({-22.5, 29.4}, {.timeout=600, .exit = new Range(10, 10)});
     intake.move(127);
-    chass.mtpoint({-24, 27.9}, {.async = false, .timeout = 800, .vMin = 0, .settleRange = 5, .exit = new exit::Range(3, 300)});
+    chass.mtpoint({-22.5, 29.4}, {.async = false, .timeout = 800, .vMin = 0, .settleRange = 5, .exit = new exit::Range(3, 300)});
     // pros::delay(600);
     // 
     // 
     // QUALS
     chass.driveAngle(-400, 90, {.async = true, .timeout = 400, .vMin = 0, .exit = new Range(5, 20)});
-    Pt corner = {-44, 45 };
-    chass.turnTo(corner, {.timeout=600, .exit = new Range(5, 10)});
-    chass.driveAngle(900, imu.get_heading(), {.async = false, .timeout = 1500, .vMin = 0, .exit = new Range(5, 20)});
+    Pt corner = {-40, 45 };
+    chass.turnTo(corner, {.timeout=500, .exit = new Range(5, 10)});
+    chass.driveAngle(1000, imu.get_heading(), {.async = false, .timeout = 1500, .vMin = 0, .exit = new Range(5, 20)});
     
     //ELIMS
     // chass.driveAngle(600, 95, {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(5, 20)});
