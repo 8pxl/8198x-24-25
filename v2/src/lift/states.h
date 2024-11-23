@@ -13,7 +13,7 @@ using namespace keejLib;
 namespace lift {
     
 #define ONE_RING 78 + 19
-#define TWO_RING 124 + 11
+#define TWO_RING 124 + 18
 #define PRIME 350.57 + 19
 #define LOWER 500 + 19
 #define ALLIANCE 554 + 98

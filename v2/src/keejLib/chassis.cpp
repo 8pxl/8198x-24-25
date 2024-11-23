@@ -15,8 +15,8 @@ std::vector<std::int8_t> DriveTrain::concat(const std::vector<std::int8_t>& left
 }
 
 void DriveTrain::spinVolts(int left, int right) {
-    _motor_group_mutex.take();
-    int half = _motor_count / 2;
+    _MotorGroup_mutex.take();
+    int half = this->size() / 2;
     for (int i = 0; i < half; i++) {
         _motors[i].move(left);
         _motors[i + half].move(right);

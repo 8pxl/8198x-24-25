@@ -32,7 +32,7 @@ namespace robot {
     Pis tsukasa({intakePiston}, false);
     
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
-    lift::Lift lb(&liftMotor, &rotationSensor, &opticalSensor, &intake, {
+    lift::Lift lb(&liftMotor, &rotationSensor, &opticalSensor, {
         .kp = 0.025,
         .ki= 0,
         .maxIntegral = 1000000,

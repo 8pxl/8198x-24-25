@@ -26,7 +26,7 @@ void driver() {
     if (state[NL1]) lb.next();
     if (state[NL2]) lb.prev();
     
-    if (state[NRIGHT]) lb.toggle();
+    if (state[NRIGHT]) doink.toggle();
     if (state[NY]) clamp.toggle();
     
     if (state[NB]) doink.toggle();
@@ -43,7 +43,7 @@ void driver() {
     if (state[NLEFT]) {
         auto p = chass.getPose();
         prosController.print(0, 0, "%.2f, %.2f, %.2f", p.pos.x, p.pos.y, p.heading.heading());
-        triangulatePoint();
+        // triangulatePoint();
     }
 }
 

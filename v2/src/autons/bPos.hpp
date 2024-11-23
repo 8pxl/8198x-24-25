@@ -20,7 +20,7 @@ void bPos() {
     //24 < x
     // 26 < x
     // 27 < x?
-    chass.moveWithin({16.5, 36.0}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 10), .reverse=false, }, 27);
+    chass.moveWithin({16.9, 36.3}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 10), .reverse=false, }, 27.5);
     chass.setAng(_ang);
     claw.toggle();
     // chass.driveAngle(500, 30, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(5, 20), .slew = 2});
@@ -33,14 +33,17 @@ void bPos() {
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
     chass.turn(neg(180), {.timeout=600, .exit = new Range(3, 100)});
     doink.toggle();
-    chass.driveAngle(-900, neg(180), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(50, 10)});
+    chass.driveAngle(-700, neg(180), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(50, 10)});
     chass.setLin(_linSmall);
-    chass.driveAngle(-1000, 120, {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(10, 20)});
+    // chass.turn(120, {.timeout = 600, .exit = new Range(5, 10)});
+    chass.driveAngle(-500, 141, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(10, 20)});
+    chass.driveAngle(-700, 141, {.async = false, .timeout = 370, .vMin = 0, .exit = new Range(10, 20)});
     chass.setLin(_lin);
     clamp.toggle();
+    pros::delay(100);
     //1490
     //1400
-    Pt fourStack = {10, -3.7};
+    Pt fourStack = {10, -3.6};
     // chass.driveAngle(1200, 179, {.async = true, .timeout = 800, .vMin = 20, .exit = new Range(30, 20)});
     chass.mtpoint(fourStack, {.async = true, .timeout = 1000, .vMin = 30, .settleRange = 14, .exit = new exit::Range(3, 30), .drift = 20});
 
@@ -49,7 +52,7 @@ void bPos() {
     chass.waitUntilSettled();
     chass.setLin(_linSmall);
 
-    chass.driveAngle(1000, neg(135), {.async = false, .timeout = 500, .vMin = 20, .exit = new Range(5, 20)});
+    chass.driveAngle(1100, neg(135), {.async = false, .timeout = 630, .vMin = 20, .exit = new Range(5, 20)});
     chass.setLin(_lin);
     chass.driveAngle(-880, neg(135), {.async = false, .timeout = 600, .vMin = 0, .exit = new Range(5, 200)});
     pros::delay(550);
@@ -77,7 +80,7 @@ void bPos() {
     lb.next();
     tsukasa.toggle();
     //10 < x
-    chass.moveWithin(allianceStake, 12.1, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
+    chass.moveWithin(allianceStake, 12.21, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
     intake.move(127);
     lb.next();
     lb.next();
@@ -97,18 +100,24 @@ void bPos() {
     // intake.setSorting(true);
     // CHANGED TODAY
     chass.setLin(_linSmall);
-    chass.driveAngle(-600, 150, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(5, 20)});
+    chass.driveAngle(-990, 150, {.async = false, .timeout = 500, .vMin = 0, .exit = new Range(5, 20)});
     chass.setLin(_lin);
     chass.setAng(_ang);
     clamp.toggle();
-    chass.turn(neg(48), {.timeout=600, .exit = new Range(7, 10)});
+    pros::delay(300);
+    chass.turn(neg(58), {.timeout=600, .exit = new Range(7, 10)});
     intake.move(127);
-    chass.driveAngle(1200, neg(48), {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(30, 10)});
-    // pros::delay(100);
-    chass.driveAngle(-1400, neg(80), {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(40, 12)});
+    chass.driveAngle(1000, neg(58), {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(30, 10)});
+    pros::delay(1000);
+    // QUlals
+    // chass.driveAngle(-1400, neg(80), {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(40, 12)});
+    // chass.turn(0, {.timeout=600, .exit = new Range(8, 10)});
+    // chass.driveAngle(880, 0, {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(5, 20)});
+    
+    
+    //-----
     // intake.setSorting(false);
     // intake.move(20);
     // chass.driveAngle(-880, neg(135), {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(5, 20)});
-    chass.turn(0, {.timeout=600, .exit = new Range(8, 10)});
-    chass.driveAngle(880, 0, {.async = false, .timeout = 800, .vMin = 0, .exit = new Range(5, 20)});
+    // 
 }
