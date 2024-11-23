@@ -1,40 +1,35 @@
-#include "chassis.h"
+#include "keejLib/chassis.h"
 #include "main.h"
-#include "keejlib/lib.h"
-#include "util.h"
+#include "keejLib/lib.h"
+#include "pros/motor_group.hpp"
+#include "keejLib/util.h"
 #include <numeric>
 
 namespace keejLib {
-    
-DriveTrain::DriveTrain(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports) : pros::MotorGroup(concat(left_ports, right_ports)){}
-
-std::vector<std::int8_t> DriveTrain::concat(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports) {
-    std::vector<std::int8_t> ports(left_ports);
-    ports.insert(ports.end(), right_ports.begin(), right_ports.end());
-    return ports;
-}
 
 void DriveTrain::spinVolts(int left, int right) {
-    _MotorGroup_mutex.take();
-    int half = this->size() / 2;
-    for (int i = 0; i < half; i++) {
-        _motors[i].move(left);
-        _motors[i + half].move(right);
-    }
-    _motor_group_mutex.give();
+    leftMotors->move(left);
+    rightMotors->move(right);
 }
 
 void DriveTrain::spinVolts(std::pair<double, double> volts) {
     spinVolts(volts.first, volts.second);
 }
+
+void DriveTrain::tare_position() {
+    leftMotors->tare_position_all();
+    rightMotors->tare_position_all();
+}
 double DriveTrain::getAvgVelocity() {
-    std::vector<double> v = (get_actual_velocities());
-    return (std::reduce(v.begin(), v.end()) / v.size());
+    std::vector<double> vl = leftMotors->get_actual_velocity_all();
+    std::vector<double> vr = rightMotors->get_actual_velocity_all();
+    return (std::reduce(vl.begin(), vl.end()) + std::reduce(vr.begin(), vr.end()) / (leftMotors->size() + rightMotors->size()));
 }
 
 double DriveTrain::getAvgPosition() {
-    std::vector<double> v = (get_positions());
-    return (std::reduce(v.begin(), v.end()) / v.size());
+    std::vector<double> pl = leftMotors->get_position_all();
+    std::vector<double> pr = rightMotors->get_position_all();
+    return (std::reduce(pl.begin(), pl.end()) + std::reduce(pr.begin(), pr.end()) / (leftMotors->size() + rightMotors->size()));
 }
 
 Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : dt(dt), chassConsts(constants), imu(imu), vertEnc(vertEnc), horizEnc(horizEnc) {}

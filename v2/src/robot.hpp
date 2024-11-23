@@ -3,6 +3,7 @@
 #include "intake/vStates.h"
 #include "keejLib/lib.h"
 #include "lift/lift.h"
+#include "pros/motor_group.hpp"
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
 #include "pros/vision.hpp"
@@ -16,12 +17,12 @@ namespace robot {
     pros::Motor intake(-14);
     pros::Motor liftMotor(4);
     
-    pros::ADIDigitalOut clampPiston('a');
-    pros::ADIDigitalOut doinkArmPiston('c');
-    pros::ADIDigitalOut doinkClawPiston('d');
-    pros::ADIDigitalOut intakePiston('b');
+    pros::adi::DigitalOut clampPiston('a');
+    pros::adi::DigitalOut doinkArmPiston('c');
+    pros::adi::DigitalOut doinkClawPiston('d');
+    pros::adi::DigitalOut intakePiston('b');
     pros::Rotation rotationSensor(15);
-    pros::Rotation vertTracker(6, true);
+    pros::Rotation vertTracker(-6);
     pros::Rotation horizTracker(17);
     pros::Optical opticalSensor(5);
     pros::Vision vision(18);
@@ -39,7 +40,9 @@ namespace robot {
         .tolerance = 0,
         .integralThreshold = 50,
     });
-    DriveTrain dt = keejLib::DriveTrain({-11,-12,-13}, {3,2,1});
+    pros::MotorGroup leftChass({-11,-12,-13});
+    pros::MotorGroup rightChass({3,2,1});
+    DriveTrain dt = keejLib::DriveTrain(&leftChass, &rightChass);
     //4.64907 1.30551
     // 1.27811 0.703097
     // 1.13273 1.07545

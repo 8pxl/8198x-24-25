@@ -5,13 +5,13 @@
 #include "controls.hpp"
 #include "globals.hpp"
 #include "units/units.hpp"
-// #include "locolib/particleFilter.h"
+#include "locolib/particleFilter.h"
 
 using namespace robot;
 void initialize() {
     // intake.setSorting(false);
     imu.reset(true);
-    lb.startControl();
+    robot::lb.startControl();
     // intake.setColor(glb::color);
     // intake.startControl();
     chass.startTracking();
@@ -66,7 +66,7 @@ void opcontrol() {
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             glb::auton();
             // intake.setSorting(true);
-            lb.setAutoControl(true);
+            robot::lb.setAutoControl(true);
         }
         driver();
         

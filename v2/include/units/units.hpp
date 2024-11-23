@@ -1,470 +1,425 @@
+// "RQuantity.h" header file
+
 #pragma once
 
-#include <cmath>
 #include <ratio>
-#include <iostream>
-// #include <concepts>
-
-// define M_PI if not already defined
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
-// define typenames
-
-/**
- * @brief Quantity class
- *
- * This class is a template class that represents a quantity with a value and units.
- *
- * @tparam TYPENAMES the types of the units
- */
-template <typename Mass = std::ratio<0>, typename Length = std::ratio<0>, typename Time = std::ratio<0>,
-          typename Current = std::ratio<0>, typename Angle = std::ratio<0>, typename Temperature = std::ratio<0>,
-          typename Luminosity = std::ratio<0>, typename Moles = std::ratio<0>>
-class Quantity {
-    protected:
-        double value; /** the value stored in its base unit type */
-    public:
-        typedef Mass mass; /** mass unit type */
-        typedef Length length; /** length unit type */
-        typedef Time time; /** time unit type */
-        typedef Current current; /** current unit type */
-        typedef Angle angle; /** angle unit type */
-        typedef Temperature temperature; /** temperature unit type */
-        typedef Luminosity luminosity; /** luminosity unit type */
-        typedef Moles moles; /** moles unit type */
-
-        using Self = Quantity<Mass, Length, Time, Current, Angle, Temperature, Luminosity, Moles>;
-
-        /**
-         * @brief construct a new Quantity object
-         *
-         * This constructor initializes the value to 0
-         */
-        explicit constexpr Quantity() : value(0) {}
-
-        /**
-         * @brief construct a new Quantity object
-         *
-         * @param value the value to initialize the quantity with
-         */
-        explicit constexpr Quantity(double value) : value(value) {}
-
-        /**
-         * @brief construct a new Quantity object
-         *
-         * @param other the quantity to copy
-         */
-        constexpr Quantity(Self const& other) : value(other.value) {}
-
-        /**
-         * @brief get the value of the quantity in its base unit type
-         *
-         * @return constexpr double
-         */
-        constexpr double internal() const { return value; }
-
-        // TODO: document this
-        constexpr double convert(Self quantity) { return value / quantity.value; }
-
-        /**
-         * @brief set the value of this quantity to its current value plus another quantity
-         *
-         * @param other the quantity to add
-         */
-        constexpr void operator+=(Self other) { value += other.value; }
-
-        /**
-         * @brief set the value of this quantity to its current value minus another quantity
-         *
-         * @param other the quantity to subtract
-         */
-        constexpr void operator-=(Self other) { value -= other.value; }
-
-        /**
-         * @brief set the value of this quantity to its current value times a double
-         *
-         * @param multiple the multiple to multiply by
-         */
-        constexpr void operator*=(double multiple) { value *= multiple; }
-
-        /**
-         * @brief set the value of this quantity to its current value divided by a double
-         *
-         * @param dividend the dividend to divide by
-         */
-        constexpr void operator/=(double dividend) { value /= dividend; }
-
-        /**
-         * @brief set the value of this quantity to a double, only if the quantity is a number
-         *
-         * @param rhs the double to assign
-         */
-        constexpr void operator=(const double& rhs) {
-            static_assert(std::ratio_equal<mass, std::ratio<0>>() && std::ratio_equal<length, std::ratio<0>>() &&
-                              std::ratio_equal<time, std::ratio<0>>() && std::ratio_equal<current, std::ratio<0>>() &&
-                              std::ratio_equal<angle, std::ratio<0>>() &&
-                              std::ratio_equal<temperature, std::ratio<0>>() &&
-                              std::ratio_equal<luminosity, std::ratio<0>>() && std::ratio_equal<moles, std::ratio<0>>(),
-                          "Cannot assign a double directly to a non-number unit type");
-            value = rhs;
-        }
-};
-
-template <typename Q> struct LookupName {
-        using Named = Q;
-};
-
-template <typename Q> using Named = typename LookupName<Q>::Named;
-
-// quantity checker. Used by the isQuantity concept
-template <typename Mass = std::ratio<0>, typename Length = std::ratio<0>, typename Time = std::ratio<0>,
-          typename Current = std::ratio<0>, typename Angle = std::ratio<0>, typename Temperature = std::ratio<0>,
-          typename Luminosity = std::ratio<0>, typename Moles = std::ratio<0>>
-void quantityChecker(Quantity<Mass, Length, Time, Current, Angle, Temperature, Luminosity, Moles> q) {}
-
-// isQuantity concept
-template <typename Q>
-concept isQuantity = requires(Q q) { quantityChecker(q); };
-
-// Isomorphic concept - used to ensure unit equivalecy
-template <typename Q, typename... Quantities>
-concept Isomorphic = ((std::convertible_to<Q, Quantities> && std::convertible_to<Quantities, Q>)&&...);
-
-// Un(type)safely coerce the a unit into a different unit
-template <isQuantity Q1, isQuantity Q2> constexpr inline Q1 unit_cast(Q2 quantity) { return Q1(quantity.internal()); }
-
-template <isQuantity Q1, isQuantity Q2> using Multiplied = Named<Quantity<
-    std::ratio_add<typename Q1::mass, typename Q2::mass>, std::ratio_add<typename Q1::length, typename Q2::length>,
-    std::ratio_add<typename Q1::time, typename Q2::time>, std::ratio_add<typename Q1::current, typename Q2::current>,
-    std::ratio_add<typename Q1::angle, typename Q2::angle>,
-    std::ratio_add<typename Q1::temperature, typename Q2::temperature>,
-    std::ratio_add<typename Q1::luminosity, typename Q2::luminosity>,
-    std::ratio_add<typename Q1::moles, typename Q2::moles>>>;
-
-template <isQuantity Q1, isQuantity Q2> using Divided =
-    Named<Quantity<std::ratio_subtract<typename Q1::mass, typename Q2::mass>,
-                   std::ratio_subtract<typename Q1::length, typename Q2::length>,
-                   std::ratio_subtract<typename Q1::time, typename Q2::time>,
-                   std::ratio_subtract<typename Q1::current, typename Q2::current>,
-                   std::ratio_subtract<typename Q1::angle, typename Q2::angle>,
-                   std::ratio_subtract<typename Q1::temperature, typename Q2::temperature>,
-                   std::ratio_subtract<typename Q1::luminosity, typename Q2::luminosity>,
-                   std::ratio_subtract<typename Q1::moles, typename Q2::moles>>>;
-
-template <isQuantity Q, typename factor> using Exponentiated = Named<
-    Quantity<std::ratio_multiply<typename Q::mass, factor>, std::ratio_multiply<typename Q::length, factor>,
-             std::ratio_multiply<typename Q::time, factor>, std::ratio_multiply<typename Q::current, factor>,
-             std::ratio_multiply<typename Q::angle, factor>, std::ratio_multiply<typename Q::temperature, factor>,
-             std::ratio_multiply<typename Q::luminosity, factor>, std::ratio_multiply<typename Q::moles, factor>>>;
-
-template <isQuantity Q, typename quotient> using Rooted = Named<
-    Quantity<std::ratio_divide<typename Q::mass, quotient>, std::ratio_divide<typename Q::length, quotient>,
-             std::ratio_divide<typename Q::time, quotient>, std::ratio_divide<typename Q::current, quotient>,
-             std::ratio_divide<typename Q::angle, quotient>, std::ratio_divide<typename Q::temperature, quotient>,
-             std::ratio_divide<typename Q::luminosity, quotient>, std::ratio_divide<typename Q::moles, quotient>>>;
-
-template <isQuantity Q, isQuantity R> constexpr Q operator+(Q lhs, R rhs)
-    requires Isomorphic<Q, R>
-{
-    return Q(lhs.internal() + rhs.internal());
-}
-
-template <isQuantity Q, isQuantity R> constexpr Q operator-(Q lhs, R rhs)
-    requires Isomorphic<Q, R>
-{
-    return Q(lhs.internal() - rhs.internal());
-}
-
-template <isQuantity Q> constexpr Q operator*(Q quantity, double multiple) { return Q(quantity.internal() * multiple); }
-
-template <isQuantity Q> constexpr Q operator*(double multiple, Q quantity) { return Q(quantity.internal() * multiple); }
-
-template <isQuantity Q> constexpr Q operator/(Q quantity, double divisor) { return Q(quantity.internal() / divisor); }
-
-template <isQuantity Q1, isQuantity Q2, isQuantity Q3 = Multiplied<Q1, Q2>> Q3 constexpr operator*(Q1 lhs, Q2 rhs) {
-    return Q3(lhs.internal() * rhs.internal());
-}
-
-template <isQuantity Q1, isQuantity Q2, isQuantity Q3 = Divided<Q1, Q2>> Q3 constexpr operator/(Q1 lhs, Q2 rhs) {
-    return Q3(lhs.internal() / rhs.internal());
-}
-
-template <isQuantity Q, isQuantity R> constexpr bool operator==(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return (lhs.internal() == rhs.internal());
-}
-
-template <isQuantity Q, isQuantity R> constexpr bool operator!=(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return (lhs.internal() != rhs.internal());
-}
-
-template <isQuantity Q, isQuantity R> constexpr bool operator<=(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return (lhs.internal() <= rhs.internal());
-}
-
-template <isQuantity Q, isQuantity R> constexpr bool operator>=(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return (lhs.internal() >= rhs.internal());
-}
-
-template <isQuantity Q, isQuantity R> constexpr bool operator<(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return (lhs.internal() < rhs.internal());
-}
-
-template <isQuantity Q, isQuantity R> constexpr bool operator>(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return (lhs.internal() > rhs.internal());
-}
-
-#define NEW_UNIT(Name, suffix, m, l, t, i, a, o, j, n)                                                                 \
-    class Name : public Quantity<std::ratio<m>, std::ratio<l>, std::ratio<t>, std::ratio<i>, std::ratio<a>,            \
-                                 std::ratio<o>, std::ratio<j>, std::ratio<n>> {                                        \
-        public:                                                                                                        \
-            explicit constexpr Name(double value)                                                                      \
-                : Quantity<std::ratio<m>, std::ratio<l>, std::ratio<t>, std::ratio<i>, std::ratio<a>, std::ratio<o>,   \
-                           std::ratio<j>, std::ratio<n>>(value) {}                                                     \
-            constexpr Name(Quantity<std::ratio<m>, std::ratio<l>, std::ratio<t>, std::ratio<i>, std::ratio<a>,         \
-                                    std::ratio<o>, std::ratio<j>, std::ratio<n>>                                       \
-                               value)                                                                                  \
-                : Quantity<std::ratio<m>, std::ratio<l>, std::ratio<t>, std::ratio<i>, std::ratio<a>, std::ratio<o>,   \
-                           std::ratio<j>, std::ratio<n>>(value) {};                                                    \
-    };                                                                                                                 \
-    template <> struct LookupName<Quantity<std::ratio<m>, std::ratio<l>, std::ratio<t>, std::ratio<i>, std::ratio<a>,  \
-                                           std::ratio<o>, std::ratio<j>, std::ratio<n>>> {                             \
-            using Named = Name;                                                                                        \
-    };                                                                                                                 \
-    constexpr Name suffix = Name(1.0);                                                                                 \
-    constexpr Name operator""_##suffix(long double value) {                                                            \
-        return Name(Quantity<std::ratio<m>, std::ratio<l>, std::ratio<t>, std::ratio<i>, std::ratio<a>, std::ratio<o>, \
-                             std::ratio<j>, std::ratio<n>>(static_cast<double>(value)));                               \
-    }                                                                                                                  \
-    constexpr Name operator""_##suffix(unsigned long long value) {                                                     \
-        return Name(Quantity<std::ratio<m>, std::ratio<l>, std::ratio<t>, std::ratio<i>, std::ratio<a>, std::ratio<o>, \
-                             std::ratio<j>, std::ratio<n>>(static_cast<double>(value)));                               \
-    }                                                                                                                  \
-    inline std::ostream& operator<<(std::ostream& os, const Name& quantity) {                                          \
-        os << quantity.internal() << "_" << #suffix;                                                                   \
-        return os;                                                                                                     \
-    }                                                                                                                  \
-    constexpr inline Name from_##suffix(double value) { return Name(value); }                                          \
-    constexpr inline double to_##suffix(Name quantity) { return quantity.internal(); }
-
-#define NEW_UNIT_LITERAL(Name, suffix, multiple)                                                                       \
-    constexpr Name suffix = multiple;                                                                                  \
-    constexpr Name operator""_##suffix(long double value) { return static_cast<double>(value) * multiple; }            \
-    constexpr Name operator""_##suffix(unsigned long long value) { return static_cast<double>(value) * multiple; }     \
-    constexpr inline Name from_##suffix(double value) { return value * multiple; }                                     \
-    constexpr inline double to_##suffix(Name quantity) { return quantity.convert(multiple); }
-
-#define NEW_METRIC_PREFIXES(Name, base)                                                                                \
-    NEW_UNIT_LITERAL(Name, T##base, base * 1E12)                                                                       \
-    NEW_UNIT_LITERAL(Name, G##base, base * 1E9)                                                                        \
-    NEW_UNIT_LITERAL(Name, M##base, base * 1E6)                                                                        \
-    NEW_UNIT_LITERAL(Name, k##base, base * 1E3)                                                                        \
-    NEW_UNIT_LITERAL(Name, c##base, base / 1E2)                                                                        \
-    NEW_UNIT_LITERAL(Name, m##base, base / 1E3)                                                                        \
-    NEW_UNIT_LITERAL(Name, u##base, base / 1E6)                                                                        \
-    NEW_UNIT_LITERAL(Name, n##base, base / 1E9)
-
-NEW_UNIT(Number, num, 0, 0, 0, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Number, percent, num / 100.0);
-
-NEW_UNIT(Mass, kg, 1, 0, 0, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Mass, g, kg / 1000)
-NEW_UNIT_LITERAL(Mass, lb, g * 453.6)
-
-NEW_UNIT(Time, sec, 0, 0, 1, 0, 0, 0, 0, 0)
-NEW_METRIC_PREFIXES(Time, sec)
-NEW_UNIT_LITERAL(Time, min, sec * 60)
-NEW_UNIT_LITERAL(Time, hr, min * 60)
-NEW_UNIT_LITERAL(Time, day, hr * 24)
-
-NEW_UNIT(Length, m, 0, 1, 0, 0, 0, 0, 0, 0)
-NEW_METRIC_PREFIXES(Length, m)
-NEW_UNIT_LITERAL(Length, in, cm * 2.54)
-NEW_UNIT_LITERAL(Length, ft, in * 12)
-NEW_UNIT_LITERAL(Length, yd, ft * 3)
-NEW_UNIT_LITERAL(Length, mi, ft * 5280)
-NEW_UNIT_LITERAL(Length, tile, 600 * mm)
-
-NEW_UNIT(Area, m2, 0, 2, 0, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Area, Tm2, Tm* Tm);
-NEW_UNIT_LITERAL(Area, Gm2, Gm* Gm);
-NEW_UNIT_LITERAL(Area, Mm2, Mm* Mm);
-NEW_UNIT_LITERAL(Area, km2, km* km);
-NEW_UNIT_LITERAL(Area, cm2, cm* cm);
-NEW_UNIT_LITERAL(Area, mm2, mm* mm);
-NEW_UNIT_LITERAL(Area, um2, um* um);
-NEW_UNIT_LITERAL(Area, nm2, nm* nm);
-NEW_UNIT_LITERAL(Area, in2, in* in)
-
-NEW_UNIT(LinearVelocity, mps, 0, 1, -1, 0, 0, 0, 0, 0)
-NEW_METRIC_PREFIXES(LinearVelocity, mps);
-NEW_UNIT_LITERAL(LinearVelocity, mph, m / hr)
-NEW_METRIC_PREFIXES(LinearVelocity, mph)
-NEW_UNIT_LITERAL(LinearVelocity, inps, in / sec)
-NEW_UNIT_LITERAL(LinearVelocity, miph, mi / hr)
-
-NEW_UNIT(LinearAcceleration, mps2, 0, 1, -2, 0, 0, 0, 0, 0)
-NEW_METRIC_PREFIXES(LinearAcceleration, mps2)
-NEW_UNIT_LITERAL(LinearAcceleration, mph2, m / hr / hr)
-NEW_METRIC_PREFIXES(LinearAcceleration, mph2)
-NEW_UNIT_LITERAL(LinearAcceleration, inps2, in / sec / sec)
-NEW_UNIT_LITERAL(LinearAcceleration, miph2, mi / hr / hr)
-
-NEW_UNIT(LinearJerk, mps3, 0, 1, -3, 0, 0, 0, 0, 0)
-NEW_METRIC_PREFIXES(LinearJerk, mps3)
-NEW_UNIT_LITERAL(LinearJerk, mph3, m / (hr * hr * hr))
-NEW_METRIC_PREFIXES(LinearJerk, mph3)
-NEW_UNIT_LITERAL(LinearJerk, inps3, in / (sec * sec * sec))
-NEW_UNIT_LITERAL(LinearJerk, miph3, mi / (hr * hr * hr))
-
-NEW_UNIT(Curvature, radpm, 0, -1, 0, 0, 0, 0, 0, 0);
-
-NEW_UNIT(Inertia, kgm2, 1, 2, 0, 0, 0, 0, 0, 0)
-
-NEW_UNIT(Force, N, 1, 1, -2, 0, 0, 0, 0, 0)
-
-NEW_UNIT(Torque, Nm, 1, 2, -2, 0, 0, 0, 0, 0)
-
-NEW_UNIT(Power, watt, 1, 2, -3, 0, 0, 0, 0, 0)
-
-NEW_UNIT(Current, amp, 0, 0, 0, 1, 0, 0, 0, 0)
-
-NEW_UNIT(Charge, coulomb, 0, 0, 1, 1, 0, 0, 0, 0)
-
-NEW_UNIT(Voltage, volt, 1, 2, -3, -1, 0, 0, 0, 0)
-NEW_METRIC_PREFIXES(Voltage, volt);
-
-NEW_UNIT(Resistance, ohm, 1, 2, -3, -2, 0, 0, 0, 0)
-NEW_METRIC_PREFIXES(Resistance, ohm)
-
-NEW_UNIT(Conductance, siemen, -1, -2, 3, 2, 0, 0, 0, 0)
-NEW_METRIC_PREFIXES(Conductance, siemen);
-
-NEW_UNIT(Luminosity, candela, 0, 0, 0, 0, 0, 0, 1, 0);
-
-NEW_UNIT(Moles, mol, 0, 0, 0, 0, 0, 0, 0, 1);
+#include <math.h>
 
 namespace units {
-template <isQuantity Q> constexpr Q abs(const Q& lhs) { return Q(std::abs(lhs.internal())); }
+	// The "RQuantity" class is the prototype template container class, that just holds a float value. The
+	// class SHOULD NOT BE INSTANTIATED directly by itself, rather use the quantity types defined below.
+	template<typename MassDim, typename LengthDim, typename TimeDim, typename AngleDim>
+	class RQuantity
+	{
+	private:
 
-template <isQuantity Q, isQuantity R> constexpr Q max(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return (lhs > rhs ? lhs : rhs);
-}
+	public:
+		float value;
+		constexpr RQuantity() : value(0.0) {}
+		constexpr RQuantity(float val) : value(val) {}
 
-template <isQuantity Q, isQuantity R> constexpr Q min(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return (lhs < rhs ? lhs : rhs);
-}
+		// The intrinsic operations for a quantity with a unit is addition and subtraction
+		constexpr RQuantity const& operator+=(const RQuantity& rhs)
+		{
+			value += rhs.value;
+			return *this;
+		}
+		constexpr RQuantity const& operator-=(const RQuantity& rhs)
+		{
+			value -= rhs.value;
+			return *this;
+		}
 
-template <int R, isQuantity Q, isQuantity S = Exponentiated<Q, std::ratio<R>>> constexpr S pow(const Q& lhs) {
-    return S(std::pow(lhs.internal(), R));
-}
+		constexpr RQuantity const& operator-() {
+			value = -value;
 
-template <isQuantity Q, isQuantity S = Exponentiated<Q, std::ratio<2>>> constexpr S square(const Q& lhs) {
-    return pow<2>(lhs);
-}
+			return *this;
+		}
 
-template <isQuantity Q, isQuantity S = Exponentiated<Q, std::ratio<3>>> constexpr S cube(const Q& lhs) {
-    return pow<3>(lhs);
-}
+		constexpr bool const& operator!=(RQuantity rhs) {
+			return this->getValue() != rhs.getValue();
+		}
 
-template <int R, isQuantity Q, isQuantity S = Rooted<Q, std::ratio<R>>> constexpr S root(const Q& lhs) {
-    return S(std::pow(lhs.internal(), 1.0 / R));
-}
+		// Returns the value of the quantity in multiples of the specified unit
+		[[nodiscard]] constexpr float Convert(const RQuantity& rhs) const
+		{
+			return value / rhs.value;
+		}
 
-template <isQuantity Q, isQuantity S = Rooted<Q, std::ratio<2>>> constexpr S sqrt(const Q& lhs) { return root<2>(lhs); }
+		// returns the raw value of the quantity (should not be used)
+		[[nodiscard]] constexpr float getValue() const
+		{
+			return value;
+		}
+	};
 
-template <isQuantity Q, isQuantity S = Rooted<Q, std::ratio<3>>> constexpr S cbrt(const Q& lhs) { return root<3>(lhs); }
 
-template <isQuantity Q, isQuantity R> constexpr Q hypot(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return Q(std::hypot(lhs.internal(), rhs.internal()));
-}
+	// Predefined (physical unit) quantity types:
+	// ------------------------------------------
+#define QUANTITY_TYPE(_Mdim, _Ldim, _Tdim, _Adim, name) \
+typedef RQuantity<std::ratio<_Mdim>, std::ratio<_Ldim>, std::ratio<_Tdim>, std::ratio<_Adim>> name;
 
-template <isQuantity Q, isQuantity R> constexpr Q mod(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return Q(std::fmod(lhs.internal(), rhs.internal()));
-}
+#define LEGACY_TYPEDEF(old_name, new_name) \
+using old_name [[deprecated("use " #new_name " instead")]] = new_name
 
-template <isQuantity Q1, isQuantity Q2> constexpr Q1 copysign(const Q1& lhs, const Q2& rhs) {
-    return Q1(std::copysign(lhs.internal(), rhs.internal()));
-}
+	// Replacement of "float" type
+	QUANTITY_TYPE(0, 0, 0, 0, Number);
 
-template <isQuantity Q> constexpr int sgn(const Q& lhs) { return lhs.internal() < 0 ? -1 : 1; }
+	// Physical quantity types
+	QUANTITY_TYPE(1, 0, 0, 0, QMass);
+	QUANTITY_TYPE(0, 1, 0, 0, QLength);
+	QUANTITY_TYPE(0, 2, 0, 0, QArea);
+	QUANTITY_TYPE(0, 3, 0, 0, QVolume);
+	QUANTITY_TYPE(0, 0, 1, 0, QTime);
+	QUANTITY_TYPE(0, 1, -1, 0, QVelocity);
+	LEGACY_TYPEDEF(QSpeed, QVelocity);
+	QUANTITY_TYPE(0, 1, -2, 0, QAcceleration);
+	QUANTITY_TYPE(0, 1, -3, 0, QJerk);
+	QUANTITY_TYPE(0, 0, -1, 0, QFrequency);
+	QUANTITY_TYPE(1, 1, -2, 0, QForce);
+	QUANTITY_TYPE(1, -1, -2, 0, QPressure);
+	QUANTITY_TYPE(0, -1, 0, 1, QCurvature);
+	QUANTITY_TYPE(0, 1, 0, -1, QRadius);
+	QUANTITY_TYPE(0, 0, -1, 1, QAngularVelocity);
+	//QUANTITY_TYPE()
 
-template <isQuantity Q> constexpr bool signbit(const Q& lhs) { return std::signbit(lhs.internal()); }
+	// Angle type:
+	QUANTITY_TYPE(0, 0, 0, 1, Angle);
 
-template <isQuantity Q, isQuantity R, isQuantity S> constexpr Q clamp(const Q& lhs, const R& lo, const S& hi)
-    requires Isomorphic<Q, R, S>
-{
-    return Q(std::clamp(lhs.internal(), lo.internal(), hi.internal()));
-}
 
-template <isQuantity Q, isQuantity R> constexpr Q ceil(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return Q(std::ceil(lhs.internal() / rhs.internal()) * rhs.internal());
-}
+	// Standard arithmetic operators:
+	// ------------------------------
+	template <typename M, typename L, typename T, typename A>
+	constexpr RQuantity<M, L, T, A>
+	operator+(const RQuantity<M, L, T, A>& lhs, const RQuantity<M, L, T, A>& rhs)
+	{
+		return RQuantity<M, L, T, A>(lhs.getValue() + rhs.getValue());
+	}
+	template <typename M, typename L, typename T, typename A>
+	constexpr RQuantity<M, L, T, A>
+	operator-(const RQuantity<M, L, T, A>& lhs, const RQuantity<M, L, T, A>& rhs)
+	{
+		return RQuantity<M, L, T, A>(lhs.getValue() - rhs.getValue());
+	}
+	template <typename M1, typename L1, typename T1, typename A1,
+		typename M2, typename L2, typename T2, typename A2>
+	constexpr RQuantity<std::ratio_add<M1, M2>, std::ratio_add<L1, L2>,
+		std::ratio_add<T1, T2>, std::ratio_add<A1, A2>>
+		operator*(const RQuantity<M1, L1, T1, A1>& lhs, const RQuantity<M2, L2, T2, A2>& rhs)
+	{
+		return RQuantity<std::ratio_add<M1, M2>, std::ratio_add<L1, L2>,
+			std::ratio_add<T1, T2>, std::ratio_add<A1, A2>>
+			(lhs.getValue() * rhs.getValue());
+	}
+	template <typename M, typename L, typename T, typename A>
+	constexpr RQuantity<M, L, T, A>
+	operator*(const float& lhs, const RQuantity<M, L, T, A>& rhs)
+	{
+		return RQuantity<M, L, T, A>(lhs * rhs.getValue());
+	}
+	template <typename M1, typename L1, typename T1, typename A1,
+		typename M2, typename L2, typename T2, typename A2>
+	constexpr RQuantity<std::ratio_subtract<M1, M2>, std::ratio_subtract<L1, L2>,
+		std::ratio_subtract<T1, T2>, std::ratio_subtract<A1, A2>>
+		operator/(const RQuantity<M1, L1, T1, A1>& lhs, const RQuantity<M2, L2, T2, A2>& rhs)
+	{
+		return RQuantity<std::ratio_subtract<M1, M2>, std::ratio_subtract<L1, L2>,
+			std::ratio_subtract<T1, T2>, std::ratio_subtract<A1, A2>>
+			(lhs.getValue() / rhs.getValue());
+	}
+	template <typename M, typename L, typename T, typename A>
+	constexpr RQuantity<std::ratio_subtract<std::ratio<0>, M>, std::ratio_subtract<std::ratio<0>, L>,
+		std::ratio_subtract<std::ratio<0>, T>, std::ratio_subtract<std::ratio<0>, A>>
+		operator/(long double x, const RQuantity<M, L, T, A>& rhs)
+	{
+		return RQuantity<std::ratio_subtract<std::ratio<0>, M>, std::ratio_subtract<std::ratio<0>, L>,
+			std::ratio_subtract<std::ratio<0>, T>, std::ratio_subtract<std::ratio<0>, A>>
+			(x / rhs.getValue());
+	}
+	template <typename M, typename L, typename T, typename A>
+	constexpr RQuantity<M, L, T, A>
+	operator/(const RQuantity<M, L, T, A>& rhs, long double x)
+	{
+		return RQuantity<M, L, T, A>(rhs.getValue() / x);
+	}
 
-template <isQuantity Q, isQuantity R> constexpr Q floor(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return Q(std::floor(lhs.internal() / rhs.internal()) * rhs.internal());
-}
 
-template <isQuantity Q, isQuantity R> constexpr Q trunc(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return Q(std::trunc(lhs.internal() / rhs.internal()) * rhs.internal());
-}
+	// Comparison operators for quantities:
+	// ------------------------------------
+	template <typename M, typename L, typename T, typename A>
+	constexpr bool operator==(const RQuantity<M, L, T, A>& lhs, const RQuantity<M, L, T, A>& rhs)
+	{
+		return (lhs.getValue() == rhs.getValue());
+	}
+	template <typename M, typename L, typename T, typename A>
+	constexpr bool operator!=(const RQuantity<M, L, T, A>& lhs, const RQuantity<M, L, T, A>& rhs)
+	{
+		return (lhs.getValue() != rhs.getValue());
+	}
+	template <typename M, typename L, typename T, typename A>
+	constexpr bool operator<=(const RQuantity<M, L, T, A>& lhs, const RQuantity<M, L, T, A>& rhs)
+	{
+		return (lhs.getValue() <= rhs.getValue());
+	}
+	template <typename M, typename L, typename T, typename A>
+	constexpr bool operator>=(const RQuantity<M, L, T, A>& lhs, const RQuantity<M, L, T, A>& rhs)
+	{
+		return (lhs.getValue() >= rhs.getValue());
+	}
+	template <typename M, typename L, typename T, typename A>
+	constexpr bool operator< (const RQuantity<M, L, T, A>& lhs, const RQuantity<M, L, T, A>& rhs)
+	{
+		return (lhs.getValue() < rhs.getValue());
+	}
+	template <typename M, typename L, typename T, typename A>
+	constexpr bool operator> (const RQuantity<M, L, T, A>& lhs, const RQuantity<M, L, T, A>& rhs)
+	{
+		return (lhs.getValue() > rhs.getValue());
+	}
 
-template <isQuantity Q, isQuantity R> constexpr Q round(const Q& lhs, const R& rhs)
-    requires Isomorphic<Q, R>
-{
-    return Q(std::round(lhs.internal() / rhs.internal()) * rhs.internal());
-}
-} // namespace units
 
-// Convert an angular unit `Q` to a linear unit correctly;
-// mostly useful for velocities
-template <isQuantity Q> Quantity<typename Q::mass, typename Q::angle, typename Q::time, typename Q::current,
-                                 typename Q::length, typename Q::temperature, typename Q::luminosity, typename Q::moles>
-toLinear(Quantity<typename Q::mass, typename Q::length, typename Q::time, typename Q::current, typename Q::angle,
-                  typename Q::temperature, typename Q::luminosity, typename Q::moles>
-             angular,
-         Length diameter) {
-    return unit_cast<Quantity<typename Q::mass, typename Q::angle, typename Q::time, typename Q::current,
-                              typename Q::length, typename Q::temperature, typename Q::luminosity, typename Q::moles>>(
-        angular * (diameter / 2.0));
-}
+	// Predefined units:
+	// -----------------
 
-// Convert an linear unit `Q` to a angular unit correctly;
-// mostly useful for velocities
-template <isQuantity Q> Quantity<typename Q::mass, typename Q::angle, typename Q::time, typename Q::current,
-                                 typename Q::length, typename Q::temperature, typename Q::luminosity, typename Q::moles>
-toAngular(Quantity<typename Q::mass, typename Q::length, typename Q::time, typename Q::current, typename Q::angle,
-                   typename Q::temperature, typename Q::luminosity, typename Q::moles>
-              linear,
-          Length diameter) {
-    return unit_cast<Quantity<typename Q::mass, typename Q::angle, typename Q::time, typename Q::current,
-                              typename Q::length, typename Q::temperature, typename Q::luminosity, typename Q::moles>>(
-        linear / (diameter / 2.0));
+	// Predefined mass units:
+	constexpr QMass kg(1.0);                            // SI base unit
+	constexpr QMass gramme = 0.001 * kg;
+	constexpr QMass tonne = 1000 * kg;
+	constexpr QMass ounce = 0.028349523125 * kg;
+	constexpr QMass pound = 16 * ounce;
+	constexpr QMass stone = 14 * pound;
+
+	// Predefined length-derived units
+	constexpr QLength metre(1.0);                   // SI base unit
+	constexpr QLength decimetre = metre / 10;
+	constexpr QLength centimetre = metre / 100;
+	constexpr QLength millimetre = metre / 1000;
+	constexpr QLength kilometre = 1000 * metre;
+	constexpr QLength inch = 2.54 * centimetre;
+	constexpr QLength foot = 12 * inch;
+	constexpr QLength yard = 3 * foot;
+	constexpr QLength mile = 5280 * foot;
+
+	constexpr QArea kilometre2 = kilometre * kilometre;
+	constexpr QArea metre2 = metre * metre;
+	constexpr QArea decimetre2 = decimetre * decimetre;
+	constexpr QArea centimetre2 = centimetre * centimetre;
+	constexpr QArea millimetre2 = millimetre * millimetre;
+	constexpr QArea inch2 = inch * inch;
+	constexpr QArea foot2 = foot * foot;
+	constexpr QArea mile2 = mile * mile;
+
+	constexpr QVolume kilometre3 = kilometre2 * kilometre;
+	constexpr QVolume metre3 = metre2 * metre;
+	constexpr QVolume decimetre3 = decimetre2 * decimetre;
+	constexpr QVolume litre = decimetre3;
+	constexpr QVolume centimetre3 = centimetre2 * centimetre;
+	constexpr QVolume millimetre3 = millimetre2 * millimetre;
+	constexpr QVolume inch3 = inch2 * inch;
+	constexpr QVolume foot3 = foot2 * foot;
+	constexpr QVolume mile3 = mile2 * mile;
+
+	// Predefined time-derived units:
+	constexpr QTime second(1.0);                        // SI base unit
+	constexpr QTime millisecond = second / 1000;
+	constexpr QTime minute = 60 * second;
+	constexpr QTime hour = 60 * minute;
+	constexpr QTime day = 24 * hour;
+	constexpr QTime year = 365 * day;
+
+	constexpr QFrequency Hz(1.0);
+
+	// Predefined mixed units:
+	constexpr QAcceleration G = 9.80665 * metre / (second * second);
+	constexpr QAcceleration inchs2 = inch / (second * second);
+
+	constexpr QForce newton(1.0);
+	constexpr QForce poundforce = pound * G;
+	constexpr QForce kilopond = kg * G;
+
+	constexpr QPressure Pascal(1.0);
+	constexpr QPressure bar = 100000 * Pascal;
+	constexpr QPressure psi = pound * G / inch2;
+
+	// Physical unit literals:
+	// -----------------------
+
+	// literals for length units
+	constexpr QLength operator"" _mm(long double x) { return static_cast<float>(x) * millimetre; }
+	constexpr QLength operator"" _cm(long double x) { return static_cast<float>(x) * centimetre; }
+	constexpr QLength operator"" _m(long double x) { return static_cast<float>(x) * metre; }
+	constexpr QLength operator"" _km(long double x) { return static_cast<float>(x) * kilometre; }
+	constexpr QLength operator"" _mi(long double x) { return static_cast<float>(x) * mile; }
+	constexpr QLength operator"" _yd(long double x) { return static_cast<float>(x) * yard; }
+	constexpr QLength operator"" _ft(long double x) { return static_cast<float>(x) * foot; }
+	constexpr QLength operator"" _in(long double x) { return static_cast<float>(x) * inch; }
+	constexpr QLength operator"" _mm(unsigned long long int x) { return static_cast<float>(x) * millimetre; }
+	constexpr QLength operator"" _cm(unsigned long long int  x) { return static_cast<float>(x) * centimetre; }
+	constexpr QLength operator"" _m(unsigned long long int  x) { return static_cast<float>(x) * metre; }
+	constexpr QLength operator"" _km(unsigned long long int  x) { return static_cast<float>(x) * kilometre; }
+	constexpr QLength operator"" _mi(unsigned long long int  x) { return static_cast<float>(x) * mile; }
+	constexpr QLength operator"" _yd(unsigned long long int  x) { return static_cast<float>(x) * yard; }
+	constexpr QLength operator"" _ft(unsigned long long int  x) { return static_cast<float>(x) * foot; }
+	constexpr QLength operator"" _in(unsigned long long int  x) { return static_cast<float>(x) * inch; }
+
+	// literals for speed units
+	constexpr QVelocity operator"" _mps(long double x) { return x; };
+	constexpr QVelocity operator"" _inchs(long double x) { return static_cast<float>(x) * inch / second; };
+	constexpr QVelocity operator"" _inchs(unsigned long long int x) { return static_cast<float>(x) * inch / second; };
+	constexpr QVelocity operator"" _miph(long double x) { return static_cast<float>(x) * mile / hour; };
+	constexpr QVelocity operator"" _kmph(long double x) { return static_cast<float>(x) * kilometre / hour; };
+	constexpr QVelocity operator"" _mps(unsigned long long int x) { return {static_cast<float>(x)}; };
+	constexpr QVelocity operator"" _miph(unsigned long long int x)
+	{
+		return static_cast<float>(x) * mile / hour;
+	};
+	constexpr QVelocity operator"" _kmph(unsigned long long int x)
+	{
+		return static_cast<float>(x) * kilometre / hour;
+	};
+
+	// literal for frequency unit
+	constexpr QFrequency operator"" _Hz(long double x) { return QFrequency(x); };
+	constexpr QFrequency operator"" _Hz(unsigned long long int x)
+	{
+		return QFrequency(static_cast<float>(x));
+	};
+
+	// literals for time units
+	constexpr QTime operator"" _s(long double x) { return QTime(x); };
+	constexpr QTime operator"" _ms(long double x) { return static_cast<float>(x) * millisecond; };
+	constexpr QTime operator"" _min(long double x) { return static_cast<float>(x) * minute; };
+	constexpr QTime operator"" _h(long double x) { return static_cast<float>(x) * hour; };
+	constexpr QTime operator"" _day(long double x) { return static_cast<float>(x) * day; };
+	constexpr QTime operator"" _s(unsigned long long int x) { return QTime(static_cast<float>(x)); };
+	constexpr QTime operator"" _ms(unsigned long long int x) { return static_cast<float>(x) * millisecond; };
+	constexpr QTime operator"" _min(unsigned long long int x) { return static_cast<float>(x) * minute; };
+	constexpr QTime operator"" _h(unsigned long long int x) { return static_cast<float>(x) * hour; };
+	constexpr QTime operator"" _day(unsigned long long int x) { return static_cast<float>(x) * day; };
+
+	// literals for mass units
+	constexpr QMass operator"" _kg(long double x) { return QMass(x); };
+	constexpr QMass operator"" _g(long double x) { return static_cast<float>(x) * gramme; };
+	constexpr QMass operator"" _t(long double x) { return static_cast<float>(x) * tonne; };
+	constexpr QMass operator"" _oz(long double x) { return static_cast<float>(x) * ounce; };
+	constexpr QMass operator"" _lb(long double x) { return static_cast<float>(x) * pound; };
+	constexpr QMass operator"" _st(long double x) { return static_cast<float>(x) * stone; };
+	constexpr QMass operator"" _kg(unsigned long long int x) { return QMass(static_cast<float>(x)); };
+	constexpr QMass operator"" _g(unsigned long long int x) { return static_cast<float>(x) * gramme; };
+	constexpr QMass operator"" _t(unsigned long long int x) { return static_cast<float>(x) * tonne; };
+	constexpr QMass operator"" _oz(unsigned long long int x) { return static_cast<float>(x) * ounce; };
+	constexpr QMass operator"" _lb(unsigned long long int x) { return static_cast<float>(x) * pound; };
+	constexpr QMass operator"" _st(unsigned long long int x) { return static_cast<float>(x) * stone; };
+
+	// literals for acceleration units
+	constexpr QAcceleration operator"" _mps2(long double x) { return QAcceleration(x); };
+	constexpr QAcceleration operator"" _mps2(unsigned long long int x) { return QAcceleration(static_cast<float>(x)); };
+	constexpr QAcceleration operator"" _inchs2(long double x) { return static_cast<float>(x) * inchs2; };
+	constexpr QAcceleration operator"" _inchs2(unsigned long long int x) { return static_cast<float>(x) * inchs2; };
+	constexpr QAcceleration operator"" _G(long double x) { return static_cast<float>(x) * G; };
+	constexpr QAcceleration operator"" _G(unsigned long long int x) { return static_cast<float>(x) * G; }
+
+	// literals for force units
+	constexpr QForce operator"" _Newton(long double x) { return QForce(x); };
+	constexpr QForce operator"" _Newton(unsigned long long int x) { return QForce(static_cast<float>(x)); };
+	constexpr QForce operator"" _lbf(long double x) { return static_cast<float>(x) * poundforce; };
+	constexpr QForce operator"" _lbf(unsigned long long int x) { return static_cast<float>(x) * poundforce; };
+	constexpr QForce operator"" _kp(long double x) { return static_cast<float>(x) * kilopond; };
+	constexpr QForce operator"" _kp(unsigned long long int x) { return static_cast<float>(x) * kilopond; };
+
+	// literals for pressure units
+	constexpr QPressure operator"" _Pa(long double x) { return QPressure(x); };
+	constexpr QPressure operator"" _Pa(unsigned long long int x)
+	{
+		return QPressure(static_cast<float>(x));
+	};
+#ifndef SIM
+	constexpr QPressure operator"" _bar(long double x) { return static_cast<float>(x) * bar; };
+	constexpr QPressure operator"" _bar(unsigned long long int x) { return static_cast<float>(x) * bar; };
+#endif // !SIM
+	constexpr QPressure operator"" _psi(long double x) { return static_cast<float>(x) * psi; };
+	constexpr QPressure operator"" _psi(unsigned long long int x) { return static_cast<float>(x) * psi; };
+
+	// Angular unit literals:
+	// ----------------------
+	constexpr float operator"" _pi(long double x)
+	{
+		return static_cast<float>(x) * 3.1415926535897932384626433832795;
+	}
+	constexpr float operator"" _pi(unsigned long long int x)
+	{
+		return static_cast<float>(x) * 3.1415926535897932384626433832795;
+	}
+
+	// Predefined angle units:
+	constexpr Angle radian(1.0);
+	constexpr Angle revolution = static_cast<float>(2) * radian;
+	constexpr Angle degree = static_cast<float>(2_pi / 360.0) * radian;
+
+	// literals for angle units
+	constexpr Angle operator"" _rad(long double x) { return Angle(x); };
+	constexpr Angle operator"" _rad(unsigned long long int x) { return Angle(static_cast<float>(x)); };
+	constexpr Angle operator"" _deg(long double x) { return static_cast<float>(x) * degree; };
+	constexpr Angle operator"" _deg(unsigned long long int x) { return static_cast<float>(x) * degree; };
+
+	constexpr QCurvature RadM(1.0);
+	constexpr QCurvature DegM = degree/metre;
+	constexpr QCurvature RadIn = degree/inch;
+	constexpr QCurvature DegIn = degree/inch;
+
+	constexpr QCurvature operator"" _radm(long double x) { return static_cast<float>(x); };
+	constexpr QCurvature operator"" _radm(unsigned long long int x) { return static_cast<float>(x); };
+	constexpr QCurvature operator"" _degm(long double x) { return static_cast<float>(x) * DegM; };
+	constexpr QCurvature operator"" _degm(unsigned long long int x) { return static_cast<float>(x) * DegM; };
+	constexpr QCurvature operator"" _radin(long double x) { return static_cast<float>(x) * RadIn; };
+	constexpr QCurvature operator"" _radin(unsigned long long int x) { return static_cast<float>(x) * RadIn; };
+	constexpr QCurvature operator"" _degin(long double x) { return static_cast<float>(x) * DegIn; };
+	constexpr QCurvature operator"" _degin(unsigned long long int x) { return static_cast<float>(x) * DegIn; };
+
+	// Conversion macro, which utilizes the string literals
+#define ConvertTo(_x, _y) (_x).Convert(1.0_##_y)
+
+	// Typesafe mathematical operations:
+	// ---------------------------------
+	template <typename M, typename L, typename T, typename A>
+	constexpr RQuantity<std::ratio_divide<M, std::ratio<2>>, std::ratio_divide<L, std::ratio<2>>,
+		std::ratio_divide<T, std::ratio<2>>, std::ratio_divide<A, std::ratio<2>>>
+		Qsqrt(const RQuantity<M, L, T, A>& num)
+	{
+		return RQuantity<std::ratio_divide<M, std::ratio<2>>, std::ratio_divide<L, std::ratio<2>>,
+			std::ratio_divide<T, std::ratio<2>>, std::ratio_divide<A, std::ratio<2>>>
+			(sqrt(num.getValue()));
+	}
+
+	template <typename M, typename L, typename T, typename A>
+	constexpr RQuantity<M, L, T, A>
+	Qabs(const RQuantity<M, L, T, A>& num)
+	{
+		return RQuantity<M, L, T, A>
+				(fabs(num.getValue()));
+	}
+
+	// Typesafe mathematical operations:
+	// ---------------------------------
+	template <typename M, typename L, typename T, typename A>
+	constexpr RQuantity<std::ratio_divide<M, std::ratio<1, 2>>, std::ratio_divide<L, std::ratio<1, 2>>,
+		std::ratio_divide<T, std::ratio<1, 2>>, std::ratio_divide<A, std::ratio<1, 2>>>
+		Qsq(const RQuantity<M, L, T, A>& num)
+	{
+		return RQuantity<std::ratio_divide<M, std::ratio<1, 2>>, std::ratio_divide<L, std::ratio<1, 2>>,
+			std::ratio_divide<T, std::ratio<1, 2>>, std::ratio_divide<A, std::ratio<1, 2>>>
+			(num * num);
+	}
+
+	// Typesafe trigonometric operations
+	inline float sin(const Angle& num) {
+		return sin(num.getValue());
+	}
+	inline float cos(const Angle& num) {
+		return cos(num.getValue());
+	}
+
+	inline float tan(const Angle& num) {
+		return tan(num.getValue());
+	}
 }

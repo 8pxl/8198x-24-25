@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Eigen/Eigen"
-#include "units/units.hpp"
+#include "main.h"
 #include "sensorModel.h"
 
 #include <random>
@@ -9,6 +9,7 @@
 
 #include "config.h"
 
+using namespace units;
 namespace loco {
     /**
      * @brief Initializes a particle filter with a pre-specified number of particles.
@@ -42,13 +43,13 @@ namespace loco {
         QLength maxDistanceSinceUpdate = 1_in;
         QTime maxUpdateInterval = 2_s;
 
-        std::function<Angle()> angleFunction;
+        std::function<units::Angle()> angleFunction;
         std::ranlux24_base de;
 
         std::uniform_real_distribution<> fieldDist{-1.78308, 1.78308};
 
     public:
-        explicit ParticleFilter(std::function<Angle()> angle_function)
+        explicit ParticleFilter(std::function<units::Angle()> angle_function)
             : angleFunction(std::move(angle_function)) {
             for (auto &&particle: particles) {
                 particle[0] = 0.0;
@@ -63,7 +64,7 @@ namespace loco {
         std::array<Eigen::Vector3f, L> getParticles() {
             std::array<Eigen::Vector3f, L> particles;
 
-            const Angle angle = angleFunction();
+            const units::Angle angle = angleFunction();
 
             for (size_t i = 0; i < L; i++) {
                 particles[i] = Eigen::Vector3f(this->particles[i][0], this->particles[i][1], angle.getValue());
@@ -83,7 +84,7 @@ namespace loco {
 
             auto start = pros::micros();
 
-            const Angle angle = angleFunction();
+            const units::Angle angle = angleFunction();
 
             for (auto &&particle: particles) {
                 auto prediction = predictionFunction();
@@ -196,7 +197,7 @@ namespace loco {
             this->sensors.emplace_back(sensor);
         }
 
-        Angle getAngle() {
+        units::Angle getAngle() {
             return angleFunction();
         }
     };

@@ -1,5 +1,6 @@
 #pragma once
 #include "main.h"
+#include "pros/motor_group.hpp"
 #include "pros/rotation.hpp"
 #include "pros/rtos.hpp"
 #include "util.h"
@@ -15,16 +16,18 @@ namespace keejLib {
         double gearRatio;
     };
     
-    class DriveTrain : public pros::MotorGroup {
+    class DriveTrain {
         private:
-            std::vector<std::int8_t> concat(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports);
+            pros::MotorGroup *leftMotors;
+            pros::MotorGroup *rightMotors;
         public:
-            DriveTrain(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports);
+            DriveTrain(pros::MotorGroup* leftMotors, pros::MotorGroup* rightMotors) : leftMotors(leftMotors), rightMotors(rightMotors){}
             
             void spinVolts(int left, int right);
             void spinVolts(std::pair<double, double> volts);
             void spinLeft(int volts);
             void spinRight(int volts);
+            void tare_position();
 
             double getAvgVelocity();
             double getAvgPosition();

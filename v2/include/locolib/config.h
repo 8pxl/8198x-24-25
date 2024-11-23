@@ -1,5 +1,8 @@
 #pragma once
 
+#include "units/units.hpp"
+#include <cstddef>
+using namespace units;
 namespace loco {
     /**
      * @brief Static class to hold configuration values for the particle filter. Generally, these values are a good
