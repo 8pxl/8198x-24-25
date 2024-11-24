@@ -1,5 +1,7 @@
 #pragma once
+#include "locolib/particleFilter.h"
 #include "main.h"
+#include "pros/distance.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/rotation.hpp"
 #include "pros/rtos.hpp"
@@ -61,6 +63,9 @@ namespace keejLib {
             pros::Imu *imu;
             pros::Rotation *vertEnc;
             pros::Rotation *horizEnc;
+            pros::Distance *vertDist;
+            pros::Distance *horizDist;
+            
             ChassConstants chassConsts;
             PIDConstants linConsts;
             PIDConstants angConsts;
@@ -79,35 +84,51 @@ namespace keejLib {
             
             pros::Mutex alternateMutex;
             bool useAltOffsets = false;
-        public:
-            Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc);
-            Chassis(DriveTrain *dt, ChassConstants constants, std::pair<double, double> alternateOffsets, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc);
-
-            void update();
-            void startTracking();
-            void setConstants(PIDConstants linear, PIDConstants angular);
-            void setLin(PIDConstants linear);
-            void setAng(PIDConstants angular);
-            void setMTP(PIDConstants lin, PIDConstants ang);
-            void setTurn(PIDConstants turn);
-            void setColor(Color c);
-            void waitUntilSettled();
-            void setPose(Pose p);
-            void setAlternateOffsets(std::pair<double, double> offsets);
-            void useAlternateOffsets(bool yes);
             
-            Pose getPose();
-            bool isSettled();
-            std::pair<double, double> measureOffsets(int iterations);
-            double getTheta();
-            std::pair<double, double> pidMTPVel(Pt target, MotionParams params, PID* lCont, PID* rCont, double absDist);
-            void turn(double angle, MotionParams params);
-            void turnTo(Pt target, MotionParams params);
-            void driveAngle(double dist, double angle, MotionParams params, bool absolute = false);
-            void mtpose(Pose target, double dLead, MotionParams params);
-            void mtpoint(Pt target, MotionParams params);
-            void moveWithin(Pt targ, double dist, MotionParams params, double angle = -1);
-            void linTo(Pt targ, MotionParams params);
+            void updatePosition();
+            Eigen::Vector2f updateOdom();
+        public:
+          Chassis(const Chassis &) = delete;
+          Chassis(Chassis &&) = delete;
+          Chassis &operator=(const Chassis &) = delete;
+          Chassis &operator=(Chassis &&) = delete;
+          Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu,
+                  pros::Rotation *vertEnc, pros::Rotation *horizEnc);
+          Chassis(DriveTrain *dt, ChassConstants constants,
+                  std::pair<double, double> alternateOffsets, pros::Imu *imu,
+                  pros::Rotation *vertEnc, pros::Rotation *horizEnc);
+
+          loco::ParticleFilter<50> mcl;
+          // units::Angle getHeading();
+
+          void startTracking();
+          void setConstants(PIDConstants linear, PIDConstants angular);
+          void setLin(PIDConstants linear);
+          void setAng(PIDConstants angular);
+          void setMTP(PIDConstants lin, PIDConstants ang);
+          void setTurn(PIDConstants turn);
+          void setColor(Color c);
+          void waitUntilSettled();
+          void setPose(Pose p);
+          void setAlternateOffsets(std::pair<double, double> offsets);
+          void useAlternateOffsets(bool yes);
+
+          Pose getPose();
+          bool isSettled();
+          std::pair<double, double> measureOffsets(int iterations);
+          double getTheta();
+          std::pair<double, double> pidMTPVel(Pt target, MotionParams params,
+                                              PID *lCont, PID *rCont,
+                                              double absDist);
+          void turn(double angle, MotionParams params);
+          void turnTo(Pt target, MotionParams params);
+          void driveAngle(double dist, double angle, MotionParams params,
+                          bool absolute = false);
+          void mtpose(Pose target, double dLead, MotionParams params);
+          void mtpoint(Pt target, MotionParams params);
+          void moveWithin(Pt targ, double dist, MotionParams params,
+                          double angle = -1);
+          void linTo(Pt targ, MotionParams params);
             
     };
 }

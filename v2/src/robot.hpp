@@ -3,6 +3,8 @@
 #include "intake/vStates.h"
 #include "keejLib/lib.h"
 #include "lift/lift.h"
+#include "locolib/distance.h"
+#include "pros/distance.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
@@ -14,6 +16,8 @@ namespace robot {
     
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController); 
+    pros::MotorGroup leftChass({-11,-12,-13});
+    pros::MotorGroup rightChass({3,2,1});
     pros::Motor intake(-14);
     pros::Motor liftMotor(4);
     
@@ -27,6 +31,8 @@ namespace robot {
     pros::Optical opticalSensor(5);
     pros::Vision vision(18);
     pros::Imu imu(16);
+    pros::Distance vertDistSensor(7);
+    pros::Distance horizDistSensor(7);
     Pis clamp({clampPiston}, false);
     Pis doink({doinkArmPiston}, false);
     Pis claw({doinkClawPiston}, false);
@@ -40,8 +46,6 @@ namespace robot {
         .tolerance = 0,
         .integralThreshold = 50,
     });
-    pros::MotorGroup leftChass({-11,-12,-13});
-    pros::MotorGroup rightChass({3,2,1});
     DriveTrain dt = keejLib::DriveTrain(&leftChass, &rightChass);
     //4.64907 1.30551
     // 1.27811 0.703097
@@ -52,7 +56,9 @@ namespace robot {
     //1.07284 1.16508
     
     std::pair<double, double> alternate = {-1.07284, 1.16508};
-
+    
+    loco::DistanceSensorModel vd({0,0,0}, vertDistSensor);
+    loco::DistanceSensorModel hd({0,0,0}, horizDistSensor);
     Chassis chass = keejLib::Chassis(&dt, {
         .horizWidth = -1.70483,
         .vertWidth = -1.15369,

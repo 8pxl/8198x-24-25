@@ -1,5 +1,6 @@
 #include "main.h"
 #include "lift/states.h"
+#include "locolib/distance.h"
 #include "pros/misc.h"
 #include "robot.hpp"
 #include "controls.hpp"
@@ -8,9 +9,12 @@
 #include "locolib/particleFilter.h"
 
 using namespace robot;
+
 void initialize() {
     // intake.setSorting(false);
     imu.reset(true);
+    chass.mcl.addSensor(&vd);
+    chass.mcl.addSensor(&hd);
     robot::lb.startControl();
     // intake.setColor(glb::color);
     // intake.startControl();

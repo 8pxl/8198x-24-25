@@ -5,6 +5,7 @@
 #include <ratio>
 #include <math.h>
 
+//credit alex 2654e !!
 namespace units {
 	// The "RQuantity" class is the prototype template container class, that just holds a float value. The
 	// class SHOULD NOT BE INSTANTIATED directly by itself, rather use the quantity types defined below.

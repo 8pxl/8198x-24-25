@@ -1,8 +1,10 @@
 #include "keejLib/chassis.h"
+#include "locolib/particleFilter.h"
 #include "main.h"
 #include "keejLib/lib.h"
 #include "pros/motor_group.hpp"
 #include "keejLib/util.h"
+#include "units/units.hpp"
 #include <numeric>
 
 namespace keejLib {
@@ -32,10 +34,34 @@ double DriveTrain::getAvgPosition() {
     return (std::reduce(pl.begin(), pl.end()) + std::reduce(pr.begin(), pr.end()) / (leftMotors->size() + rightMotors->size()));
 }
 
-Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : dt(dt), chassConsts(constants), imu(imu), vertEnc(vertEnc), horizEnc(horizEnc) {}
+// units::Angle Chassis::getHeading() {
+//     return 1_rad;
+// }
+Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : 
+    dt(dt), 
+    chassConsts(constants), 
+    imu(imu), 
+    vertEnc(vertEnc), 
+    horizEnc(horizEnc), 
+    mcl(loco::ParticleFilter<50>([&imu](){
+        units::Angle ang = imu->get_heading();
+        return ang;
+    })) 
+{}
 
 
-Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, std::pair<double, double> alternateOffsets, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : dt(dt), chassConsts(constants), alternateOffsets(alternateOffsets), imu(imu), vertEnc(vertEnc), horizEnc(horizEnc) {}
+Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, std::pair<double, double> alternateOffsets, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : 
+    dt(dt), 
+    chassConsts(constants), 
+    alternateOffsets(alternateOffsets), 
+    imu(imu), 
+    vertEnc(vertEnc), 
+    horizEnc(horizEnc),
+    mcl(loco::ParticleFilter<50>([&imu](){
+        units::Angle ang = imu->get_heading();
+        return ang;
+    })) 
+{}
 
 std::pair<double, double> Chassis::measureOffsets(int iterations) {
     std::pair<double, double> offsets = {0,0};

@@ -1,5 +1,6 @@
 #include "keejLib/lib.h"
 #include "keejLib/util.h"
+#include "locolib/distance.h"
 #include <cstdio>
 
 namespace keejLib {
@@ -10,7 +11,11 @@ void Chassis::startTracking() {
         horizEnc -> reset_position();
         odomTask = new pros::Task{[=] {
             while (true) {
-                update();
+                mcl.update([&](){
+                    return updateOdom();
+                });
+                auto p = mcl.getPrediction();
+                pose = {p.x(), p.y(), Angle(p.z(), keejLib::HEADING)};
                 // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
                 // std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
                 pros::delay(5);
@@ -19,7 +24,7 @@ void Chassis::startTracking() {
     }
 }
 
-void Chassis::update() {
+Eigen::Vector2f Chassis::updateOdom() {
     // chassMutex.take();
     double rot = imu -> get_rotation();
     Angle currTheta;
@@ -75,9 +80,7 @@ void Chassis::update() {
     
     // std::cout << "x: " << locX << " y: " << locY << std::endl;
     // update globals
-    pose.pos.x += locY * sin(avgHeading) - (locX * cos(avgHeading));
-    pose.pos.y += locY * cos(avgHeading) + (locX * sin(avgHeading));
-    pose.heading = currTheta;
+    return {locY * sin(avgHeading) - (locX * cos(avgHeading)), locY * cos(avgHeading) + (locX * sin(avgHeading))};
     // chassMutex.give()
 }
 
