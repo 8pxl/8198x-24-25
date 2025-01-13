@@ -2,7 +2,6 @@
 
 #include "main.h"
 #include "keejLib/lib.h"
-#include "../intake/intake.h"
 #include "pros/rtos.hpp"
 using namespace keejLib;
 
@@ -34,7 +33,7 @@ class Lift{
         pros::Rotation *rot;
         pros::Optical *optical;
         pros::Task *task = nullptr;
-        std::unordered_map<LiftState, LiftState> stateMap = {
+        stde::bimap<LiftState, LiftState> stateMap = {
             {idle, one},
             {one, two},
             {two, prime},
@@ -44,6 +43,7 @@ class Lift{
         };
         
         PID pid;
+        double angleOffset = 20;
         double kf = 0.5;
         double target;
         double error = 0;

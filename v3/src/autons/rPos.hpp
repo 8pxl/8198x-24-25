@@ -5,7 +5,6 @@
 
 using namespace robot;
 void rPos() {
-    lb.setAutoControl(false);
     chass.setTurn(_90);
     chass.setAng(_angBig);
     chass.setLin(_lin);

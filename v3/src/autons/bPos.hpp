@@ -6,7 +6,6 @@
 
 using namespace robot;
 void bPos() {
-    lb.setAutoControl(false);
     chass.setTurn(_90);
     chass.setAng(_angBig);
     chass.setLin(_lin);

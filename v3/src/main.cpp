@@ -1,6 +1,4 @@
 #include "main.h"
-#include "lift/states.h"
-#include "locolib/distance.h"
 #include "pros/misc.h"
 #include "robot.hpp"
 #include "controls.hpp"
@@ -32,7 +30,8 @@ void initialize() {
     // }
     
     // if (glb::color == blue) {
-        // Pose p = chass.getPose();
+        // Pose p 
+        // = chass.getPose();
         // chass.setPose({-p.pos.x, p.pos.y, p.heading});
     // }
     // 
@@ -72,7 +71,6 @@ void opcontrol() {
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             glb::auton();
             // intake.setSorting(true);
-            robot::lb.setAutoControl(true);
         }
         driver();
         
