@@ -5,7 +5,7 @@
 
 namespace lift {
 
-Lift::Lift(pros::Motor *motor, pros::Rotation *rot, pros::Optical *optical, PIDConstants constants) : motor(motor), rot(rot), optical(optical) {
+Lift::Lift(pros::Motor *motor, pros::Rotation *rot, PIDConstants constants) : motor(motor), rot(rot) {
     currentState = &Idle::getInstance();
     pid = keejLib::PID(constants);
 }

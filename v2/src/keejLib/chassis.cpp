@@ -58,7 +58,7 @@ Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, std
     vertEnc(vertEnc), 
     horizEnc(horizEnc),
     mcl(loco::ParticleFilter<50>([&imu](){
-        units::Angle ang = imu->get_heading();
+        units::Angle ang = imu->get_rotation();
         return ang;
     })) 
 {}

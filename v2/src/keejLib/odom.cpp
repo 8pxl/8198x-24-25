@@ -2,6 +2,7 @@
 #include "keejLib/util.h"
 #include "locolib/distance.h"
 #include <cstdio>
+#include <ostream>
 
 namespace keejLib {
     
@@ -11,14 +12,21 @@ void Chassis::startTracking() {
         horizEnc -> reset_position();
         odomTask = new pros::Task{[=] {
             while (true) {
-                mcl.update([&](){
+                // updateOdom();
+                mcl.update([this](){
                     return updateOdom();
                 });
                 auto p = mcl.getPrediction();
-                pose = {p.x(), p.y(), Angle(p.z(), keejLib::HEADING)};
-                // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
+                auto particles = mcl.getParticles();
+                // std::printf("[");
+                for (auto q: particles) {
+                    // std::printf("(%.3f, %.3f), ", q.x(), q.y());
+                }
+                // std::printf("],\n");
+                pose = {p.x() * 39.3701, p.y() * 39.3701, Angle(p.z(), keejLib::HEADING)};
+                std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
                 // std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
-                pros::delay(5);
+                pros::delay(10);
             }
         }};
     }
@@ -78,9 +86,11 @@ Eigen::Vector2f Chassis::updateOdom() {
         locY = 2 * sin(dTheta / 2) * (dy / dTheta + chassConsts.vertWidth);
     }
     
-    // std::cout << "x: " << locX << " y: " << locY << std::endl;
+    // std::cout << "x: " << dHoriz << " y: " << locY << std::endl;
     // update globals
-    return {locY * sin(avgHeading) - (locX * cos(avgHeading)), locY * cos(avgHeading) + (locX * sin(avgHeading))};
+    // pose.pos.x += locY * sin(avgHeading) - (locX * cos(avgHeading));
+    // pose.pos.y += locY * cos(avgHeading) + (locX * sin(avgHeading));
+    return { 39.3701 * locY * sin(avgHeading) - (locX * cos(avgHeading)), 39.3701 * locY * cos(avgHeading) + (locX * sin(avgHeading))};
     // chassMutex.give()
 }
 

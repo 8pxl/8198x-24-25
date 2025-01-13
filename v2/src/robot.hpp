@@ -9,6 +9,7 @@
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
 #include "pros/vision.hpp"
+#include <cmath>
 
 using namespace keejLib;
 
@@ -16,30 +17,30 @@ namespace robot {
     
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController); 
-    pros::MotorGroup leftChass({-11,-12,-13});
+    pros::MotorGroup leftChass({-14,-15,-16});
     pros::MotorGroup rightChass({3,2,1});
-    pros::Motor intake(-14);
-    pros::Motor liftMotor(4);
+    pros::Motor intake(-9);
+    pros::Motor liftMotor(10);
     
     pros::adi::DigitalOut clampPiston('a');
     pros::adi::DigitalOut doinkArmPiston('c');
     pros::adi::DigitalOut doinkClawPiston('d');
     pros::adi::DigitalOut intakePiston('b');
-    pros::Rotation rotationSensor(15);
-    pros::Rotation vertTracker(-6);
-    pros::Rotation horizTracker(17);
-    pros::Optical opticalSensor(5);
-    pros::Vision vision(18);
-    pros::Imu imu(16);
-    pros::Distance vertDistSensor(7);
-    pros::Distance horizDistSensor(7);
+    pros::Rotation rotationSensor(18);
+    pros::Rotation vertTracker(-20);
+    pros::Rotation horizTracker(19);
+    // pros::Optical opticalSensor(5);
+    pros::Vision vision(21);
+    pros::Imu imu(17);
+    // pros::Distance vertDistSensor(20);
+    // pros::Distance horizDistSensor(7);
     Pis clamp({clampPiston}, false);
     Pis doink({doinkArmPiston}, false);
     Pis claw({doinkClawPiston}, false);
     Pis tsukasa({intakePiston}, false);
     
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
-    lift::Lift lb(&liftMotor, &rotationSensor, &opticalSensor, {
+    lift::Lift lb(&liftMotor, &rotationSensor, {
         .kp = 0.025,
         .ki= 0,
         .maxIntegral = 1000000,
@@ -57,8 +58,8 @@ namespace robot {
     
     std::pair<double, double> alternate = {-1.07284, 1.16508};
     
-    loco::DistanceSensorModel vd({0,0,0}, vertDistSensor);
-    loco::DistanceSensorModel hd({0,0,0}, horizDistSensor);
+    // loco::DistanceSensorModel vd({-6.59 * 0.0254,-4.8 * 0.0254, M_PI}, vertDistSensor);
+    // loco::DistanceSensorModel hd({5.65 * 0.0254,-3.4 * 0.0254,M_PI/2}, horizDistSensor);
     Chassis chass = keejLib::Chassis(&dt, {
         .horizWidth = -1.70483,
         .vertWidth = -1.15369,

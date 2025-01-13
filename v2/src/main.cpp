@@ -13,8 +13,10 @@ using namespace robot;
 void initialize() {
     // intake.setSorting(false);
     imu.reset(true);
-    chass.mcl.addSensor(&vd);
-    chass.mcl.addSensor(&hd);
+    // std::cout << vertDistSensor.is_installed();
+    // chass.mcl.initUniform(-1.78308, -1.78308, 1.78308, 1.78308);
+    // chass.mcl.addSensor(&vd);
+    // chass.mcl.addSensor(&hd);
     robot::lb.startControl();
     // intake.setColor(glb::color);
     // intake.startControl();
