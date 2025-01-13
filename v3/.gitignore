@@ -14,5 +14,5 @@ compile_commands.json
 temp.log
 temp.errors
 *.ini
-.d/
-include/locolib
+/include/locolib/
+/.d
