@@ -18,8 +18,8 @@ namespace robot {
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController); 
     pros::MotorGroup leftChass({-14,-15,-16});
-    pros::MotorGroup rightChass({3,2,1});
-    pros::Motor intake(-9);
+    pros::MotorGroup rightChass({11,12,13});
+    pros::Motor intake(9);
     pros::Motor liftMotor(10);
     
     pros::adi::DigitalOut clampPiston('a');
@@ -43,6 +43,7 @@ namespace robot {
     lift::Lift lb(&liftMotor, &rotationSensor, {
         .kp = 0.025,
         .ki= 0,
+        .kd = 0.1,
         .maxIntegral = 1000000,
         .tolerance = 0,
         .integralThreshold = 50,
