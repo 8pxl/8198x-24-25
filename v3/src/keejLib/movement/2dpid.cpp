@@ -51,10 +51,10 @@ namespace keejLib {
             prev = vl;
             if (params.reverse) vl = -vl;
             
-            this -> dt -> spinVolts(vl + va, vl - va);
+            this -> dt -> spinVolts({vl + va, vl - va});
             pros::delay(10);
         }
-        this -> dt -> spinVolts(0,0);
+        this -> dt -> spinAll(0);
         moving = false;
         // chassMutex.give()
     }
@@ -108,9 +108,9 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
         if (params.slew != 0) vl = keejLib::sign(vl) * std::min(fabs(prev) + params.slew, fabs(vl));
         prev = vl;
         
-        this -> dt -> spinVolts(vl + va, vl - va);
+        this -> dt -> spinVolts({vl + va, vl - va});
     }
-    this -> dt -> spinVolts(0, 0);
+    this -> dt -> spinAll(0);
     moving = false;
     // chassMutex.give();
 }
@@ -210,11 +210,11 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         double lVel = linearVel + angularVel;
         double rVel = linearVel - angularVel;
         // double x = angCont.out(angularError)
-        dt -> spinVolts(lVel, rVel);
+        dt -> spinVolts({lVel, rVel});
         pros::delay(10);
         // std::cout << lVel << " " << rVel << std::endl;
     }
-    dt -> spinVolts(0,0);
+    dt -> spinAll(0);
     moving = false;
     // chassMutex.give();
 }
@@ -311,7 +311,7 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
         double rVel = linearVel - angularVel;
         // double x = angCont.out(angularError)
         // 
-        dt -> spinVolts(lVel, rVel);
+        dt -> spinVolts({lVel, rVel});
         // 
         pros::delay(10);
 

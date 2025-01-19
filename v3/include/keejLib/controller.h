@@ -1,4 +1,5 @@
 #pragma once
+#include "keejLib/util.h"
 #include "main.h"
 
 namespace keejLib {
@@ -24,7 +25,7 @@ namespace keejLib {
             std::vector<bool> getAll(std::vector<pros::controller_digital_e_t> buttons);
             std::vector<bool> getReleased();
             double curve(double x, double scale);
-            std::pair<double, double> drive(int direction, Controller::driveMode mode);
+            ChassVelocities drive(int direction, Controller::driveMode mode);
             void setCurves(double left, double right);
     };
     

@@ -12,36 +12,37 @@ void Chassis::startTracking() {
         horizEnc -> reset_position();
         odomTask = new pros::Task{[=] {
             while (true) {
-                // updateOdom();
-                mcl.update([this](){
-                    return updateOdom();
-                });
-                auto p = mcl.getPrediction();
-                auto particles = mcl.getParticles();
-                // std::printf("[");
-                for (auto q: particles) {
-                    // std::printf("(%.3f, %.3f), ", q.x(), q.y());
-                }
+                // std::cout << "hi1" << std::endl;
+                updateOdom();
+        // std::cout << "hi2" << std::endl;
+                // mcl.update([this](){
+                //     return updateOdom();
+                // });
+                // auto p = mcl.getPrediction();
+                // auto particles = mcl.getParticles();
+                // // std::printf("[");
+                // for (auto q: particles) {
+                //     // std::printf("(%.3f, %.3f), ", q.x(), q.y());
+                // }
                 // std::printf("],\n");
-                pose = {p.x() * 39.3701, p.y() * 39.3701, Angle(p.z(), keejLib::HEADING)};
+                // pose = {p.x() * 39.3701, p.y() * 39.3701, Angle(p.z(), keejLib::HEADING)};
                 // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
                 // std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
                 pros::delay(10);
             }
         }};
+        pros::delay(10);
     }
 }
 
-Eigen::Vector2f Chassis::updateOdom() {
+void Chassis::updateOdom() {
     // chassMutex.take();
     double rot = imu -> get_rotation();
     Angle currTheta;
     if (rot == PROS_ERR_F) {
         currTheta= prev.theta;
-        // std::cout << "imu disconnected!" << std::endl;
     }
     else currTheta = Angle(imu -> get_rotation(), AngleType::HEADING);
-    // std::cout << "heading: " << currTheta.heading() << std::endl;
     // encMutex.take();
     double currVert = (vertEnc -> get_position() / 100.0);
     double currHoriz = (horizEnc -> get_position() / 100.0);
@@ -50,7 +51,7 @@ Eigen::Vector2f Chassis::updateOdom() {
     double dTheta = toRad(currTheta.error(prev.theta));
     // std::cout << toDeg(dTheta) << std::endl;
     
-    alternateMutex.take();
+    // alternateMutex.take();
     double dVert;
     double dHoriz;
     if (useAltOffsets) {
@@ -61,7 +62,7 @@ Eigen::Vector2f Chassis::updateOdom() {
         dVert = (angError(currVert, prev.vert) * M_PI * chassConsts.vertDia) / 360.0;
         dHoriz = (angError(currHoriz, prev.horiz) * M_PI * chassConsts.horizDia) / 360.0;   
     }
-    alternateMutex.give();
+    // alternateMutex.give();
     // std::cout << "dVert: " << dVert << " dHoriz: " << dHoriz << std::endl;
     // std::cout << "dTheta: " << dTheta*10 << std::endl;
     prev.theta = currTheta;
@@ -88,9 +89,11 @@ Eigen::Vector2f Chassis::updateOdom() {
     
     // std::cout << "x: " << dHoriz << " y: " << locY << std::endl;
     // update globals
-    // pose.pos.x += locY * sin(avgHeading) - (locX * cos(avgHeading));
-    // pose.pos.y += locY * cos(avgHeading) + (locX * sin(avgHeading));
-    return { 39.3701 * locY * sin(avgHeading) - (locX * cos(avgHeading)), 39.3701 * locY * cos(avgHeading) + (locX * sin(avgHeading))};
+    pose.pos.x += locY * sin(avgHeading) - (locX * cos(avgHeading));
+    pose.pos.y += locY * cos(avgHeading) + (locX * sin(avgHeading));
+    pose.heading = currTheta;
+    // velEMA.out(hypot(dx, dy));
+    // return { 39.3701 * locY * sin(avgHeading) - (locX * cos(avgHeading)), 39.3701 * locY * cos(avgHeading) + (locX * sin(avgHeading))};
     // chassMutex.give()
 }
 

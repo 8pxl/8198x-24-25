@@ -22,10 +22,10 @@ void Chassis::turn(double angle, MotionParams params) {
     while (!params.exit -> exited({.error = fabs(error)}) && !timeout -> exited({})) {
         error = targ.error(Angle(imu -> get_rotation(), HEADING));
         double vel = cont.out(error);
-        this -> dt -> spinVolts(vel, -vel);
+        this -> dt -> spinVolts({vel, -vel});
         pros::delay(10);
     }
-    this -> dt -> spinVolts(0, 0);
+    this -> dt -> spinAll(0);
     moving = false;
 }
 
@@ -51,11 +51,11 @@ void Chassis::turnTo(Pt target, MotionParams params) {
         if (params.reverse) targ = targ.reverseDir();
         error = targ.error(Angle(imu -> get_rotation(), HEADING));
         double vel = cont.out(error);
-        this -> dt -> spinVolts(vel, -vel);
+        this -> dt -> spinVolts({vel, -vel});
         // std::cout << "turnto: " << error << std::endl;
         pros::delay(10);
     }
-    this -> dt -> spinVolts(0, 0);
+    this -> dt -> spinAll(0);
     moving = false;
     // chassMutex.give();
 }

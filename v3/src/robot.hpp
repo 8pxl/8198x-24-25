@@ -28,7 +28,7 @@ namespace robot {
     pros::adi::DigitalOut intakePiston('b');
     pros::Rotation rotationSensor(18);
     pros::Rotation vertTracker(-20);
-    pros::Rotation horizTracker(19);
+    pros::Rotation horizTracker(8);
     // pros::Optical opticalSensor(5);
     pros::Vision vision(21);
     pros::Imu imu(17);

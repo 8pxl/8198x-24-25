@@ -4,9 +4,8 @@ using namespace robot;
 
 void goal1() {
     lb.next();
-    lb.next();
     chass.setLin(_linBigger);
-    chass.driveAngle(-210, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(40, 20)});
+    chass.driveAngle(-210, 0, {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(40, 20)});
     // chass.useAlternateOffsets(true);
     clamp.toggle();
     intake.move(127);
@@ -16,11 +15,12 @@ void goal1() {
     intake.move(0);
     lb.next();
     lb.next();
+    lb.next();
     //10.9 < x
     chass.moveWithin(redAS, 12.7, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
     lb.next();
     lb.next();
-    pros::delay(490);
+    pros::delay(700);
     lb.prev();
     chass.driveAngle(-500, neg(45), {.async = true, .timeout = 600, .exit = new Range(20, 20)});
     lb.setState(lift::idle);

@@ -98,6 +98,12 @@ namespace keejLib {
         keejLib::Angle heading;
     };
     
+    struct ChassVelocities {
+        double left;
+        double right;
+    };
+    
+    
     enum CompState {
         autonomous,
         teleop,

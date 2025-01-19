@@ -9,14 +9,23 @@
 
 namespace keejLib {
 
-void DriveTrain::spinVolts(int left, int right) {
-    leftMotors->move(left);
-    rightMotors->move(right);
+void DriveTrain::spinVolts(ChassVelocities vels) {
+    leftMotors->move(vels.left);
+    rightMotors->move(vels.right);
 }
 
-void DriveTrain::spinVolts(std::pair<double, double> volts) {
-    spinVolts(volts.first, volts.second);
+void DriveTrain::spinAll(int volts) {
+    leftMotors->move(volts);
+    rightMotors->move(volts);
 }
+// void DriveTrain::spinVolts(int left, int right) {
+//     leftMotors->move(left);
+//     rightMotors->move(right);
+// }
+
+// void DriveTrain::spinVolts(std::pair<double, double> volts) {
+//     spinVolts(volts.first, volts.second);
+// }
 
 void DriveTrain::tare_position() {
     leftMotors->tare_position_all();
@@ -42,12 +51,12 @@ Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pro
     chassConsts(constants), 
     imu(imu), 
     vertEnc(vertEnc), 
-    horizEnc(horizEnc), 
-    mcl(loco::ParticleFilter<50>([&imu](){
-        units::Angle ang = imu->get_heading();
-        return ang;
-    })) 
-{}
+    horizEnc(horizEnc){}
+    // mcl(loco::ParticleFilter<50>([&imu](){
+    //     units::Angle ang = imu->get_heading();
+    //     return ang;
+    // })) 
+// {}
 
 
 Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, std::pair<double, double> alternateOffsets, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : 
@@ -56,11 +65,11 @@ Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, std
     alternateOffsets(alternateOffsets), 
     imu(imu), 
     vertEnc(vertEnc), 
-    horizEnc(horizEnc),
-    mcl(loco::ParticleFilter<50>([&imu](){
-        units::Angle ang = imu->get_rotation();
-        return ang;
-    })) 
+    horizEnc(horizEnc)
+    // mcl(loco::ParticleFilter<50>([&imu](){
+        // units::Angle ang = imu->get_rotation();
+        // return ang;
+    // })) 
 {}
 
 std::pair<double, double> Chassis::measureOffsets(int iterations) {
@@ -71,7 +80,7 @@ std::pair<double, double> Chassis::measureOffsets(int iterations) {
         double imuStart = imu -> get_heading();
         double vel = i%2 == 0 ? 30 : -30;
         // this -> turn(target, {.async = true, .timeout=1000, .exit = new exit::Range(0.01, 500)});
-        this->dt->spinVolts(vel, -vel);
+        this->dt->spinVolts({vel, -vel});
         Stopwatch s;
         PrevOdom prev = {0,0};
         vertEnc -> reset_position();
@@ -88,7 +97,7 @@ std::pair<double, double> Chassis::measureOffsets(int iterations) {
             pros::delay(10);
             
             if (s.elapsed() > 800) {
-                this->dt->spinVolts(0, 0);
+                this->dt->spinAll(0);
             }
         }
         double delta = toRad(fabs(angError(imu -> get_heading(), imuStart)));

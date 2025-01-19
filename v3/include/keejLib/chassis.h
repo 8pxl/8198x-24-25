@@ -25,8 +25,10 @@ namespace keejLib {
         public:
             DriveTrain(pros::MotorGroup* leftMotors, pros::MotorGroup* rightMotors) : leftMotors(leftMotors), rightMotors(rightMotors){}
             
-            void spinVolts(int left, int right);
-            void spinVolts(std::pair<double, double> volts);
+            void spinVolts(ChassVelocities velocities);
+            // void spinVolts(int left, int right);
+            // void spinVolts(std::pair<double, double> volts);
+            void spinAll(int volts);
             void spinLeft(int volts);
             void spinRight(int volts);
             void tare_position();
@@ -75,6 +77,7 @@ namespace keejLib {
             PIDConstants mtpLin;
             PIDConstants mtpAng;
             Pose pose;
+            EMA velEMA = EMA(0.5);
             pros::Task* odomTask = nullptr;
             PrevOdom prev = {0,0};
             bool moving = false;
@@ -86,7 +89,7 @@ namespace keejLib {
             bool useAltOffsets = false;
             
             void updatePosition();
-            Eigen::Vector2f updateOdom();
+            void updateOdom();
         public:
           Chassis(const Chassis &) = delete;
           Chassis(Chassis &&) = delete;
@@ -98,7 +101,7 @@ namespace keejLib {
                   std::pair<double, double> alternateOffsets, pros::Imu *imu,
                   pros::Rotation *vertEnc, pros::Rotation *horizEnc);
 
-          loco::ParticleFilter<50> mcl;
+          // loco::ParticleFilter<50> mcl;
           // units::Angle getHeading();
 
           void startTracking();

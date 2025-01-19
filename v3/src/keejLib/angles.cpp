@@ -1,7 +1,6 @@
 #pragma once
 
 #include "keejLib/lib.h"
-#include "util.h"
 
 double keejLib::toRad(double deg) {
     return deg * M_PI / 180;

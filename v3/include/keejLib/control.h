@@ -49,7 +49,18 @@ namespace keejLib {
     struct PIDConstants {
         double kp, ki, kd, kf, maxIntegral, tolerance, integralThreshold;
     };
-     
+    
+    //all units are percentage values (from -1 to 1), this should be exposed to the user (units handled in the background)
+    struct ProfileParams {
+        double speedPct, accelPct, decelPct = 1;
+        double startPct = 0;
+        double endPct = 0;
+    };
+    
+    struct ProfileLimits {
+        double maxSpeed, maxAccel, maxDecel;
+    };
+    
     class PID {
         private:
             double prevError, error, derivative, integral;
@@ -62,6 +73,8 @@ namespace keejLib {
             double getError();
             double getDerivative();
     };
+    
+    std::vector<double> generateProfile(double dist, ProfileParams pp, ProfileLimits pl);
     
     class VelocityController {
         private:

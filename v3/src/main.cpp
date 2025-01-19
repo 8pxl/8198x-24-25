@@ -16,6 +16,7 @@ void initialize() {
     // chass.mcl.addSensor(&vd);
     // chass.mcl.addSensor(&hd);
     robot::lb.startControl();
+    // std::cout << "hi" << std::endl;
     // intake.setColor(glb::color);
     // intake.startControl();
     chass.startTracking();
