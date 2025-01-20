@@ -27,6 +27,7 @@ void Chassis::startTracking() {
                 // std::printf("],\n");
                 // pose = {p.x() * 39.3701, p.y() * 39.3701, Angle(p.z(), keejLib::HEADING)};
                 // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
+                                // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " <<horizDist -> get() << std::endl;
                 // std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
                 pros::delay(10);
             }
@@ -97,4 +98,49 @@ void Chassis::updateOdom() {
     // chassMutex.give()
 }
 
+void Chassis::wallReset(int wall, int numReadings, bool createTask) {
+    if (createTask) {
+        pros::Task task([&]() { wallReset(wall, numReadings, false);});
+        pros::delay(10);
+        return;
+    }
+    double weightedDist = 0;
+    double weights = 0;
+    // const double imuConfInterval = 4;
+    const double mmtoinch = 0.0393701;
+    const double offset = 30.0;
+    while (numReadings--) {
+        double distReading = (horizDist->get_distance() - offset) * mmtoinch;
+        double imuReading = imu->get_rotation();
+        int target = wall * 90;
+        // double imuConfidence = 1 - (fabs(angError(target, imuReading)) / 4);
+        // imuConfidence = imuConfidence < 0 ? 0.1 : imuConfidence;
+        double confidence = horizDist -> get_confidence();
+        weights += confidence;
+        weightedDist += distReading * confidence;
+        pros::delay(10);
+    }
+    double avgDist = weightedDist / weights;
+    
+    const double maxX = 40.1124;
+    const double maxY = 5.7999;
+    const double minX = -98.527;
+    const double minY = -133.19;
+    std::cout << "prev x: " << pose.pos.x << " prev y: " << pose.pos.y << std::endl;
+    switch (wall) {
+        case 0:
+            pose.pos.x = minX + avgDist;
+            break;
+        case 1:
+            pose.pos.y = maxY - avgDist;
+            break;
+        case 2:
+            pose.pos.x = maxX - avgDist;
+            break;
+        case 3:
+            pose.pos.y = minY + avgDist;
+            break;
+    }
+    std::cout << "new x: " << pose.pos.x << " new y: " << pose.pos.y << std::endl;
+}
 }

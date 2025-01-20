@@ -2,6 +2,7 @@
 #include "../robot.hpp"
 #include "keejLib/util.h"
 #include "pros/rtos.hpp"
+#include "../lift/lift.h"
 #include "funcs.hpp"
 
 using namespace robot;
@@ -63,7 +64,7 @@ void bPos() {
     // intake.setSorting(false);
     // CHANGED TODAYS
         chass.mtpoint(ringStack, {.async = false, .timeout = 1700, .vMin = 0, .settleRange = 5, .exit = new exit::Range(5, 50)});
-    lb.next();lb.next();
+    lb.next();
     tsukasa.toggle();
     chass.driveAngle(800, 90, {.async = false, .timeout = 500, .vMin = 0, .exit = new Range(20, 10)});
     chass.driveAngle(-400, 90, {.async = false, .timeout = 500, .vMin = 0, .exit = new Range(20, 10)});
@@ -77,11 +78,11 @@ void bPos() {
     intake.move(0);
     lb.next();
     lb.next();
+    lb.next();
     tsukasa.toggle();
     //10 < x
     chass.moveWithin(allianceStake, 12.21, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
     intake.move(127);
-    lb.next();
     lb.next();
     pros::delay(600);
     // chass.driveAngle(-400, neg(180), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(5, 20)});

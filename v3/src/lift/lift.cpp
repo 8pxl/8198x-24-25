@@ -11,7 +11,7 @@ Lift::Lift(pros::Motor *motor, pros::Rotation *rot, PIDConstants constants) : mo
 
 void Lift::startControl() {
     if (task == nullptr) {
-        motor -> set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+        motor -> set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         task = new pros::Task{[this] {
             while (true) {
                 control();
@@ -40,19 +40,20 @@ void Lift::control() {
 
 void Lift::setState(LiftState state) {
     currentState = state;
+    setTarget(currentState);
 }
 
 void Lift::next() {
     // currentState = stateMap.get_value(currentState);
-    currentState = fwdMap[currentState];
-    setTarget(currentState);
+    setState(fwdMap[currentState]);
+    // setTarget(currentState);
     // std::cout << currentState << std::endl;
 }
 
 void Lift::prev() {
     // currentState = stateMap.get_key(currentState);
-    currentState = revMap[currentState];
-    setTarget(currentState);
+    setState(revMap[currentState]);
+    // setTarget(currentState);
 }
 
 void Lift::setTarget(LiftState state) {

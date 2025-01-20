@@ -1,5 +1,6 @@
 #include "constants.hpp"
 #include "../robot.hpp"
+#include "../lift/lift.h"
 #include "keejLib/util.h"
 #include "pros/rtos.hpp"
 
@@ -57,7 +58,7 @@ void rPos() {
     // intake.setSorting(false);
     // CHANGED TODAY
         chass.mtpoint(ringStack, {.async = false, .timeout = 1700, .vMin = 0, .settleRange = 5, .exit = new exit::Range(5, 50)});
-    lb.next();lb.next();
+    lb.next();
     tsukasa.toggle();
     // chass.setLin(_linSmall);
     chass.driveAngle(300, neg(90), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(20, 10)});
@@ -69,19 +70,20 @@ void rPos() {
     intake.move(0);
     lb.next();
     lb.next();
+    lb.next();
     tsukasa.toggle();
     //11.4 > x
     //11.2 > x
     chass.moveWithin(allianceStake, 10.9, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
     intake.move(127);
     lb.next();
-    lb.next();
     pros::delay(600);
     // chass.driveAngle(-400, 180, {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(5, 20)});
     Pt goal = {-54.1, 16.8};
     intake.move(0);
     chass.mtpoint(goal, {.async = false, .timeout = 1000, .vMin = 30, .settleRange = 9, .exit = new exit::Range(3, 30), .drift = 16});
-    lb.next();
+    // lb.next();
+    lb.setState(lift::idle);
     // chass.turn(neg(140), {.timeout=500, .exit = new Range(3, 20)});
     // chass.driveAngle(-900, neg(140), {.async = true, .timeout = 1000, .vMin = 35, .exit = new Range(5, 20)});
     tsukasa.toggle();

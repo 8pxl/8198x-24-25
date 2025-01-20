@@ -132,6 +132,6 @@ namespace keejLib {
           void moveWithin(Pt targ, double dist, MotionParams params,
                           double angle = -1);
           void linTo(Pt targ, MotionParams params);
-            
+          void wallReset(int wall, int numReadings, bool createTask = true);
     };
 }
