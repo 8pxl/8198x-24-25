@@ -76,4 +76,9 @@ Pt triangulate(Pose a, Pose b) {
 Pt translate(Pt a) {
     return {-a.x, a.y};
 }
+
+template <typename T>
+bool inRange(T val, std::pair<T, T> range) {
+    return (range.first <= val && val <= range.second);
+}
 }

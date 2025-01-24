@@ -37,9 +37,9 @@ namespace keejLib {
     };
     
     enum Color {
-        blue,
-        red,
-        none
+        red = 0,
+        blue = 1,
+        none = 2,
     };
     
     class Stopwatch {
@@ -103,7 +103,6 @@ namespace keejLib {
         double right;
     };
     
-    
     enum CompState {
         autonomous,
         teleop,
@@ -124,6 +123,9 @@ namespace keejLib {
     double reverseDir(double heading);
     Angle absoluteAngleToPoint(const Pt& pos, const Pt& point);
     double curvature(Pose pose, Pose other);
+
+    template <typename T>
+    bool inRange(T val, std::pair<T, T> range);
     
     Pt triangulate(Pose a, Pose b);
     
