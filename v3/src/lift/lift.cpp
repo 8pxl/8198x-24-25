@@ -1,8 +1,7 @@
-// #include "common.h"
 #include "lift.h"
-#include "pros/motors.h"
+#include "main.h"
 
-namespace lift {
+namespace keejLib {
 
 Lift::Lift(pros::Motor *motor, pros::Rotation *rot, PIDConstants constants) : motor(motor), rot(rot) {
     currentState = LiftState::idle;
@@ -27,12 +26,17 @@ void Lift::setControl(bool state) {
 }
 
 void Lift::spin(double voltage) {
-    if (off) motor -> move(voltage);
+    if (off) {
+        motor -> move(voltage);
+        //snapping
+        if (voltage == 0 && fabs(rot -> get_position() - target) <= snapRange) {
+            off = false;
+        }
+    }
 }
 
 void Lift::control() {
     if (off) return;
-    // std::cout << target << std::endl;
     double angle = rot -> get_position();
     error = angle - target;
     motor -> move(pid.out(error) + kf * cos(angle + angleOffset));
@@ -44,16 +48,11 @@ void Lift::setState(LiftState state) {
 }
 
 void Lift::next() {
-    // currentState = stateMap.get_value(currentState);
     setState(fwdMap[currentState]);
-    // setTarget(currentState);
-    // std::cout << currentState << std::endl;
 }
 
 void Lift::prev() {
-    // currentState = stateMap.get_key(currentState);
     setState(revMap[currentState]);
-    // setTarget(currentState);
 }
 
 void Lift::setTarget(LiftState state) {

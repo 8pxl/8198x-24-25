@@ -24,7 +24,7 @@ void goal1() {
     pros::delay(700);
     lb.prev();
     chass.driveAngle(-500, neg(45), {.async = true, .timeout = 600, .exit = new Range(20, 20)});
-    lb.setState(lift::idle);
+    lb.setState(Lift::idle);
     pros::delay(200);
     chass.waitUntilSettled();
     chass.setLin(_lin);
@@ -134,7 +134,7 @@ void corner1() {
     chass.driveAngle(-600, 80, { .timeout = 1000, .vMin = 60, .exit = new Range(20 , 20)});
     Pt lerp = {3, -105};
     chass.mtpoint(lerp, {.async = false, .timeout = 1600, .vMin = 5, .settleRange = 10, .exit = new Range(5, 10), .drift = 9});
-    lb.setState(lift::one);
+    lb.setState(Lift::one);
     
     Pt ring1 = {16, -116};
     intake.move(127);
@@ -351,7 +351,7 @@ Pt stake = {-98, -61.8};
 void corner4() {
     Pt ring1 = {-82, -90};
     chass.driveAngle(-600, neg(90), {.timeout = 700, .vMin = 20, .exit = new Range(20, 10)});
-    lb.setState(lift::idle);
+    lb.setState(Lift::idle);
     chass.driveAngle(300, 200, {.timeout = 700, .vMin = 20, .exit = new Range(20, 10)});
     chass.mtpoint(ring1, {.timeout = 1400, .vMin = 30, .settleRange = 5, .exit = new Range(2, 14) });
     

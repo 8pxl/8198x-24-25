@@ -83,7 +83,7 @@ void rPos() {
     intake.move(0);
     chass.mtpoint(goal, {.async = false, .timeout = 1000, .vMin = 30, .settleRange = 9, .exit = new exit::Range(3, 30), .drift = 16});
     // lb.next();
-    lb.setState(lift::idle);
+    lb.setState(Lift::idle);
     // chass.turn(neg(140), {.timeout=500, .exit = new Range(3, 20)});
     // chass.driveAngle(-900, neg(140), {.async = true, .timeout = 1000, .vMin = 35, .exit = new Range(5, 20)});
     tsukasa.toggle();

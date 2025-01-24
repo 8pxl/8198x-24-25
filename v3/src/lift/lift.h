@@ -4,22 +4,21 @@
 #include "keejLib/lib.h"
 #include "pros/rtos.hpp"
 #include <unordered_map>
-using namespace keejLib;
 
-namespace lift {
-
-enum LiftState {
-    idle,
-    one,
-    two,
-    prime,
-    lower,
-    lowest
-};
+namespace keejLib {
 
 
 class Lift{
     public:
+            enum LiftState {
+            idle,
+            one,
+            two,
+            prime,
+            lower,
+            lowest
+        };
+
         Lift(pros::Motor *lift, pros::Rotation *rot, PIDConstants constants);
        	void next();
         void prev();
@@ -75,6 +74,7 @@ class Lift{
         double target;
         double error = 0;
         bool off = false;
+        const int snapRange = 400;
         
        	LiftState currentState;
 
