@@ -1,14 +1,15 @@
 #pragma once
 
-#include "intake/vStates.h"
 #include "keejLib/lib.h"
 #include "lift/lift.h"
 #include "locolib/distance.h"
+#include "pros/adi.hpp"
 #include "pros/distance.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
 #include "pros/vision.hpp"
+#include "intake/intake.h"
 #include <cmath>
 
 using namespace keejLib;
@@ -19,17 +20,18 @@ namespace robot {
     keejLib::Controller cont = keejLib::Controller(prosController); 
     pros::MotorGroup leftChass({-14,-15,-16});
     pros::MotorGroup rightChass({11,12,13});
-    pros::Motor intake(9);
+    pros::Motor intakeMotor(0);
     pros::Motor liftMotor(10);
     
     pros::adi::DigitalOut clampPiston('a');
     pros::adi::DigitalOut doinkArmPiston('c');
     pros::adi::DigitalOut doinkClawPiston('d');
     pros::adi::DigitalOut intakePiston('b');
+    pros::adi::DigitalOut colorSortPiston('e');
     pros::Rotation rotationSensor(18);
     pros::Rotation vertTracker(-20);
     pros::Rotation horizTracker(8);
-    // pros::Optical opticalSensor(5);
+    pros::Optical opticalSensor(0);
     pros::Vision vision(21);
     pros::Imu imu(17);
     // pros::Distance vertDistSensor(20);
@@ -38,9 +40,11 @@ namespace robot {
     Pis doink({doinkArmPiston}, false);
     Pis claw({doinkClawPiston}, false);
     Pis tsukasa({intakePiston}, false);
+    Pis colorSort({colorSortPiston}, false);
     
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
-    lift::Lift lb(&liftMotor, &rotationSensor, {
+    Intake intake(&intakeMotor, &opticalSensor, &colorSort,Color::red);
+    Lift lb(&liftMotor, &rotationSensor, {
         .kp = 0.025,
         .ki= 0,
         .kd = 0.1,

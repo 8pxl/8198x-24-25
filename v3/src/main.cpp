@@ -21,11 +21,12 @@ void initialize() {
     // intake.startControl();
     chass.startTracking();
     
-    // int clr = cont.select({"red", "blue"});
+    int clr = cont.select({"red", "blue"});
+    intake.setColor(static_cast<Color>(clr));
     // glb::color = clr ? blue : red;
     glb::auton = autons.autonsList[cont.select(autons.names)];
     
-    int clr = red;
+    // int clr = red;
     // glb::auton = skills;
     // if (glb::auton == skills) {
     // }
@@ -41,6 +42,7 @@ void initialize() {
         Pose p = chass.getPose();
         chass.setPose({-p.pos.x, p.pos.y, p.heading});
     }
+    
     
     // robot::vision.set_signature(0, &redRing);
     // robot::vision.set_signature(1, &blueRing);
