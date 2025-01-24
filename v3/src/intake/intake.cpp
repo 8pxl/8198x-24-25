@@ -1,83 +1,64 @@
 #include "Intake.h"
 #include "keejLib/util.h"
-#include "states.h"
-#include "vStates.h"
 
-namespace ifsm {
+namespace keejLib {
 
-Intake::Intake(pros::Motor *motor, pros::Optical *optical, Color color) : motor(motor), optical(optical), color(color) {
-    currentState = &Idle::getInstance();
-}
+Intake::Intake(pros::Motor *motor, pros::Optical *optical, Pis *piston,
+               Color color)
+    : motor(motor), optical(optical), piston(piston), colorToSort(color) {}
 
 void Intake::startControl() {
-    if (task == nullptr) {
-        task = new pros::Task{[=] {
-            while (true) {
-                control();
-                pros::delay(10);
-            }
-        }};
+  if (task == nullptr) {
+    task = new pros::Task{[this] {
+      while (true) {
+        control();
+        pros::delay(10);
+      }
+    }};
+  }
+  pros::delay(20);
+}
+
+void Intake::setColor(Color c) { colorToSort = c; }
+
+void Intake::move(double velocity) { velocity = velocity; }
+
+void Intake::toggleSort() { sort = !sort; }
+
+Color Intake::getDetected() { return colorDetected; }
+
+Color Intake::detectColor() {
+  int check = 2;
+  double hue = optical->get_hue();
+  Color color = none;
+  while (check-- >= 0) {
+    color = static_cast<Color>(check);
+    if (inRange(hue, colorHues[color])) {
+      colorDetected = color;
+      return color;
     }
-    pros::delay(20);
+  }
+  colorDetected = color;
+  return none;
 }
 
 void Intake::control() {
-    motor->move(speed);
-    currentState->control(this);
+  Color col = detectColor();
+  if (col == colorToSort && sort)
+    piston->setState(true);
+  else if (col != none) {
+    piston->setState(false);
+  }
+  if (taskBlocked) {
+    pros::delay(300);
+    motor->move(0);
+    pros::delay(50);
+    taskBlocked = false;
+  }
+  if (velocity >= 0)
+    optical->set_led_pwm(100);
+  else
+    optical->set_led_pwm(0);
+  motor->move(velocity);
 }
-
-void Intake::setState(IntakeState& state) {
-    currentState->exit(this);
-    currentState = &state;
-    currentState->enter(this);
-}
-
-void Intake::next() {
-    currentState->next(this);
-}
-
-void Intake::move(double speed) {
-    if (currentState->getState() == IntakeState::sort) return;
-    if (speed == 0) {
-        if (currentState->getState() != IntakeState::idle) setState(Idle::getInstance());
-    }
-    else {
-        if (currentState->getState() != IntakeState::on) setState(On::getInstance());
-    }
-    this->speed = speed;
-}
-
-void Intake::setSpeed(double speed) {
-    this->speed = speed;
-}
-double Intake::getSpeed() {
-    return speed;
-}
-
-Color Intake::getOptical() {
-    double hue = optical->get_hue();
-    if (hue > 190 && hue < 230) return blue;
-    if (hue > 6 && hue < 17) return red;
-    return none;
-}
-
-Color Intake::getColor() {
-    return color;
-}
-
-void Intake::setPwm(int led) {
-    optical->set_led_pwm(led);
-}
-
-bool Intake::getSorting() {
-    return sort;
-}
-
-void Intake::setSorting(bool state) {
-    sort = state;
-}
-
-void Intake::setColor(Color c) {
-    color = c;
-}
-}
+} // namespace keejLib
