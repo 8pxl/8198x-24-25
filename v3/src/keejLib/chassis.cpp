@@ -41,7 +41,10 @@ double DriveTrain::getAvgVelocity() {
 double DriveTrain::getAvgPosition() {
     std::vector<double> pl = leftMotors->get_position_all();
     std::vector<double> pr = rightMotors->get_position_all();
-    return (std::reduce(pl.begin(), pl.end()) + std::reduce(pr.begin(), pr.end()) / (leftMotors->size() + rightMotors->size()));
+
+    //doesnt work
+    // return (std::reduce(pl.begin(), pl.end()) + std::reduce(pr.begin(), pr.end()) / (leftMotors->size() + rightMotors->size()));
+    return ((std::reduce(pl.begin(), pl.end()) + std::reduce(pr.begin(), pr.end())) / 6);
 }
 
 // units::Angle Chassis::getHeading() {
