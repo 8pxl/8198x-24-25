@@ -1,14 +1,16 @@
 #include "Intake.h"
-#include "keejLib/util.h"
+#include "keejLib/lib.h"
+#include "../robotState/robotState.h"
 
 namespace keejLib {
 
 Intake::Intake(pros::Motor *motor, pros::Optical *optical, Pis *piston,
                Color color)
-    : motor(motor), optical(optical), piston(piston), colorToSort(color) {}
+    : motor(motor), optical(optical), piston(piston), colorToSort(color), velocityEma(0.9) {
+    }
 
 void Intake::startControl() {
-  if (task == nullptr) {
+    if (task == nullptr) {
     task = new pros::Task{[this] {
       while (true) {
         control();
@@ -21,7 +23,7 @@ void Intake::startControl() {
 
 void Intake::setColor(Color c) { colorToSort = c; }
 
-void Intake::move(double velocity) { velocity = velocity; }
+void Intake::move(double velocity) { this->velocity = velocity; }
 
 void Intake::toggleSort() { sort = !sort; }
 
@@ -43,22 +45,39 @@ Color Intake::detectColor() {
 }
 
 void Intake::control() {
-  Color col = detectColor();
-  if (col == colorToSort && sort)
-    piston->setState(true);
-  else if (col != none) {
-    piston->setState(false);
+    auto state = RobotState::getInstance();
+
+
+  // Color col = detectColor();
+  // if (col == colorToSort && sort)
+  //   piston->setState(true);
+  // else if (col != none) {
+  //   piston->setState(false);
+  // }
+  // if (taskBlocked) {
+  //   pros::delay(300);
+  //   motor->move(0);
+  //   pros::delay(50);
+  //   taskBlocked = false;
+  // }
+  // if (velocity >= 0) optical->set_led_pwm(100);
+  // else optical->set_led_pwm(0);
+  double vel = velocityEma.out(motor->get_actual_velocity());
+  // std::cout << vel << std::endl;
+  std::cout << jamTimer.elapsed() << std::endl;
+  if (velocity > 0 && fabs(vel) < 0.5 && (jamTimer.elapsed() > 600) && state->getLiftState() == LiftState::idle) {
+    Stopwatch sw;
+    while (sw.elapsed() < 500) {
+      motor->move(-80);
+      jamTimer.reset();
+    }
   }
-  if (taskBlocked) {
-    pros::delay(300);
-    motor->move(0);
-    pros::delay(50);
-    taskBlocked = false;
+  else {
+    motor->move(velocity);
   }
-  if (velocity >= 0)
-    optical->set_led_pwm(100);
-  else
-    optical->set_led_pwm(0);
-  motor->move(velocity);
+
+  if (velocity <= 0) {
+    jamTimer.reset();
+  }
 }
 } // namespace keejLib

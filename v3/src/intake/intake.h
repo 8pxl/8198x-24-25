@@ -28,6 +28,8 @@ private:
   bool taskBlocked = false;
   Color colorDetected = none;
   Color colorToSort = none;
+  keejLib::EMA velocityEma;
+  Stopwatch jamTimer;
 
   Color detectColor();
   void control();
