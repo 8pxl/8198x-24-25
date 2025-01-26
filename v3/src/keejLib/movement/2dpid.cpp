@@ -141,7 +141,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
     double maxSlipSpeed;
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {
-        std::cout << timeout -> exited({}) << std::endl;
+        // std::cout << timeout -> exited({}) << std::endl;
         Angle currHeading = pose.heading;
         Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
         if (dir < 0) targetHeading = Angle(reverseDir(targetHeading.heading()), HEADING);

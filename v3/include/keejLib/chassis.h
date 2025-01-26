@@ -96,7 +96,7 @@ namespace keejLib {
           Chassis &operator=(const Chassis &) = delete;
           Chassis &operator=(Chassis &&) = delete;
           Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu,
-                  pros::Rotation *vertEnc, pros::Rotation *horizEnc);
+                  pros::Rotation *vertEnc, pros::Rotation *horizEnc, pros::Distance *horizDist);
           Chassis(DriveTrain *dt, ChassConstants constants,
                   std::pair<double, double> alternateOffsets, pros::Imu *imu,
                   pros::Rotation *vertEnc, pros::Rotation *horizEnc);

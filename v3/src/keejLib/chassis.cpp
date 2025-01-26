@@ -2,6 +2,7 @@
 #include "locolib/particleFilter.h"
 #include "main.h"
 #include "keejLib/lib.h"
+#include "pros/distance.hpp"
 #include "pros/motor_group.hpp"
 #include "keejLib/util.h"
 #include "units/units.hpp"
@@ -46,12 +47,15 @@ double DriveTrain::getAvgPosition() {
 // units::Angle Chassis::getHeading() {
 //     return 1_rad;
 // }
-Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : 
+Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc, pros::Distance *horizDist) : 
     dt(dt), 
     chassConsts(constants), 
     imu(imu), 
     vertEnc(vertEnc), 
-    horizEnc(horizEnc){}
+    horizEnc(horizEnc),
+    horizDist(horizDist){}
+
+    
     // mcl(loco::ParticleFilter<50>([&imu](){
     //     units::Angle ang = imu->get_heading();
     //     return ang;

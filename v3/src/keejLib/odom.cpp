@@ -135,10 +135,10 @@ void Chassis::wallReset(int wall, int numReadings, bool createTask) {
             pose.pos.y = maxY - avgDist;
             break;
         case 2:
-            pose.pos.x = maxX - avgDist;
+            pose.pos.y = minY + avgDist;
             break;
         case 3:
-            pose.pos.y = minY + avgDist;
+            pose.pos.x = maxX - avgDist;
             break;
     }
     std::cout << "new x: " << pose.pos.x << " new y: " << pose.pos.y << std::endl;
