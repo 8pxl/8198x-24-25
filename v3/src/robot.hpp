@@ -20,7 +20,7 @@ namespace robot {
     keejLib::Controller cont = keejLib::Controller(prosController); 
     pros::MotorGroup leftChass({-14,-15,-16});
     pros::MotorGroup rightChass({11,12,13});
-    pros::Motor intakeMotor(0);
+    pros::Motor intakeMotor(9);
     pros::Motor liftMotor(10);
     
     pros::adi::DigitalOut clampPiston('a');
@@ -35,7 +35,7 @@ namespace robot {
     pros::Vision vision(21);
     pros::Imu imu(17);
     // pros::Distance vertDistSensor(20);
-    // pros::Distance horizDistSensor(7);
+    pros::Distance horizDistSensor(2);
     Pis clamp({clampPiston}, false);
     Pis doink({doinkArmPiston}, false);
     Pis claw({doinkClawPiston}, false);
@@ -43,7 +43,7 @@ namespace robot {
     Pis colorSort({colorSortPiston}, false);
     
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
-    Intake intake(&intakeMotor, &opticalSensor, &colorSort,Color::red);
+    Intake intake(&intakeMotor, &opticalSensor, &colorSort, Color::red);
     Lift lb(&liftMotor, &rotationSensor, {
         .kp = 0.025,
         .ki= 0,
@@ -52,6 +52,7 @@ namespace robot {
         .tolerance = 0,
         .integralThreshold = 50,
     });
+    // Lift::setInstance(&lb);
     DriveTrain dt = keejLib::DriveTrain(&leftChass, &rightChass);
     //4.64907 1.30551
     // 1.27811 0.703097
@@ -72,7 +73,7 @@ namespace robot {
         .vertDia = 2.125,
         .horizDia = 2.75,
         .gearRatio = 0.75,
-    }, alternate, &imu, &vertTracker, &horizTracker);
+    }, &imu, &vertTracker, &horizTracker, &horizDistSensor);
     
     // pros::vision_signature_s_t  redRing = pros::Vision::signature_from_utility(1, 1319, 8061, 4690, -893, 327, -284, 1.300, 0);
     // pros::vision_signature_s_t blueRing = pros::Vision::signature_from_utility(2, -5121, -3615, -4368, 2049, 7201, 4626, 1.200, 0);

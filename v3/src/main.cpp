@@ -15,7 +15,10 @@ void initialize() {
     // chass.mcl.initUniform(-1.78308, -1.78308, 1.78308, 1.78308);
     // chass.mcl.addSensor(&vd);
     // chass.mcl.addSensor(&hd);
+
     robot::lb.startControl();
+    robot::intake.startControl();
+
     // std::cout << "hi" << std::endl;
     // intake.setColor(glb::color);
     // intake.startControl();
