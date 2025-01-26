@@ -1,4 +1,5 @@
 #include "lift.h"
+#include "../robotState/robotState.h"
 #include "main.h"
 
 namespace keejLib {
@@ -10,6 +11,7 @@ Lift::Lift(pros::Motor *motor, pros::Rotation *rot, PIDConstants constants) : mo
 
 void Lift::startControl() {
     if (task == nullptr) {
+        // calibrate();
         motor -> set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         task = new pros::Task{[this] {
             while (true) {
@@ -21,6 +23,11 @@ void Lift::startControl() {
     pros::delay(20);
 }
 
+void Lift::calibrate() {
+    while (rot->get_position() < 0) {
+        motor -> move(-10);
+    }
+}
 void Lift::setControl(bool state) {
     off = !state;
 }
@@ -36,6 +43,8 @@ void Lift::spin(double voltage) {
 }
 
 void Lift::control() {
+    auto state = RobotState::getInstance();
+    state ->setLiftState(currentState);
     if (off) return;
     double angle = rot -> get_position();
     error = angle - target;

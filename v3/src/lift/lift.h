@@ -3,22 +3,11 @@
 #include "main.h"
 #include "keejLib/lib.h"
 #include "pros/rtos.hpp"
-#include <unordered_map>
+#include "states.h"
 
 namespace keejLib {
-
-
-class Lift{
+class Lift {
     public:
-            enum LiftState {
-            idle,
-            one,
-            two,
-            prime,
-            lower,
-            lowest
-        };
-
         Lift(pros::Motor *lift, pros::Rotation *rot, PIDConstants constants);
        	void next();
         void prev();
@@ -44,28 +33,28 @@ class Lift{
         //     {lowest, idle}
         // };
         std::unordered_map<LiftState, LiftState> fwdMap = {
-            {idle, one},
-            {one, two},
-            {two, prime},
-            {prime, lower},
-            {lower, lowest},
-            {lowest, idle}
+            {LiftState::idle, LiftState::one},
+            {LiftState::one, LiftState::two},
+            {LiftState::two, LiftState::prime},
+            {LiftState::prime, LiftState::lower},
+            {LiftState::lower, LiftState::lowest},
+            {LiftState::lowest, LiftState::idle}
         };
         std::unordered_map<LiftState, LiftState> revMap = {
-            {one, idle},
-            {two, one},
-            {prime, two},
-            {lower, prime},
-            {lowest, lower},
-            {idle, lowest}
+            {LiftState::one, LiftState::idle},
+            {LiftState::two, LiftState::one},
+            {LiftState::prime, LiftState::two},
+            {LiftState::lower, LiftState::prime},
+            {LiftState::lowest, LiftState::lower},
+            {LiftState::idle, LiftState::lowest}
         };
         std::unordered_map<LiftState, double> valueMap = {
-            {idle, 0},
-            {one, 57},
-            {two, 114},
-            {prime, 349},
-            {lower, 360 + 121},
-            {lowest, 360 + 325}
+            {LiftState::idle, 0},
+            {LiftState::one, 57},
+            {LiftState::two, 118},
+            {LiftState::prime, 349},
+            {LiftState::lower, 360 + 121},
+            {LiftState::lowest, 360 + 325}
         };
         
         PID pid;
@@ -78,6 +67,7 @@ class Lift{
         
        	LiftState currentState;
 
+        void calibrate();
         void control();
         void updatePID(double error);
 };
