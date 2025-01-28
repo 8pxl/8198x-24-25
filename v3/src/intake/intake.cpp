@@ -64,11 +64,11 @@ void Intake::control() {
   // else optical->set_led_pwm(0);
   double vel = velocityEma.out(motor->get_actual_velocity());
   // std::cout << vel << std::endl;
-  std::cout << jamTimer.elapsed() << std::endl;
-  if (velocity > 0 && fabs(vel) < 0.5 && (jamTimer.elapsed() > 600) && state->getLiftState() == LiftState::idle) {
+  // std::cout << jamTimer.elapsed() << std::endl;
+  if (velocity > 0 && fabs(vel) < 0.4 && (jamTimer.elapsed() > 400) && state->getLiftState() == LiftState::idle) {
     Stopwatch sw;
-    while (sw.elapsed() < 500) {
-      motor->move(-80);
+    while (sw.elapsed() < 200) {
+      motor->move(-127);
       jamTimer.reset();
     }
   }
