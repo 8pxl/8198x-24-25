@@ -1,5 +1,6 @@
 #pragma once
 #include "../lift/states.h"
+#include "pros/rtos.hpp"
 
 namespace keejLib {
 class RobotState {
@@ -12,10 +13,11 @@ public:
         return instance;
     }
 
-    LiftState getLiftState() const { return liftState; }
-    void setLiftState(LiftState state) { liftState = state; }
+    LiftState getLiftState();
+    void setLiftState(LiftState state);
 
 private:
+    pros::Mutex mutex;
     RobotState() = default;
     LiftState liftState = LiftState::idle;
 };
