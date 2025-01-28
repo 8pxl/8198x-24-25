@@ -11,7 +11,7 @@ Lift::Lift(pros::Motor *motor, pros::Rotation *rot, PIDConstants constants) : mo
 
 void Lift::startControl() {
     if (task == nullptr) {
-        // calibrate();
+        calibrate();
         motor -> set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         task = new pros::Task{[this] {
             while (true) {
@@ -24,9 +24,14 @@ void Lift::startControl() {
 }
 
 void Lift::calibrate() {
-    while (rot->get_position() < 0) {
-        motor -> move(-10);
+    double angle = rot -> get_position();
+    // std::cout << "old angle: " << angle << std::endl;
+    if (angle > 32000) {
+        // std::cout << "set to: " << angle - 36000 << std::endl;
+        rot ->set_position(angle - 36000);
     }
+    // std::cout << "new angle: " << rot -> get_position() << std::endl;
+
 }
 void Lift::setControl(bool state) {
     off = !state;
@@ -43,15 +48,16 @@ void Lift::spin(double voltage) {
 }
 
 void Lift::control() {
-    auto state = RobotState::getInstance();
-    state ->setLiftState(currentState);
     if (off) return;
     double angle = rot -> get_position();
     error = angle - target;
+    // std::cout << "angle: " << angle << std::endl;
     motor -> move(pid.out(error) + kf * cos(angle + angleOffset));
 }
 
 void Lift::setState(LiftState state) {
+    auto s = RobotState::getInstance();
+    s -> setLiftState(currentState);
     currentState = state;
     setTarget(currentState);
 }
