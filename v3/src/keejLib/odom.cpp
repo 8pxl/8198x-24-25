@@ -28,7 +28,7 @@ void Chassis::startTracking() {
                 // pose = {p.x() * 39.3701, p.y() * 39.3701, Angle(p.z(), keejLib::HEADING)};
                 // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
                                 // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " <<horizDist -> get() << std::endl;
-                // std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
+                //  std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
                 pros::delay(10);
             }
         }};
@@ -135,10 +135,10 @@ void Chassis::wallReset(int wall, int numReadings, bool createTask) {
             pose.pos.y = maxY - avgDist;
             break;
         case 2:
-            pose.pos.y = minY + avgDist;
+            pose.pos.x = maxX - avgDist;
             break;
         case 3:
-            pose.pos.x = maxX - avgDist;
+            pose.pos.y = minY + avgDist;
             break;
     }
     std::cout << "new x: " << pose.pos.x << " new y: " << pose.pos.y << std::endl;
