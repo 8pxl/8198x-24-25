@@ -56,10 +56,10 @@ void Lift::control() {
 }
 
 void Lift::setState(LiftState state) {
-    auto s = RobotState::getInstance();
-    s -> setLiftState(currentState);
     currentState = state;
     setTarget(currentState);
+    auto s = RobotState::getInstance();
+    s -> setLiftState(currentState);
 }
 
 void Lift::next() {
