@@ -12,7 +12,6 @@ public:
   void startControl();
   void setColor(Color c);
   void move(double velocity);
-  void toggleSort();
   Color getDetected();
 
 private:
@@ -24,12 +23,12 @@ private:
   std::unordered_map<Color, std::pair<double, double>> colorHues{
       {red, {1, 2}}, {blue, {2, 3}}};
   double velocity = 0;
-  bool sort = true;
   bool taskBlocked = false;
   Color colorDetected = none;
   Color colorToSort = none;
   keejLib::EMA velocityEma;
   Stopwatch jamTimer;
+  double sortDist = 300;
 
   Color detectColor();
   void control();
