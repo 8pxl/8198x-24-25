@@ -33,6 +33,11 @@ Angle absoluteAngleToPoint(const Pt &pos, const Pt &point) {
     return (Angle(t, HEADING));
 }
 
+Color oppositeColor(Color c) {
+    if (c == blue) return red;
+    if (c == red) return blue;
+    return none;
+}
 Stopwatch::Stopwatch() {
     start = pros::millis();
 }
@@ -77,8 +82,4 @@ Pt translate(Pt a) {
     return {-a.x, a.y};
 }
 
-template <typename T>
-bool inRange(T val, std::pair<T, T> range) {
-    return (range.first <= val && val <= range.second);
-}
 }

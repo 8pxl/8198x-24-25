@@ -41,6 +41,8 @@ namespace keejLib {
         blue = 1,
         none = 2,
     };
+
+    Color oppositeColor(Color c);
     
     class Stopwatch {
         private:
@@ -125,8 +127,9 @@ namespace keejLib {
     double curvature(Pose pose, Pose other);
 
     template <typename T>
-    bool inRange(T val, std::pair<T, T> range);
-    
+    bool inRange(T val, std::pair<T, T> range) {
+        return (range.first <= val && val <= range.second);
+    }
     Pt triangulate(Pose a, Pose b);
     
     Pt translate(Pt a);
