@@ -12,6 +12,9 @@ void Chassis::turn(double angle, MotionParams params) {
         return;
     }
     this -> waitUntilSettled();
+    if (params.exit == nullptr) {
+        params.exit = new exit::Range(1.5, 20);
+    }
     moving = true;
     // if (clr == blue) angle = neg(angle);
     Angle targ = Angle(angle, HEADING);
@@ -29,15 +32,19 @@ void Chassis::turn(double angle, MotionParams params) {
     moving = false;
 }
 
-void Chassis::turnTo(Pt target, MotionParams params) {
+double Chassis::turnTo(Pt target, MotionParams params) {
     // chassMutex.take();
     if (params.async) {
         params.async = false;
-        pros::Task task([&]() { turnTo(target, params);});
+        double returnVal;
+        pros::Task task([&]() {returnVal = turnTo(target, params);});
         pros::delay(10);
-        return;
+        return returnVal;
     }
     this -> waitUntilSettled();
+    if (params.exit == nullptr) {
+        params.exit = new exit::Range(1.5, 20);
+    }
     moving = true;
     if (clr == blue) target = translate(target);
     Angle targ = absoluteAngleToPoint(pose.pos, target);
@@ -57,6 +64,7 @@ void Chassis::turnTo(Pt target, MotionParams params) {
     }
     this -> dt -> spinAll(0);
     moving = false;
+    return targ.heading();
     // chassMutex.give();
 }
 

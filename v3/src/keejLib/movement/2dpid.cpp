@@ -1,9 +1,11 @@
+#include "keejLib/control.h"
 #include "keejLib/lib.h"
 #include "keejLib/util.h"
 #include "pros/rtos.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <type_traits>
 
 namespace keejLib {
 
@@ -16,6 +18,11 @@ namespace keejLib {
             return;
         }
         this -> waitUntilSettled();
+
+        if (params.exit == nullptr) {
+            params.exit = new exit::Range(5, 50);
+        }
+
         moving = true;
         if (clr == blue) target = translate(target);
         Exit* timeout = new exit::Timeout(params.timeout);
@@ -68,6 +75,9 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
         pros::delay(10);
         return;
     }
+    if (params.exit == nullptr) {
+        params.exit = new exit::Range(20, 20);
+    }
     this -> waitUntilSettled();
     moving = true;
     if (clr == blue) angle = neg(angle);
@@ -90,7 +100,10 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
         // prev = chassConsts.wheelDia * M_PI * (vertEnc->get_position()/36000.0);
         // encMutex.give();
         
-        if (params.vMin > 0 && linError * sign(dist) < 0) break;
+        if (params.vMin > 0 && linError * sign(dist) < 0) {
+            std::cout<< "bye" <<std::endl;
+            break;
+        }
         double angularError = targ.error(Angle(imu -> get_rotation(), HEADING));
     
         if (std::abs(angularError) < this -> angConsts.tolerance) {
@@ -109,6 +122,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
         prev = vl;
         
         this -> dt -> spinVolts({vl + va, vl - va});
+        pros::delay(20);
     }
     this -> dt -> spinAll(0);
     moving = false;
@@ -124,6 +138,9 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         return;
     }
     this -> waitUntilSettled();
+    if (params.exit == nullptr) {
+        params.exit = new exit::Range(3, 20);
+    }
     moving = true;
     if (clr == blue) target = translate(target);
 

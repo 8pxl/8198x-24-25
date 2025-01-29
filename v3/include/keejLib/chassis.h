@@ -49,7 +49,7 @@ namespace keejLib {
         double vMin = 0;
         double settleRange;
         double settleTime;
-        Exit* exit;
+        Exit* exit = nullptr;
         double mtpRotBias;
         double vStart;
         double rotationCut;
@@ -124,7 +124,7 @@ namespace keejLib {
                                               PID *lCont, PID *rCont,
                                               double absDist);
           void turn(double angle, MotionParams params);
-          void turnTo(Pt target, MotionParams params);
+          double turnTo(Pt target, MotionParams params);
           void driveAngle(double dist, double angle, MotionParams params,
                           bool absolute = false);
           void mtpose(Pose target, double dLead, MotionParams params);
