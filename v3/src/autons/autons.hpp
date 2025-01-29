@@ -1,9 +1,12 @@
 #include "constants.hpp"
 #include "keejLib/lib.h"
 #include "../robot.hpp"
-#include "rPos.hpp"
-#include "bPos.hpp"
+#include "pos/qred.hpp"
+#include "pos/qblue.hpp"
+#include "neg/qred.hpp"
 #include "skills.hpp"
+#include "neg/rawp.hpp"
+
 
 using namespace robot;
 using namespace exit;
@@ -42,4 +45,4 @@ void triangulatePoint() {
     prosController.print(0, 0, "%f, %f", point.x, point.y);
 }
 
-keejLib::Autons autons = {{skills, bPos, rPos, test}, {"skills", "bPos", "rPos", "test"}};
+keejLib::Autons autons = {{skills, rAwp, qbPos, qrPos, test}, {"skills", "red awp", "bPos", "rPos", "test"}};

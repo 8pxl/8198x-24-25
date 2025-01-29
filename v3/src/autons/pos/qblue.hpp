@@ -1,12 +1,12 @@
-#include "constants.hpp"
-#include "../robot.hpp"
+#include "../constants.hpp"
+#include "../../robot.hpp"
 #include "keejLib/util.h"
 #include "pros/rtos.hpp"
-#include "../lift/lift.h"
-#include "funcs.hpp"
+#include "../../lift/lift.h"
+#include "../funcs.hpp"
 
 using namespace robot;
-void bPos() {
+void qbPos() {
     chass.setTurn(_90);
     chass.setAng(_angBig);
     chass.setLin(_lin);

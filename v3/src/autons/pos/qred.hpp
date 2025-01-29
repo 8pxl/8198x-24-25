@@ -1,11 +1,10 @@
-#include "constants.hpp"
-#include "../robot.hpp"
-#include "../lift/lift.h"
+#include "../constants.hpp"
+#include "../../robot.hpp"
+#include "../../lift/lift.h"
 #include "keejLib/util.h"
-#include "pros/rtos.hpp"
 
 using namespace robot;
-void rPos() {
+void qrPos() {
     chass.setTurn(_90);
     chass.setAng(_angBig);
     chass.setLin(_lin);
