@@ -57,36 +57,36 @@ void rAwp() {
       chass.mtpoint(ring3, {.drift = 10, .within = 5});
 
       //go to corner
-      // chass.driveAngle(2600, neg(78), {});  
+      chass.driveAngle(2600, neg(83), {});  
       intake.setJamProtection(false);
-      chass.mtpoint({-73, 3}, {.exit = new Range(13, 10), .drift = 8, .within = 6});
-      Pt corner = {-102, 24};
+      // chass.mtpoint({-74, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
+      Pt corner = {-106, 24};
       intake.move(127);
-      chass.mtpoint(corner, {.timeout = 900, .exit = new Range(0, 100000), .drift = 10, .within = 5});
-      chass.driveAngle(600, neg(45), {.timeout  = 600, .exit = new Range(0, 100000)});
-      chass.driveAngle(-600, neg(65), {});
+      chass.mtpoint(corner, {.timeout = 900, .exit = new Range(3, 10), .drift = 10, .within = 9});
+      chass.driveAngle(800, neg(45), {.timeout  = 1200, .slew = 2});
+      chass.driveAngle(-300, neg(45), {.timeout = 600, .slew = 2});
+      pros::delay(600);
 
 
       //goal 2
-      Pt ring5 = {-78.5, -22};
+      Pt ring5 = {-79, -24};
+      // chass.turn(90, {.timeout = 250});
       chass.turnTo(ring5, {.async = true, .timeout = 600});
-      intake.setJamProtection(true);
       pros::delay(300);
       clamp.toggle();
       chass.waitUntilSettled();
-      chass.mtpoint(ring5, {.within = 4});
-      intake.move(40);
+      chass.mtpoint(ring5, {.drift = 6, .within = 4});
+      intake.move(30);
 
       Pt goal2 = {-60, -23};
       double heading = chass.turnTo(goal2, {.exit = new Range(6, 10), .reverse = true});
 
       //clamp goal
 
-      chass.driveAngle(-950, heading, {.exit = new Range(180, 10), .slew = 2.3});
+      chass.driveAngle(-1050, heading, {.exit = new Range(180, 10), .slew = 2.3});
       clamp.toggle();
-      chass.driveAngle(-950, heading, {.exit = new Range(50, 10),}, true);
+      chass.driveAngle(-1050, heading, {.exit = new Range(50, 10),}, true);
 
-      clamp.toggle();
       intake.move(127);
       chass.turn(180, {.timeout = 600});
       chass.driveAngle(600, 180, {});
