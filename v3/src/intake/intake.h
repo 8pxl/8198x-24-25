@@ -13,6 +13,7 @@ public:
   void setColor(Color c);
   void move(double velocity);
   Color getDetected();
+  void setJamProtection(bool val);
 
 private:
   pros::Motor *motor;
@@ -29,6 +30,7 @@ private:
   keejLib::EMA velocityEma;
   Stopwatch jamTimer;
   double sortDist = 300;
+  bool jamProtection = true;
 
   Color detectColor();
   void control();
