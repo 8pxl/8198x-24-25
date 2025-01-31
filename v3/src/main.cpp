@@ -1,10 +1,10 @@
 #include "main.h"
+#include "keejLib/util.h"
 #include "pros/misc.h"
 #include "robot.hpp"
 #include "controls.hpp"
 #include "globals.hpp"
 #include "units/units.hpp"
-#include "locolib/particleFilter.h"
 
 using namespace robot;
 
@@ -25,7 +25,7 @@ void initialize() {
     chass.startTracking();
     
     int clr = cont.select({"red", "blue"});
-    intake.setColor(static_cast<Color>(clr));
+    intake.setColor(oppositeColor(static_cast<Color>(clr)));
     // glb::color = clr ? blue : red;
     glb::auton = autons.autonsList[cont.select(autons.names)];
     
@@ -40,7 +40,7 @@ void initialize() {
         // chass.setPose({-p.pos.x, p.pos.y, p.heading});
     // }
     // 
-    if(glb::auton == bPos) {
+    if(glb::auton == qbPos) {
         prosController.print(0, 0, "%f", "blue pos");
         Pose p = chass.getPose();
         chass.setPose({-p.pos.x, p.pos.y, p.heading});

@@ -1,4 +1,5 @@
 #include "autons/constants.hpp"
+#include "intake/intake.h"
 #include "keejLib/lib.h"
 #include "keejLib/util.h"
 #include "robot.hpp"
@@ -42,7 +43,6 @@ void driver() {
     if (state[NRIGHT]) doink.toggle();
     if (state[NY]) clamp.toggle();
     
-    if (state[NB]) doink.toggle();
     if (state[NA]) claw.toggle();
     if (state[NUP]) tsukasa.toggle();
     // if (state[NDOWN]) {
@@ -57,6 +57,9 @@ void driver() {
         auto p = chass.getPose();
         prosController.print(0, 0, "%.2f, %.2f, %.2f", p.pos.x, p.pos.y, p.heading.heading());
         // triangulatePoint();
+    }
+    if (state[NB]) {
+        intake.setColor( static_cast<Color>((intake.getColor() + 1) % 3));
     }
 }
 

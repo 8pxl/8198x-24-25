@@ -29,6 +29,7 @@ private:
   Color colorDetected = none;
   Color colorToSort = none;
   keejLib::EMA velocityEma;
+  keejLib::EMA colorEma;
   Stopwatch jamTimer;
   double sortDist = 370;
   bool jamProtection = true;

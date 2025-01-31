@@ -7,7 +7,7 @@ namespace keejLib {
 
 Intake::Intake(pros::Motor *motor, pros::Optical *optical,
                Color color)
-    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.8) {
+    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.5), colorEma(0.6) {
       optical -> set_integration_time(5);
     }
 
@@ -38,7 +38,7 @@ Color Intake::getDetected() { return colorDetected; }
 
 Color Intake::detectColor() {
   int check = 2;
-  double hue = optical->get_hue();
+  double hue = colorEma.out(optical->get_hue());
   Color color = none;
   while (check-- >= 0) {
     color = static_cast<Color>(check);
