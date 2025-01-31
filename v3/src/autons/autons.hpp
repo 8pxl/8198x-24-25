@@ -3,7 +3,7 @@
 #include "../robot.hpp"
 #include "pos/qred.hpp"
 #include "pos/qblue.hpp"
-#include "neg/qred.hpp"
+#include "neg/relims.hpp"
 #include "skills.hpp"
 #include "neg/rawp.hpp"
 #include "neg/bawp.hpp"
@@ -46,4 +46,4 @@ void triangulatePoint() {
     prosController.print(0, 0, "%f, %f", point.x, point.y);
 }
 
-keejLib::Autons autons = {{skills, bAwp, rAwp, qbPos, qrPos, test}, {"skills", "blue awp", "red awp", "bPos", "rPos", "test"}};
+keejLib::Autons autons = {{skills, relimsNeg, bAwp, rAwp, qbPos, qrPos, test}, {"skills", "red elims neg", "blue awp", "red awp", "bPos", "rPos", "test"}};
