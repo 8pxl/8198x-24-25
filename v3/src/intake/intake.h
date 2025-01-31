@@ -8,12 +8,13 @@
 namespace keejLib {
 class Intake {
 public:
-  Intake(pros::Motor *intake, pros::Optical *optical, Pis *piston, Color sort);
+  Intake(pros::Motor *intake, pros::Optical *optical, Color sort);
   void startControl();
   void setColor(Color c);
   void move(double velocity);
   Color getDetected();
   void setJamProtection(bool val);
+  Color getColor();
 
 private:
   pros::Motor *motor;
@@ -22,14 +23,14 @@ private:
   Pis *piston;
 
   std::unordered_map<Color, std::pair<double, double>> colorHues{
-      {red, {1, 2}}, {blue, {2, 3}}};
+      {red, {1, 11}}, {blue, {210, 223}}};
   double velocity = 0;
   bool taskBlocked = false;
   Color colorDetected = none;
   Color colorToSort = none;
   keejLib::EMA velocityEma;
   Stopwatch jamTimer;
-  double sortDist = 300;
+  double sortDist = 370;
   bool jamProtection = true;
 
   Color detectColor();

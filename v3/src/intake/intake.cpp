@@ -5,9 +5,10 @@
 
 namespace keejLib {
 
-Intake::Intake(pros::Motor *motor, pros::Optical *optical, Pis *piston,
+Intake::Intake(pros::Motor *motor, pros::Optical *optical,
                Color color)
-    : motor(motor), optical(optical), piston(piston), colorToSort(color), velocityEma(0.9) {
+    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.8) {
+      optical -> set_integration_time(5);
     }
 
 void Intake::startControl() {
@@ -22,6 +23,9 @@ void Intake::startControl() {
   pros::delay(20);
 }
 
+Color Intake::getColor() {
+  return colorToSort;
+}
 void Intake::setColor(Color c) { colorToSort = c; }
 
 void Intake::move(double velocity) { this->velocity = velocity; }
@@ -44,6 +48,7 @@ Color Intake::detectColor() {
     }
   }
   colorDetected = color;
+
   return none;
 }
 
@@ -62,15 +67,17 @@ void Intake::control() {
     if (taskBlocked && liftClear) {
         motor -> tare_position();
         while (motor->get_position() < sortDist) {
+          // std::cout << motor -> get_position() << std::endl;
           motor->move(127);
         }
-        motor->move(0);
-        pros::delay(50);
+        motor->move(-50);
+        pros::delay(160);
         taskBlocked = false;
+        jamTimer.reset();
     }
   }
 
-  if (velocity >= 0) optical->set_led_pwm(100);
+  if (velocity != 0) optical->set_led_pwm(100);
   else optical->set_led_pwm(0);
   double vel = velocityEma.out(motor->get_actual_velocity());
   if (velocity > 0 && fabs(vel) < 0.4 && (jamTimer.elapsed() > 400) && liftClear && jamProtection) {
