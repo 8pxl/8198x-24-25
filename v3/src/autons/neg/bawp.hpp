@@ -12,6 +12,8 @@ void bAwp() {
       chass.setAng(_ang);
       chass.setLin(_lin);
       chass.setMTP(_chassLin, _chassAng);
+        Pose p = chass.getPose();
+        chass.setPose({-p.pos.x, p.pos.y, p.heading});
 
       //grab mogo and score alliance stake;
       lb.next();
@@ -57,7 +59,7 @@ void bAwp() {
       chass.mtpoint(ring3, {.drift = 10, .within = 5});
 
       //go to corner
-      chass.mtpoint({87.0, -1.0}, {.exit = new Range(2, 10), .drift = 10, .within = 9});
+      chass.mtpoint({87.0, 2}, {.exit = new Range(2, 10), .drift = 10, .within = 9});
       pros::delay(300);
       intake.setJamProtection(false);
       // chass.mtpoint({74.0, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
@@ -68,7 +70,7 @@ void bAwp() {
 
 
       //goal 2
-      Pt ring5 = {79.0, -26.0};
+      Pt ring5 = {79.0, -28.0};
       pros::delay(500);
       chass.turn(neg(90), {.timeout = 250});
       chass.turn(neg(140), {.async = true, .timeout = 340});
@@ -76,7 +78,7 @@ void bAwp() {
       // chass.turnTo(ring5, {.async = true, .timeout = 600});
       clamp.toggle();
       chass.waitUntilSettled();
-      chass.driveAngle(500, neg(135), {.vMin = 30});
+      chass.driveAngle(650, neg(135), {.timeout = 400, .vMin = 50});
       chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 4});
       intake.move(30);
 
@@ -85,13 +87,13 @@ void bAwp() {
 
       //clamp goal
 
-      chass.driveAngle(-1050, neg(heading), {.exit = new Range(180, 10), .slew = 4});
+      chass.driveAngle(-1050, heading, {.exit = new Range(180, 10), .slew = 4});
       clamp.toggle();
-      chass.driveAngle(-1050, neg(heading), {.exit = new Range(50, 10),}, true);
+      chass.driveAngle(-1050, heading, {.exit = new Range(50, 10),}, true);
 
       intake.move(127);
-      chass.turn(neg(180), {.timeout = 300});
-      chass.driveAngle(600, neg(180), {});
+      chass.turn(172, {.timeout = 300});
+      chass.driveAngle(900, 172, {});
             intake.setJamProtection(true);
             intake.setColor(none);
 }

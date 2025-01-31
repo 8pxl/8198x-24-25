@@ -57,7 +57,7 @@ void rAwp() {
       chass.mtpoint(ring3, {.drift = 10, .within = 5});
 
       //go to corner
-      chass.mtpoint({-87, -1}, {.exit = new Range(2, 10), .drift = 10, .within = 9});
+      chass.mtpoint({-87, 2}, {.exit = new Range(2, 10), .drift = 10, .within = 9});
       pros::delay(300);
       intake.setJamProtection(false);
       // chass.mtpoint({-74, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
@@ -68,7 +68,7 @@ void rAwp() {
 
 
       //goal 2
-      Pt ring5 = {-79, -26};
+      Pt ring5 = {-79, -28};
       pros::delay(500);
       chass.turn(90, {.timeout = 250});
       chass.turn(140, {.async = true, .timeout = 340});
@@ -90,8 +90,8 @@ void rAwp() {
       chass.driveAngle(-1050, heading, {.exit = new Range(50, 10),}, true);
 
       intake.move(127);
-      chass.turn(180, {.timeout = 300});
-      chass.driveAngle(600, 180, {});
+      chass.turn(187, {.timeout = 300});
+      chass.driveAngle(600, 187, {});
             intake.setJamProtection(true);
             intake.setColor(none);
 
