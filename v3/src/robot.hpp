@@ -24,9 +24,10 @@ namespace robot {
     pros::Motor liftMotor(10);
     
     pros::adi::DigitalOut clampPiston('a');
-    pros::adi::DigitalOut doinkArmPiston('c');
-    pros::adi::DigitalOut doinkClawPiston('d');
-    pros::adi::DigitalOut intakePiston('b');
+    pros::adi::DigitalOut doinkArmPiston('b');
+    pros::adi::DigitalOut doinkClawPiston('c');
+    pros::adi::DigitalOut odomPiston('e');
+    pros::adi::DigitalOut intakePiston('d');
     pros::Rotation rotationSensor(18);
     pros::Rotation vertTracker(-20);
     pros::Rotation horizTracker(8);
@@ -39,10 +40,11 @@ namespace robot {
     Pis doink({doinkArmPiston}, false);
     Pis claw({doinkClawPiston}, false);
     Pis tsukasa({intakePiston}, false);
+    Pis odomRelease({odomPiston}, false);
     // Pis colorSort({colorSortPiston}, false);
     
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
-    Intake intake(&intakeMotor, &opticalSensor, Color::red);
+    Intake intake(&intakeMotor, &opticalSensor, Color::blue);
     Lift lb(&liftMotor, &rotationSensor, {
         .kp = 0.025,
         .ki= 0,
