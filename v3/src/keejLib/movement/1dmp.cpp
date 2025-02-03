@@ -43,6 +43,23 @@ std::vector<double> keejLib::generateProfile(double dist, ProfileParams pp, Prof
     return profile;
 }
 
+void keejLib::Chassis::driveLin(int time, double speed, MotionParams params) {
+    if (params.async) {
+        params.async = false;
+        pros::Task task([&]() { driveLin(time, speed, params);});
+        pros::delay(10);
+        return;
+    }
+    this -> waitUntilSettled();
+    moving = true;
+    Exit* timeout = new exit::Timeout(time);
+    while (!timeout->exited({})) {
+        this -> dt -> spinVolts({speed, speed});
+        pros::delay(10);
+    }
+    moving = false;
+}
+
 // void keejLib::chassis::profiledDrive(double target, int endDelay = 500, double start = 0, double end = 0) {
 //   //kv: rpm -> voltage
 //   //sf: in/ms -> rpm

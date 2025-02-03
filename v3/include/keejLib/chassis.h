@@ -46,17 +46,19 @@ namespace keejLib {
     struct MotionParams {
         bool async;
         int timeout = 3000;
+        double vStart = 0;
         double vMin = 0;
+        double vMax = 127;
         double settleRange;
         double settleTime;
         Exit* exit = nullptr;
         double mtpRotBias;
-        double vStart;
         double rotationCut;
         double drift = 0;
         bool reverse = false;
         double within = 0;
         double slew = 0;
+        bool debug = false;
     };
 
     class Chassis {
@@ -133,5 +135,7 @@ namespace keejLib {
                           double angle = -1);
           void linTo(Pt targ, MotionParams params);
           void wallReset(int wall, int numReadings, bool createTask = true);
+
+          void driveLin(int time, double speed, MotionParams params);
     };
 }
