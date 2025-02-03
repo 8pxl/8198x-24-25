@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Eigen/Eigen"
+// #include "Eigen/Eigen"
 namespace keejLib {
     
     #define ALLBUTTONS {pros::E_CONTROLLER_DIGITAL_L1, pros::E_CONTROLLER_DIGITAL_L2, pros::E_CONTROLLER_DIGITAL_R1, pros::E_CONTROLLER_DIGITAL_R2, pros::E_CONTROLLER_DIGITAL_UP, pros::E_CONTROLLER_DIGITAL_DOWN, pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT, pros::E_CONTROLLER_DIGITAL_X, pros::E_CONTROLLER_DIGITAL_B, pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A}
@@ -130,7 +130,7 @@ namespace keejLib {
     bool inRange(T val, std::pair<T, T> range) {
         return (range.first <= val && val <= range.second);
     }
-    Pt triangulate(Pose a, Pose b);
+    Pt triangulate(Pose a, Pose b); 
     
     Pt translate(Pt a);
 }

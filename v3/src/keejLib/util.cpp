@@ -1,12 +1,12 @@
 #include "keejLib/lib.h"
-#include "keejLib/util.h"
+
 
 namespace keejLib {
 
 EMA::EMA(double ka): ka(ka){}
 
 double EMA::out(double val) {
-    last = val * ka + val * (1 - ka);
+    last = val * ka + last * (1 - ka);
     return last;
 }
 
@@ -28,7 +28,7 @@ Angle absoluteAngleToPoint(const Pt &pos, const Pt &point) {
         t = M_PI/2;
     }
     
-    t = keejLib::toDeg(t);
+    t = toDeg(t);
     t = t >= 0 ? t : 360+t;
     return (Angle(t, HEADING));
 }
