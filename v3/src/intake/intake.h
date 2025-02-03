@@ -23,7 +23,7 @@ private:
   Pis *piston;
 
   std::unordered_map<Color, std::pair<double, double>> colorHues{
-      {red, {1, 11}}, {blue, {210, 223}}};
+      {red, {1, 14}}, {blue, {203, 224}}};
   double velocity = 0;
   bool taskBlocked = false;
   Color colorDetected = none;
@@ -31,7 +31,7 @@ private:
   keejLib::EMA velocityEma;
   keejLib::EMA colorEma;
   Stopwatch jamTimer;
-  double sortDist = 370;
+  double sortDist = 560;
   bool jamProtection = true;
 
   Color detectColor();

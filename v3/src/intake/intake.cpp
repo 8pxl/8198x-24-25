@@ -7,7 +7,7 @@ namespace keejLib {
 
 Intake::Intake(pros::Motor *motor, pros::Optical *optical,
                Color color)
-    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.5), colorEma(0.6) {
+    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.5), colorEma(1) {
       optical -> set_integration_time(5);
     }
 
@@ -59,6 +59,16 @@ void Intake::control() {
 
   if (colorToSort != none) {
     Color col = detectColor();
+    switch (col) {
+      case none:
+        break;
+      case red:
+        std::cout << "Color: Red" << std::endl;
+        break;
+      case blue:
+        std::cout << "Color: Blue" << std::endl;
+        break;
+    }
     if (col != none) {
       if (col == oppositeColor(col)) taskBlocked = false;
       if (col == colorToSort) taskBlocked = true;
@@ -66,7 +76,8 @@ void Intake::control() {
 
     if (taskBlocked && liftClear) {
         motor -> tare_position();
-        while (motor->get_position() < sortDist) {
+        jamTimer.reset();
+        while (motor->get_position() < sortDist && jamTimer.elapsed() < 2000) {
           // std::cout << motor -> get_position() << std::endl;
           motor->move(127);
         }
