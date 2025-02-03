@@ -26,7 +26,11 @@ void Chassis::startTracking() {
                 // }
                 // std::printf("],\n");
                 // pose = {p.x() * 39.3701, p.y() * 39.3701, Angle(p.z(), keejLib::HEADING)};
-                // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.deg() << std::endl;
+                // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.heading() << std::endl;
+                // if (pose.heading.heading() < 0) {
+                    // std::cout << "heading: " << pose.heading.heading() << std::endl;
+                    // std::cout << "standard: " << pose.heading.rad() << std::endl;
+                // }
                                 // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " <<horizDist -> get() << std::endl;
                 //  std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
                 pros::delay(10);
@@ -38,12 +42,12 @@ void Chassis::startTracking() {
 
 void Chassis::updateOdom() {
     // chassMutex.take();
-    double rot = imu -> get_rotation();
+    double rot = imu -> get_heading();
     Angle currTheta;
     if (rot == PROS_ERR_F) {
         currTheta= prev.theta;
     }
-    else currTheta = Angle(imu -> get_rotation(), AngleType::HEADING);
+    else currTheta = Angle(imu -> get_heading(), AngleType::HEADING);
     // encMutex.take();
     double currVert = (vertEnc -> get_position() / 100.0);
     double currHoriz = (horizEnc -> get_position() / 100.0);

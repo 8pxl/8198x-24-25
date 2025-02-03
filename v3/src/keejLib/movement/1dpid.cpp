@@ -20,10 +20,10 @@ void Chassis::turn(double angle, MotionParams params) {
     Angle targ = Angle(angle, HEADING);
     Exit* timeout = new exit::Timeout(params.timeout);
     PID cont = PID(this -> turnConsts);
-    double error = targ.error(Angle(imu -> get_rotation(), HEADING));
+    double error = targ.error(Angle(imu -> get_heading(), HEADING));
 
     while (!params.exit -> exited({.error = fabs(error)}) && !timeout -> exited({})) {
-        error = targ.error(Angle(imu -> get_rotation(), HEADING));
+        error = targ.error(Angle(imu -> get_heading(), HEADING));
         double vel = cont.out(error);
         this -> dt -> spinVolts({vel, -vel});
         pros::delay(10);
@@ -52,11 +52,11 @@ double Chassis::turnTo(Pt target, MotionParams params) {
     Exit* timeout = new exit::Timeout(params.timeout);
     // Exit* range = new exit::Range(params.settleRange, params.settleTime);
     PID cont = PID(this -> turnConsts);
-    double error = targ.error(Angle(imu -> get_rotation(), HEADING));
+    double error = targ.error(Angle(imu -> get_heading(), HEADING));
     while (!params.exit -> exited({.error = fabs(error)}) && !timeout -> exited({})) {
         targ = absoluteAngleToPoint(pose.pos, target);
         if (params.reverse) targ = targ.reverseDir();
-        error = targ.error(Angle(imu -> get_rotation(), HEADING));
+        error = targ.error(Angle(imu -> get_heading(), HEADING));
         double vel = cont.out(error);
         this -> dt -> spinVolts({vel, -vel});
         // std::cout << "turnto: " << error << std::endl;

@@ -39,7 +39,7 @@ namespace keejLib {
         while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
             linError = pose.pos.dist(target) - dist;
             if (linError < 0 && params.vMin != 0) break;
-            double angularError = heading.error(Angle(imu -> get_rotation(), HEADING));
+            double angularError = heading.error(Angle(imu -> get_heading(), HEADING));
         
             if (std::abs(angularError) < this -> angConsts.tolerance) {
                 angularError = 0;
@@ -91,20 +91,11 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
     // double prev = chassConsts.wheelDia * M_PI * (vertEnc->get_position()/36000.0);
     double prev = 0;
     while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
-        // encMutex.take();
-        // traveled += ((chassConsts.wheelDia * M_PI * (vertEnc->get_position()/36000.0)) - prev);
-                linError = dist - (this -> dt -> getAvgPosition());
-
-        // std::cout << vertEnc->get_position() << std::endl;
-        // linError = dist - traveled;
-        // prev = chassConsts.wheelDia * M_PI * (vertEnc->get_position()/36000.0);
-        // encMutex.give();
-        
+        linError = dist - (this -> dt -> getAvgPosition());
         if (params.vMin > 0 && linError * sign(dist) < 0) {
-            std::cout<< "bye" <<std::endl;
             break;
         }
-        double angularError = targ.error(Angle(imu -> get_rotation(), HEADING));
+        double angularError = targ.error(Angle(imu -> get_heading(), HEADING));
     
         if (std::abs(angularError) < this -> angConsts.tolerance) {
             angularError = 0;
@@ -168,6 +159,13 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         double adjHeading = pose.heading.rad();
         if (adjHeading > M_PI) adjHeading = - (2*M_PI - adjHeading);
         double m = tan(adjHeading);
+        //print current coordinates and  target cordinates
+        if (params.debug) {
+            std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
+            std::printf(" target: (%.3f, %.3f, %.3f) \n", target.x, target.y, targetHeading.heading());
+            //print angular error
+            std::printf(" angularError: %.3f \n", angularError);
+        }
 
         if (close) {
             if (std::fabs(angularError) > 20) {
@@ -205,7 +203,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         if (params.within > 0) linearError -= params.within;
         dist = linearError;
         prevSide = side;
-        if (linearError < params.settleRange && !close) close = true;
+        if (fabs(linearError) < params.settleRange && !close) close = true;
         linearError *= cos(toRad(angularError));
         angularVel = angCont.out(angularError);
         // std::cout << close << std::endl;
