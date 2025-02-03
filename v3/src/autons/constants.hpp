@@ -67,7 +67,7 @@ PIDConstants _15 {
 };
 
 PIDConstants _5 {
-    .kp = 4.9,
+    .kp = 6.9,
     .ki = 0.4,
     .kd = 26,
     .maxIntegral = 100,
