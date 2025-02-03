@@ -36,7 +36,7 @@ void initialize() {
     
     // if (glb::color == blue) {
         // Pose p 
-        // = chass.getPose();
+    // = chass.getPose();
         // chass.setPose({-p.pos.x, p.pos.y, p.heading});
     // }
     // 
@@ -75,7 +75,9 @@ void opcontrol() {
 
         // std::cout << "his" << std::endl;
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-            glb::auton();
+            init();
+            allianceStake();
+            // glb::auton();
             // intake.setSorting(true);
         }
         driver();
