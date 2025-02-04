@@ -2,12 +2,13 @@
 #include "keejLib/lib.h"
 #include "../robotState/robotState.h"
 #include "keejLib/util.h"
+#include <ostream>
 
 namespace keejLib {
 
 Intake::Intake(pros::Motor *motor, pros::Optical *optical,
                Color color)
-    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.5), colorEma(1) {
+    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.8), colorEma(1) {
       optical -> set_integration_time(5);
     }
 
@@ -34,6 +35,12 @@ void Intake::setJamProtection(bool val) {
   jamProtection = val;
 }
 
+void Intake::stopOnColor(Color col, int timeout) {
+  velocity = 127;
+  colorToStop = col;
+  autoStopTimer.set(timeout);
+}
+
 Color Intake::getDetected() { return colorDetected; }
 
 Color Intake::detectColor() {
@@ -52,14 +59,16 @@ Color Intake::detectColor() {
   return none;
 }
 
-void Intake::control() {
-  auto s = RobotState::getInstance();
-  auto liftState = s->getInstance()->getLiftState();
-  bool liftClear = !(liftState == LiftState::one || liftState == LiftState::two);
+void Intake::handleAutoStop(Color col) {
+  // std::cout << colorDetected << std::endl;
+  if (col == colorToStop) {
+    velocity = 0;
+    colorToStop = none;
+  }
+}
 
-  if (colorToSort != none) {
-    Color col = detectColor();
-    switch (col) {
+void Intake::handleColorSort(Color col, bool liftClear) {
+  switch (col) {
       case none:
         break;
       case red:
@@ -86,20 +95,52 @@ void Intake::control() {
         taskBlocked = false;
         jamTimer.reset();
     }
-  }
+}
 
-  if (velocity != 0) optical->set_led_pwm(100);
-  else optical->set_led_pwm(0);
-  double vel = velocityEma.out(motor->get_actual_velocity());
-  if (velocity > 0 && fabs(vel) < 0.4 && (jamTimer.elapsed() > 400) && liftClear && jamProtection) {
-    Stopwatch sw;
-    while (sw.elapsed() < 200) {
-      motor->move(-127);
+bool Intake::isJammed(double actual) {
+  return (velocity > 0 && fabs(actual) < 0.4 && (jamTimer.elapsed() > 400));
+}
+
+void Intake::handleJamProtection(bool liftClear, RobotState * s) {
+    std::cout << "intake jammed! " <<std::endl;
+    if (s->getLiftState() == LiftState::one && autoLift) {
+      motor -> move(0);
+      pros::delay(100);
+      s->setLiftState(LiftState::two);
+      pros::delay(100);
       jamTimer.reset();
     }
+    else if (liftClear && jamProtection) {
+      Stopwatch sw;
+      while (sw.elapsed() < 200) {
+        motor->move(-127);
+      }
+      jamTimer.reset();
+    }
+}
+
+void Intake::control() {
+  auto s = RobotState::getInstance();
+  auto liftState = s->getInstance()->getLiftState();
+  bool liftClear = !(liftState == LiftState::one || liftState == LiftState::two);
+  Color col = detectColor();
+  double vel = velocityEma.out(motor->get_actual_velocity());
+
+  if (colorToStop != none) {
+    handleAutoStop(col);
+  } 
+  if (colorToSort != none && velocity > 0) {
+    handleColorSort(col, liftClear);
   }
-  else motor->move(velocity);
+  if(isJammed(vel)) {
+    handleJamProtection(liftClear, s);
+  }
+  else {
+    motor->move(velocity);
+  }
+  if (velocity != 0) optical->set_led_pwm(100);
+  else optical->set_led_pwm(0);
 
   if (velocity <= 0) jamTimer.reset();
-}
-} // namespace keejLib
+} 
+}// namespace keejLib

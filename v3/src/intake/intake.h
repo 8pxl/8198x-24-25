@@ -4,6 +4,7 @@
 #include "keejLib/piston.h"
 #include "keejLib/util.h"
 #include "main.h"
+#include "../robotState/robotState.h"
 
 namespace keejLib {
 class Intake {
@@ -15,6 +16,8 @@ public:
   Color getDetected();
   void setJamProtection(bool val);
   Color getColor();
+  void setAutoLift();
+  void stopOnColor(Color col, int timeout);
 
 private:
   pros::Motor *motor;
@@ -22,6 +25,7 @@ private:
   pros::Task *task = nullptr;
   Pis *piston;
 
+  bool autoLift = true;
   std::unordered_map<Color, std::pair<double, double>> colorHues{
       {red, {1, 14}}, {blue, {203, 224}}};
   double velocity = 0;
@@ -34,7 +38,15 @@ private:
   double sortDist = 560;
   bool jamProtection = true;
 
+  Color colorToStop = none;
+
   Color detectColor();
   void control();
+
+  Timer autoStopTimer= Timer(1000);
+  void handleAutoStop(Color colorDetected);
+  void handleColorSort(Color col, bool liftClear);
+  void handleJamProtection(bool liftClear, RobotState* s);
+  bool isJammed(double actual);
 };
 } // namespace keejLib
