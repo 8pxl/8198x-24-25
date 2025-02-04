@@ -52,6 +52,17 @@ namespace keejLib {
             void reset();
             int elapsed();
     };
+
+    class Timer {
+        private: 
+            Stopwatch sw;
+            int timeout;
+        public:
+            Timer(int timeout);
+            void reset();
+            void set(int timeout);
+            bool done();
+    };
     
     class EMA {
        private:

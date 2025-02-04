@@ -1,4 +1,5 @@
 #include "keejLib/lib.h"
+#include "pros/rtos.hpp"
 
 
 namespace keejLib {
@@ -50,6 +51,21 @@ int Stopwatch::elapsed() {
     return pros::millis() - start;
 }
 
+Timer::Timer(int timeout) {
+    set(timeout);
+    sw = Stopwatch();
+}
+
+void Timer::reset() {
+    sw.reset();
+}
+
+void Timer::set(int timeout) {
+    this->timeout = timeout;
+}
+bool Timer::done() {
+    return sw.elapsed() > timeout;
+}
 //credit: lemlib
 double curvature(Pose pose, Pose other) {
     // calculate whether the pose is on the left or right side of the circle
