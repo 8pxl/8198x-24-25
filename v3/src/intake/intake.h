@@ -16,7 +16,7 @@ public:
   Color getDetected();
   void setJamProtection(bool val);
   Color getColor();
-  void setAutoLift();
+  void setAutoLift(bool val);
   void stopOnColor(Color col, int timeout);
 
 private:
@@ -35,7 +35,7 @@ private:
   keejLib::EMA velocityEma;
   keejLib::EMA colorEma;
   Stopwatch jamTimer;
-  double sortDist = 560;
+  double sortDist = 520;
   bool jamProtection = true;
 
   Color colorToStop = none;

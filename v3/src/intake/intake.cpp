@@ -29,6 +29,10 @@ Color Intake::getColor() {
 }
 void Intake::setColor(Color c) { colorToSort = c; }
 
+void Intake::setAutoLift(bool val) {
+  autoLift = val;
+}
+
 void Intake::move(double velocity) { this->velocity = velocity; }
 
 void Intake::setJamProtection(bool val) {
@@ -36,7 +40,7 @@ void Intake::setJamProtection(bool val) {
 }
 
 void Intake::stopOnColor(Color col, int timeout) {
-  velocity = 127;
+  velocity = 90;
   colorToStop = col;
   autoStopTimer.set(timeout);
 }
@@ -68,16 +72,16 @@ void Intake::handleAutoStop(Color col) {
 }
 
 void Intake::handleColorSort(Color col, bool liftClear) {
-  switch (col) {
-      case none:
-        break;
-      case red:
-        std::cout << "Color: Red" << std::endl;
-        break;
-      case blue:
-        std::cout << "Color: Blue" << std::endl;
-        break;
-    }
+  // switch (col) {
+  //     case none:
+  //       break;
+  //     case red:
+  //       std::cout << "Color: Red" << std::endl;
+  //       break;
+  //     case blue:
+  //       std::cout << "Color: Blue" << std::endl;
+  //       break;
+  //   }
     if (col != none) {
       if (col == oppositeColor(col)) taskBlocked = false;
       if (col == colorToSort) taskBlocked = true;
@@ -102,7 +106,7 @@ bool Intake::isJammed(double actual) {
 }
 
 void Intake::handleJamProtection(bool liftClear, RobotState * s) {
-    std::cout << "intake jammed! " <<std::endl;
+    // std::cout << "intake jammed! " <<std::endl;
     if (s->getLiftState() == LiftState::one && autoLift) {
       motor -> move(0);
       pros::delay(100);
