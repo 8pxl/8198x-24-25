@@ -15,15 +15,15 @@ void relimsNeg() {
 
 
       //grab mogo and score alliance stake;
-      lb.next();
-      chass.driveAngle(-930, 0, {.async = true, .exit = new Range(180, 10), .slew = 5});
+      // lb.next();
+      chass.driveAngle(-1000, 0, {.async = true, .vMax = 60,.exit = new Range(300, 10), .slew = 3});
       pros::delay(400);
-      intake.move(127);
+      // intake.move(127);
       chass.waitUntilSettled();
       clamp.toggle();
-      chass.driveAngle(-930, 0, {.async = false, .exit = new Range(50, 10),}, true);
+      chass.driveAngle(-1000, 0, {.async = false, .vMax = 60, .exit = new Range(50, 10)}, true);
 
-      intake.move(0);
+      // intake.move(0);
       lb.setState(LiftState::lower);
 
       //score alliance ring
@@ -42,8 +42,8 @@ void relimsNeg() {
       //intake first ring
       Pt ring1 = {12.5, -44.6};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
-      chass.mtpoint(ring1, {.drift = 9});
-      chass.driveAngle(800, 87, {.exit = new Range(40, 10)});
+      chass.mtpoint(ring1, {.drift = 9, .within = 1});
+      chass.driveAngle(800, 86, {.vMax = 70, .exit = new Range(40, 10)});
 
       //intake second ring
       chass.driveAngle(-900, 110, {.vMin = 70, .exit = new Range(200, 10)});
@@ -61,12 +61,12 @@ void relimsNeg() {
       chass.mtpoint(corner1, {.timeout = 1200, .exit = new Range(1, 10), .drift = 7});
       intake.move(127);
       chass.setTurn(_5);
-      chass.turnTo({41, 17}, {});
+      double ang = chass.turnTo({41, 17}, {});
       chass.setTurn(_90);
       // chass.turn(45, {});=
       intake.setJamProtection(false);
       // chass.driveLin(600, 40, {});
-chass.driveAngle(470, 45, {.timeout = 600, .slew = 3});
+chass.driveAngle(470, ang, {.timeout = 600, .slew = 3});
             chass.driveLin(600, -25, {});
             intake.setJamProtection(true);
       tsukasa.toggle();
