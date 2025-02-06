@@ -16,7 +16,6 @@ void initialize() {
     // chass.mcl.addSensor(&vd);
     // chass.mcl.addSensor(&hd);
 
-    robot::lb.startControl();
     robot::intake.startControl();
 
     // std::cout << "hi" << std::endl;
@@ -26,6 +25,7 @@ void initialize() {
     
     int clr = cont.select({"red", "blue"});
     intake.setColor(oppositeColor(static_cast<Color>(clr)));
+    intake.setColor(none);
     // glb::color = clr ? blue : red;
     glb::auton = autons.autonsList[cont.select(autons.names)];
     
@@ -40,6 +40,10 @@ void initialize() {
         // chass.setPose({-p.pos.x, p.pos.y, p.heading});
     // }
     // 
+    robot::lb.startControl();
+    if (glb::auton != qrPos && glb::auton != qbPos) {
+        lb.setState(keejLib::LiftState::one);
+    }
     if(glb::auton == qbPos) {
         prosController.print(0, 0, "%f", "blue pos");
         Pose p = chass.getPose();
@@ -70,14 +74,15 @@ void opcontrol() {
     // for (int i = 0; i < 100; i++) {
     //     lb.setAutoControl(true);
     // }
+    // intake.stopOnColor(keejLib::red, 10000);
     while(true) {
         // lb.setAutoControl(true);        
 
         // std::cout << "his" << std::endl;
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             init();
-            allianceStake();
-            // glb::auton();
+            // allianceStake();
+            glb::auton();
             // intake.setSorting(true);
         }
         driver();
