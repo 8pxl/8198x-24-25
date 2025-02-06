@@ -55,7 +55,9 @@ void bAwp() {
 
       //go to third ring
       chass.driveAngle(600, 60, {.vMin = 40, .exit = new Range(100, 10)});
+      tsukasa.toggle();
       Pt ring3 = {29.0, -3.0};
+      tsukasa.toggle();
       chass.mtpoint(ring3, {.drift = 10, .within = 5});
 
       //go to corner
