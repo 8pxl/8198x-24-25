@@ -1,6 +1,8 @@
 #include "lift.h"
 #include "../robotState/robotState.h"
 #include "main.h"
+#include "states.h"
+#include <ostream>
 
 namespace keejLib {
 
@@ -35,13 +37,24 @@ void Lift::calibrate() {
 }
 void Lift::setControl(bool state) {
     off = !state;
+    if (state == true) {
+       if (rot -> get_position() > 36000) {
+            setState(LiftState::idle);
+       } 
+    }
 }
 
 void Lift::spin(double voltage) {
     if (off) {
         motor -> move(voltage);
         //snapping
-        if (voltage == 0 && fabs(rot -> get_position() - target) <= snapRange) {
+        // std::cout << "rot position: " << rot -> get_position() << std::endl;
+        // std::cout << "target: " << target << std::endl;
+        // std::cout << "error: " << abs(rot -> get_position()- target) << std::endl; 
+;
+        if (voltage == 0 && (abs(rot -> get_position()- target) <= snapRange)) {
+    std::cout << (abs(rot -> get_position()- target)) << std::endl;
+    // std::cout << snapRange << std::endl;
             off = false;
         }
     }
@@ -50,7 +63,16 @@ void Lift::spin(double voltage) {
 void Lift::control() {
     if (off) return;
     double angle = rot -> get_position();
+    // if (angle > 360 * 100 && (currentState  == LiftState::two)|| ) {
+    //     currentState = LiftState::idle;
+    // }
     error = angle - target;
+    auto s = RobotState::getInstance();
+    currentState = s->getLiftState();
+    setTarget(currentState);
+    if (currentState == LiftState::idle && error < 250) {
+        motor -> move(0);
+    }
     // std::cout << "angle: " << angle << std::endl;
     motor -> move(pid.out(error) + kf * cos(angle + angleOffset));
 }

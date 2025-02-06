@@ -49,9 +49,9 @@ class Lift {
             {LiftState::idle, LiftState::lowest}
         };
         std::unordered_map<LiftState, double> valueMap = {
-            {LiftState::idle, 0},
-            {LiftState::one, 52},
-            {LiftState::two, 118},
+            {LiftState::idle, 12},
+            {LiftState::one, 63 },
+            {LiftState::two, 128},
             {LiftState::prime, 349},
             {LiftState::lower, 360 + 121},
             {LiftState::lowest, 360 + 325}
@@ -63,7 +63,7 @@ class Lift {
         double target;
         double error = 0;
         bool off = false;
-        const int snapRange = 400;
+        const int snapRange = 4000;
         
        	LiftState currentState;
 
