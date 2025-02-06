@@ -44,7 +44,9 @@ void driver() {
     if (state[NY]) clamp.toggle();
     
     if (state[NA]) claw.toggle();
-    if (state[NUP]) tsukasa.toggle();
+    if (state[NUP]) {
+        tsukasa.toggle();
+    }
     // if (state[NDOWN]) {
     //     // test();
     //     // rPos();
