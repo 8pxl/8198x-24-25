@@ -14,15 +14,15 @@ void rAwp() {
       chass.setMTP(_chassLin, _chassAng);
 
       //grab mogo and score alliance stake;
-      lb.next();
-      chass.driveAngle(-930, 0, {.async = true, .exit = new Range(180, 10), .slew = 5});
+      // lb.next();
+      chass.driveAngle(-1000, 0, {.async = true, .vMax = 60,.exit = new Range(300, 10), .slew = 3});
       pros::delay(400);
-      intake.move(127);
+      // intake.move(127);
       chass.waitUntilSettled();
       clamp.toggle();
-      chass.driveAngle(-930, 0, {.async = false, .exit = new Range(50, 10),}, true);
+      chass.driveAngle(-1000, 0, {.async = false, .vMax = 60, .exit = new Range(50, 10)}, true);
 
-      intake.move(0);
+      // intake.move(0);
       lb.setState(LiftState::lower);
 
       //score alliance ring
@@ -40,45 +40,47 @@ void rAwp() {
 
       //intake first ring
       Pt ring1 = {12.5, -44.6};
-      double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
-      chass.mtpoint(ring1, {.drift = 9});
-      chass.driveAngle(800, 87, {.exit = new Range(40, 10)});
+      double ringAngle = chass.turnTo(ring1, {.exit = new Range(4, 10)});
+      chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 9});
+      chass.driveAngle(800, 86, {.exit = new Range(40, 10)});
 
       //intake second ring
-      chass.driveAngle(-800, 110, {.exit = new Range(30, 10)});
+      chass.driveAngle(-800, 110, {.exit = new Range(100, 10)});
       Pt ring2 = {20, -28};
       chass.mtpoint(ring2, {.vMin = 50, .within = 4});
       // ringAngle = chass.turnTo(ring2, {.exit = new Range(13, 10)});
       // chass.driveAngle(1000, ringAngle, {.vMin = 50});
 
       //go to third ring
-      chass.driveAngle(600, neg(60), {.vMin = 40, .exit = new Range(100, 10)});
+      chass.driveAngle(600, neg(60), {.timeout = 350, .vMin = 40, .exit = new Range(100, 10)});
       Pt ring3 = {-29, -3};
+      tsukasa.toggle();
       chass.mtpoint(ring3, {.drift = 10, .within = 5});
+      tsukasa.toggle();
 
       //go to corner
-      chass.mtpoint({-87, 2}, {.exit = new Range(2, 10), .drift = 10, .within = 9});
-      pros::delay(300);
+      chass.mtpoint({-86, 10}, {.exit = new Range(2, 10), .drift = 10, .within = 9});
       intake.setJamProtection(false);
       // chass.mtpoint({-74, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
-      Pt corner = {-107, 24};
+      Pt corner = {-104, 24};
       intake.move(127);
-      chass.mtpoint(corner, {.timeout = 790, .exit = new Range(1, 10), .drift = 10, .within = 9});
-      chass.driveAngle(-300, neg(45), {.timeout = 600, .slew = 2});
+      chass.mtpoint(corner, {.timeout = 800, .exit = new Range(2, 10), .drift = 10, .within = 6});
+      chass.driveAngle(-300, neg(45), {.timeout = 400, .slew = 4});
 
 
       //goal 2
-      Pt ring5 = {-79, -28};
-      pros::delay(500);
+      Pt ring5 = {-77, -28};
       chass.turn(90, {.timeout = 250});
-      chass.turn(140, {.async = true, .timeout = 340});
-      pros::delay(300);
-      // chass.turnTo(ring5, {.async = true, .timeout = 600});
+      chass.turn(140, {.async = true, .timeout = 800});
+      pros::delay(800);
       clamp.toggle();
+      /*
+      // chass.turnTo(ring5, {.async = true, .timeout = 600});
       chass.waitUntilSettled();
-      chass.driveAngle(500, 135, {.vMin = 30});
+      chass.driveAngle(600, 135, {.vMin = 50}); 
+      */
       chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 4});
-      intake.move(30);
+      intake.stopOnColor(keejLib::red, 1000);
 
       Pt goal2 = {-60, -23};
       double heading = chass.turnTo(goal2, {.timeout = 400, .exit = new Range(9, 10), .reverse = true});
@@ -89,11 +91,15 @@ void rAwp() {
       clamp.toggle();
       chass.driveAngle(-1050, heading, {.exit = new Range(50, 10),}, true);
 
+      chass.turn(187, {.timeout = 200});
       intake.move(127);
-      chass.turn(187, {.timeout = 300});
-      chass.driveAngle(600, 187, {});
+      pros::delay(100);
+      chass.driveAngle(730, 187, {.async = true});
+      pros::delay(300);
+      lb.next();
+      lb.next();
             intake.setJamProtection(true);
-            intake.setColor(none);
+            // intake.setColor(none);
 
 
 }

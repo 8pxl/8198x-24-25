@@ -13,7 +13,7 @@ using namespace exit;
 using namespace keejLib;
 
 PIDConstants _180 {
-    .kp = 5.9,
+    .kp = 5.3,
     .ki = 0.6,
     .kd = 70,
     .maxIntegral = 20,
