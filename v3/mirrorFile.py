@@ -2,12 +2,11 @@ import shutil
 import os
 import re
 
-path = 'src/autons/neg/'
-cache = path + 'cache/'
-side = input("sideToGenerate? ")
-shutil.rmtree(cache)
-os.mkdir(cache)
-assert(side == "r" or side == "b")
+
+path = "src/autons/neg/relims.hpp"
+write = "src/autons/neg/belims.hpp"
+f = open(path, 'r')
+w = open(write, 'w')
 
 points = r'(\{\s*(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)\s*\})'
 turn = r'(?://.*|/\*.*?\*/|\s*).*?chass\.turn\(\s*([^,]+)'
@@ -22,18 +21,7 @@ def flipAng(ang):
 
 def grabNums(txt):
     return float(txt.replace('{', '').replace('}', ''))
-
-for file in os.listdir(path):
-    print(file)
-    if (file[0] != side): continue
-    shutil.move(path + file, cache+file)
-    print(path + file)
-for file in os.listdir(path):
-    if file[0] != ('r' if side == 'b' else 'r'): continue
-    f = open(path + file, 'r')
-    w = open(path + side + file[1:], 'w')
-    print(path+file)
-    for line in f.readlines():
+for line in f.readlines():
         toWrite = line
         matches = re.findall(points, line)
         if matches:
