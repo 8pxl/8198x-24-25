@@ -28,7 +28,7 @@ void relimsNeg() {
 
       //score alliance ring
       // chass.driveAngle(800, neg(10), {});
-      Pt allianceStake = {-26.1, 18.9};
+      Pt allianceStake = {-25.8, 18.9};
       // chass.moveWithin(allianceStake, 14.7, {});
       chass.mtpoint(allianceStake, {.drift = 12, .within = 14.7});
       lb.next();

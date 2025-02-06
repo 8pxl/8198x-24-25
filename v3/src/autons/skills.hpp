@@ -160,7 +160,7 @@ void wall1() {
 void corner1() {
     chass.driveAngle(-400, 80, { .timeout = 1000, .vMin = 60, .exit = new Range(20 , 20)});
     //was -112
-    Pt lerp = {3, -112};
+    Pt lerp = {3, -108};
     chass.mtpoint(lerp, {.async = false, .timeout = 1200, .vMin = 15, .settleRange = 10, .exit = new Range(8, 10), .drift = 9});
     
     Pt ring1 = {19.4, -117.8};
@@ -185,9 +185,10 @@ void corner1() {
     
     Pt ring2 = {20.9, -132.5};
     // chass.turnTo(ring2, {.timeout = 700, .exit = new Range(10, 20)});
+    chass.mtpoint(ring2, {.async = true, .timeout = 1200, .vMin = 0, .settleRange = 5, .exit = new Range(5, 10), .drift = 9});
+    pros::delay(200);
     intake.move(127);
-    chass.mtpoint(ring2, {.timeout = 1200, .vMin = 0, .settleRange = 5, .exit = new Range(5, 10), .drift = 9});
-    
+    chass.waitUntilSettled();
     //place
     // chass.driveAngle(-500, 170, { .timeout = 900, .exit = new Range(40, 20)});
     // doink.toggle();
@@ -261,7 +262,7 @@ tsukasa.toggle();
     //was 32.8
     //was 33.8
     //was34.8
-    Pt blueAS = {-33.2, -136.8};
+    Pt blueAS = {-32.8, -136.8};
     // Pt blueAS = {-29, -135};
     chass.turnTo(blueAS, {.timeout  = 600, .exit = new Range(2, 100)});
     Pose pose = chass.getPose();
@@ -385,7 +386,7 @@ void goal3() {
     lb.next();
     intake.move(127);
     chass.mtpoint(ring1, {.async = false, .timeout = 1400, .vMin = 30, .settleRange = 5, .exit = new Range(5, 10), .drift = 8 });
-    pros::delay(600);
+    pros::delay(700);
     intake.move(0);
     lb.next();
     lb.next();
@@ -402,7 +403,7 @@ void goal3() {
     // Pt stake = {-98, -65.5};
     // Pt stake = {-98, -65.5};
     //was 62
-    chass.driveAngle(500, 180, {});
+    chass.driveAngle(-400, neg(135), {});
 Pt stake = {-106, -62.7};
     // chass.setTurn(_ttp);
     // chass.turnTo(stake, {.timeout = 800, .exit = new Range(1, 200)});
@@ -480,13 +481,14 @@ clamp.toggle();
 
 void hang() {
     //-50, -87
-    lb.setState(keejLib::LiftState::prime);
+    lb.setState(keejLib::LiftState::lower);
     chass.mtpoint({-65, -99}, {.exit = new Range (7, 10)});
     chass.setTurn(_180);
     chass.turn(neg(135), {.timeout = 700});
     chass.setTurn(_90);
-    chass.driveAngle(-1700, neg(135), {.timeout = 1000, .vMax = 60, .slew = 4,});
-    chass.driveAngle(400, neg(135), {.slew = 4});}
+    chass.driveAngle(-1700, neg(135), {.timeout = 1000, .vMax = 58, .slew = 4,});
+    pros::delay(100);
+    chass.driveAngle(300, neg(135), {.slew = 4});}
 void skills() {
     init();
 
