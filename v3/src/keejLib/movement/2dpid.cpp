@@ -105,6 +105,9 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
         if (std::abs(vl) < params.vMin) {
             vl = params.vMin * sign(vl);
         }
+        if (std::abs(vl) > params.vMax) {
+            vl = params.vMax * sign(vl);
+        }
         
         if (std::abs(vl) + std::abs(va) > 127) {
           vl = (127 - std::abs(va)) * sign(vl);
