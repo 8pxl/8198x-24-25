@@ -70,9 +70,9 @@ void Lift::control() {
     auto s = RobotState::getInstance();
     currentState = s->getLiftState();
     setTarget(currentState);
-    if (currentState == LiftState::idle && error < 250) {
-        motor -> move(0);
-    }
+    // if (currentState == LiftState::idle && error < 250) {
+    //     motor -> move(0);
+    // }
     // std::cout << "angle: " << angle << std::endl;
     motor -> move(pid.out(error) + kf * cos(angle + angleOffset));
 }

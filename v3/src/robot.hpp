@@ -26,7 +26,7 @@ namespace robot {
     pros::adi::DigitalOut clampPiston('a');
     pros::adi::DigitalOut doinkArmPiston('b');
     pros::adi::DigitalOut doinkClawPiston('c');
-    pros::adi::DigitalOut odomPiston('e');
+    pros::adi::DigitalOut odomPiston('g');
     pros::adi::DigitalOut intakePiston('d');
     pros::Rotation rotationSensor(18);
     pros::Rotation vertTracker(-20);

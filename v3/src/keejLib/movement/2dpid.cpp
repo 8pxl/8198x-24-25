@@ -222,6 +222,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         linearVel = std::clamp(linearVel, -maxSlipSpeed, maxSlipSpeed);
         
         linearVel = std::max(fabs(linearVel), params.vMin) * sign(linearVel);
+        linearVel = std::min(fabs(linearVel), params.vMax) * sign(linearVel);
         if (std::abs(linearVel) + std::abs(angularVel) > 127) {
             linearVel = (127 - std::abs(angularVel)) * sign(linearVel);
         }

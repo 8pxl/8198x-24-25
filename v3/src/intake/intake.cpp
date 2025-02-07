@@ -43,7 +43,7 @@ void Intake::setJamProtection(bool val) {
 }
 
 void Intake::stopOnColor(Color col, int timeout) {
-  velocity = 90;
+  velocity = 105;
   colorToStop = col;
   autoStopTimer.set(timeout);
 }
@@ -105,7 +105,7 @@ void Intake::handleColorSort(Color col, bool liftClear) {
 }
 
 bool Intake::isJammed(double actual) {
-  return (velocity > 0 && fabs(actual) < 0.4 && (jamTimer.elapsed() > 400));
+  return (velocity > 0 && fabs(actual) < 5 && (jamTimer.elapsed() > 400));
 }
 
 void Intake::handleJamProtection(bool liftClear, RobotState * s) {
@@ -148,6 +148,6 @@ void Intake::control() {
   if (velocity != 0) optical->set_led_pwm(100);
   else optical->set_led_pwm(0);
 
-  if (velocity <= 0) jamTimer.reset();
+  if (velocity <= 0.5) jamTimer.reset();
 } 
 }// namespace keejLib
