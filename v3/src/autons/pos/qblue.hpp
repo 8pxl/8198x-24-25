@@ -11,6 +11,9 @@ void qbPos() {
     chass.setAng(_angBig);
     chass.setLin(_lin);
     chass.setMTP(_chassLin, _chassAng);
+        Pose p = chass.getPose();
+        chass.setPose({-p.pos.x, p.pos.y, p.heading});
+    
     // turnToRing(100000);
     // chass.mtpoint({64.0, -1.0}, {.async = false, .timeout = 1700, .vMin = 0, .settleRange = 5, .exit = new exit::Range(5, 50)});
     // chass.mtpose({-64, -1, Angle(neg(90), keejLib::HEADING)}, 0.5, {.async = false, .timeout = 1700, .vMin = 0, .settleRange = 5, .exit = new exit::Range(5, 50)});

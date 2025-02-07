@@ -14,13 +14,13 @@ void init() {
 }
 void allianceStake() {
     intake.setColor(none);
-    lb.next();
+    // lb.next();
     chass.setLin(_linBigger);
     chass.driveAngle(-300, 0, {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(40, 20), .slew = 5});
     // chass.useAlternateOffsets(true);
     clamp.toggle();
-    pros::delay(100);
-    intake.move(127);
+    // pros::delay(100);
+    // intake.move(127);
     
     // Pt redAS = {-25.7, 6.7};
     //from circle regression
@@ -452,7 +452,7 @@ void corner4() {
     chass.driveAngle(800, imu.get_heading(), {.timeout = 600, .exit = new Range(20, 10)});
 
     
-    chass.turn(45, {.timeout = 800, .exit = new Range(3, 10)});
+    chass.turn(60, {.timeout = 800, .exit = new Range(3, 10)});
     pros::delay(200);
     // clamp.toggle();
     // chass.driveAngle(700, 45, {.timeout = 300, .exit = new Range(20, 10)});
@@ -486,7 +486,7 @@ void hang() {
     chass.setTurn(_180);
     chass.turn(neg(135), {.timeout = 700});
     chass.setTurn(_90);
-    chass.driveAngle(-1700, neg(135), {.timeout = 1000, .vMax = 58, .slew = 4,});
+    chass.driveAngle(-1700, neg(135), {.timeout = 1000, .vMax = 50, .slew = 4,});
     pros::delay(100);
     chass.driveAngle(300, neg(135), {.slew = 4});}
 void skills() {

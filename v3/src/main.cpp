@@ -24,9 +24,9 @@ void initialize() {
     chass.startTracking();
     
     int clr = cont.select({"red", "blue"});
+    glb::color = clr ? red : blue;
+    
     intake.setColor(oppositeColor(static_cast<Color>(clr)));
-    intake.setColor(none);
-    // glb::color = clr ? blue : red;
     glb::auton = autons.autonsList[cont.select(autons.names)];
     
     // int clr = red;
@@ -40,15 +40,15 @@ void initialize() {
         // chass.setPose({-p.pos.x, p.pos.y, p.heading});
     // }
     // 
-    robot::lb.startControl();
     if (glb::auton != qrPos && glb::auton != qbPos) {
         lb.setState(keejLib::LiftState::one);
     }
-    if(glb::auton == qbPos) {
-        prosController.print(0, 0, "%f", "blue pos");
-        Pose p = chass.getPose();
-        chass.setPose({-p.pos.x, p.pos.y, p.heading});
-    }
+    robot::lb.startControl();
+    // if(glb::auton == qbPos) {
+    //     prosController.print(0, 0, "%f", "blue pos");
+    //     Pose p = chass.getPose();
+    //     chass.setPose({-p.pos.x, p.pos.y, p.heading});
+    // }
     
     
     // robot::vision.set_signature(0, &redRing);
@@ -56,9 +56,12 @@ void initialize() {
     // lb.setState(lift::Idle::getInstance());
 }
 
-void disabled() {}
+void disabled() {
+    odomPiston.set_value(true);
+}
 void competition_initialize() {}
 void autonomous() {
+    odomPiston.set_value(false);
     glb::auton();
 }
 

@@ -40,7 +40,7 @@ void relimsNeg() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {12.5, -44.6};
+      Pt ring1 = {12.5, -43.7};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.drift = 9, .within = 1});
       chass.driveAngle(800, 86, {.vMax = 70, .exit = new Range(40, 10)});
@@ -80,6 +80,8 @@ chass.driveAngle(470, ang, {.timeout = 600, .slew = 3});
       chass.driveAngle(-600, 45, {.vMin = 40, .exit = new Range(100, 10)});
       Pt ring3 = {-29, -3};
       tsukasa.toggle();
+
+      /*
       chass.turn(neg(90), {.timeout = 300});
       chass.mtpoint(ring3, {.drift = 10, .within = 5});
 
@@ -88,4 +90,12 @@ chass.driveAngle(470, ang, {.timeout = 600, .slew = 3});
 
       Pt corner2 = {-102, 24};
       chass.mtpoint(corner2, {.timeout = 1200, .exit = new Range(1, 10), .drift = 10, .within = 9});
+      */
+
+      //touch:
+      ang = chass.turnTo({-15, -30}, {.timeout = 800});
+      intake.move(20);
+      lb.next();
+      chass.mtpoint({-13, -32}, {});
+
 }

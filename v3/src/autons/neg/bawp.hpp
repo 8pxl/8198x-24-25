@@ -16,20 +16,19 @@ void bAwp() {
         chass.setPose({-p.pos.x, p.pos.y, p.heading});
 
       //grab mogo and score alliance stake;
-      lb.next();
-      chass.driveAngle(-930, neg(0), {.async = true, .exit = new Range(180, 10), .slew = 5});
-      pros::delay(400);
-      intake.move(127);
+      // lb.next();
+      chass.driveAngle(-1000, 0, {.async = true, .vMax = 60,.exit = new Range(300, 10), .slew = 3});
+      // intake.move(127);
       chass.waitUntilSettled();
       clamp.toggle();
-      chass.driveAngle(-930, neg(0), {.async = false, .exit = new Range(50, 10),}, true);
+      chass.driveAngle(-1000, 0, {.async = false, .vMax = 60, .exit = new Range(50, 10)}, true);
 
       intake.move(0);
       lb.setState(LiftState::lower);
 
       //score alliance ring
       // chass.driveAngle(800, 10, {});
-      Pt allianceStake = {26.3, 18.9};
+      Pt allianceStake = {26.8, 19.2};
       // chass.moveWithin(allianceStake, 14.7, {});
       chass.mtpoint(allianceStake, {.drift = 12, .within = 14.7});
       lb.next();
@@ -41,7 +40,7 @@ void bAwp() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {-12.5, -44.6};
+      Pt ring1 = {-12.5, -43.7};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.drift = 9});
       chass.driveAngle(800, neg(87), {.exit = new Range(40, 10)});
@@ -81,6 +80,7 @@ void bAwp() {
       clamp.toggle();
       chass.waitUntilSettled();
       chass.driveAngle(650, neg(135), {.timeout = 400, .vMin = 50});
+      lb.setState(LiftState::lower);
       chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 4});
       intake.move(30);
 

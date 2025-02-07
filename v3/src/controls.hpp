@@ -1,4 +1,5 @@
 #include "autons/constants.hpp"
+#include "globals.hpp"
 #include "intake/intake.h"
 #include "keejLib/lib.h"
 #include "keejLib/util.h"
@@ -60,8 +61,17 @@ void driver() {
         prosController.print(0, 0, "%.2f, %.2f, %.2f", p.pos.x, p.pos.y, p.heading.heading());
         // triangulatePoint();
     }
+    if (state[NX]) {
+        odomPiston.set_value(true);
+    }
     if (state[NB]) {
-        intake.setColor( static_cast<Color>((intake.getColor() + 1) % 3));
+        if (intake.getColor() == none) {
+            intake.setColor(glb::color);
+        }
+        else {
+            intake.setColor(none);
+        }
+        // intake.setColor( static_cast<Color>((intake.getColor() + 1) % 3));
     }
 }
 

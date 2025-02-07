@@ -27,7 +27,7 @@ void rAwp() {
 
       //score alliance ring
       // chass.driveAngle(800, neg(10), {});
-      Pt allianceStake = {-26.3, 18.9};
+      Pt allianceStake = {-26.9, 19.6};
       // chass.moveWithin(allianceStake, 14.7, {});
       chass.mtpoint(allianceStake, {.drift = 12, .within = 14.7});
       lb.next();
@@ -39,7 +39,7 @@ void rAwp() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {12.5, -44.6};
+      Pt ring1 = {12.5, -43.4};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(4, 10)});
       chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 9});
       chass.driveAngle(800, 86, {.exit = new Range(40, 10)});
@@ -72,13 +72,15 @@ void rAwp() {
       Pt ring5 = {-77, -28};
       chass.turn(90, {.timeout = 250});
       chass.turn(140, {.async = true, .timeout = 800});
-      pros::delay(800);
+      // pros::delay(800);
+      chass.driveAngle(600, 135, {.vMin = 50}); 
       clamp.toggle();
       /*
       // chass.turnTo(ring5, {.async = true, .timeout = 600});
       chass.waitUntilSettled();
       chass.driveAngle(600, 135, {.vMin = 50}); 
       */
+      lb.setState(LiftState::lower);
       chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 4});
       intake.stopOnColor(keejLib::red, 1000);
 
@@ -91,13 +93,12 @@ void rAwp() {
       clamp.toggle();
       chass.driveAngle(-1050, heading, {.exit = new Range(50, 10),}, true);
 
-      chass.turn(187, {.timeout = 200});
+      chass.turn(160, {.timeout = 200});
       intake.move(127);
       pros::delay(100);
-      chass.driveAngle(730, 187, {.async = true});
+      chass.driveAngle(730, 160, {.async = true});
       pros::delay(300);
-      lb.next();
-      lb.next();
+      // lb.setState(keejLib::LiftState::lowest);
             intake.setJamProtection(true);
             // intake.setColor(none);
 

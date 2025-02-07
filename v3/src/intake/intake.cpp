@@ -33,7 +33,10 @@ void Intake::setAutoLift(bool val) {
   autoLift = val;
 }
 
-void Intake::move(double velocity) { this->velocity = velocity; }
+void Intake::move(double velocity) { 
+  this->velocity = velocity; 
+  colorToStop = none;
+  }
 
 void Intake::setJamProtection(bool val) {
   jamProtection = val;
