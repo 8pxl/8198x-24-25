@@ -131,20 +131,22 @@ void Chassis::wallReset(int wall, int numReadings, bool createTask) {
     const double minX = -98.527;
     const double minY = -133.19;
     std::cout << "prev x: " << pose.pos.x << " prev y: " << pose.pos.y << std::endl;
-    switch (wall) {
-        case 0:
-            pose.pos.x = minX + avgDist;
-            break;
-        case 1:
-            pose.pos.y = maxY - avgDist;
-            break;
-        case 2:
-            pose.pos.x = maxX - avgDist;
-            break;
-        case 3:
-            pose.pos.y = minY + avgDist;
-            break;
-    }
+    // if (fabs(avgDist) <= 8) {
+        switch (wall) {
+            case 0:
+                pose.pos.x = minX + avgDist;
+                break;
+            case 1:
+                pose.pos.y = maxY - avgDist;
+                break;
+            case 2:
+                pose.pos.x = maxX - avgDist;
+                break;
+            case 3:
+                pose.pos.y = minY + avgDist;
+                break;
+        }
+    // }
     std::cout << "new x: " << pose.pos.x << " new y: " << pose.pos.y << std::endl;
 }
 }

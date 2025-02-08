@@ -27,9 +27,9 @@ void qrPos() {
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
     chass.turn(135, {.timeout=50, .exit = new Range(3, 20)});
     chass.turn(190, {.timeout=400, .exit = new Range(3, 20)});
-    chass.driveAngle(-900, 200, {.async = false, .timeout = 680, .vMin = 28, .exit = new Range(30, 10)});
+    chass.driveAngle(-750, 200, {.async = false, .timeout = 680, .vMin = 28, .exit = new Range(30, 10)});
     chass.setLin(_linSmall);
-    chass.driveAngle(-750, neg(180), {.async = false, .timeout = 600, .vMin = 0, .exit = new Range(5, 20)});
+    chass.driveAngle(-900, neg(180), {.async = false, .timeout = 600, .vMin = 0, .exit = new Range(5, 20)});
     chass.setLin(_lin);
     clamp.toggle();
     //1490

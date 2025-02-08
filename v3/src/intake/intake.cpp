@@ -133,7 +133,7 @@ void Intake::control() {
   Color col = detectColor();
   double vel = velocityEma.out(motor->get_actual_velocity());
 
-  std::cout << vel << std::endl;
+  // std::cout << vel << std::endl;
   if (colorToStop != none) {
     handleAutoStop(col);
   } 

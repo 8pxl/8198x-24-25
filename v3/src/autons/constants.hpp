@@ -121,7 +121,7 @@ PIDConstants _ang {
 };
 
 PIDConstants _angBig {
-    .kp = 1.9,
+    .kp = 2.4,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 0,

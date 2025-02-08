@@ -82,9 +82,7 @@ void qbPos() {
     chass.turnTo(allianceStake, {.timeout=700, .exit = new Range(5, 20)});
     // chass.turn(neg(18    0), {.timeout=900, .exit = new Range(3, 20)});
     intake.move(0);
-    lb.next();
-    lb.next();
-    lb.next();
+    lb.setState(keejLib::LiftState::lower);
     tsukasa.toggle();
     //10 < x
     chass.mtpoint(allianceStake, {.drift = 12, .within = 14.7});
@@ -94,11 +92,11 @@ void qbPos() {
     // chass.driveAngle(-400, neg(180), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(5, 20)});
     // 49.1 < x
     // 15 tpp small
-    Pt goal = {54, 18.4};
+    Pt goal = {52, 18.4};
     intake.move(0);
     chass.mtpoint(goal, {.async = true, .timeout = 1000, .vMin = 25, .settleRange = 9, .exit = new exit::Range(7, 10), .drift = 5});
     pros::delay(400);
-    lb.next();
+    lb.setState(keejLib::LiftState::idle);
     chass.waitUntilSettled();
     // chass.turn(140, {.timeout=500, .exit = new Range(3, 20)});
     // chass.driveAngle(-900, 140, {.async = true, .timeout = 1000, .vMin = 35, .exit = new Range(5, 20)});
@@ -106,9 +104,10 @@ void qbPos() {
     // intake.setSorting(true);
     // CHANGED TODAY
     // chass.turn(150, {.timeout = 280});
-    chass.driveAngle(-1100, 155, {.async = false, .timeout = 500, .vMin = 0, .exit = new Range(5, 20), .slew = 3});
+    chass.driveAngle(-1200, 155, {.async = false, .timeout = 500, .vMin = 0, .exit = new Range(5, 20), .slew = 3});
     chass.setAng(_ang);
     clamp.toggle();
+    pros::delay(100);
 // chass.driveAngle(-300, 150, {.async = false, .timeout = 400});
     chass.turn(neg(58), {.timeout=600, .exit = new Range(7, 10)});
     intake.move(127);

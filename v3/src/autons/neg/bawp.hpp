@@ -30,7 +30,7 @@ void bAwp() {
 
       //score alliance ring
       // chass.driveAngle(800, 10, {});
-      Pt allianceStake = {25.9, 19.2};
+      Pt allianceStake = {25.9, 18.3};
       // chass.moveWithin(allianceStake, 14.7, {});
       chass.mtpoint(allianceStake, {.drift = 12, .within = 14.7});
       lb.next();
@@ -103,7 +103,7 @@ void bAwp() {
 
       Pt goal2 = {60.0, -26.3};
       double heading = chass.turnTo(goal2, {.timeout = 300, .exit = new Range(9, 10), .reverse = true});
-      intake.stopOnColor(keejLib::red, 1000);
+      intake.stopOnColor(keejLib::blue, 1000);
 
       //clamp goal
 
@@ -113,7 +113,7 @@ void bAwp() {
 
       intake.move(127);
       pros::delay(500);
-      chass.turn(neg(135), {.timeout = 400});
+      chass.turn(neg(135), {.timeout = 500});
       chass.driveAngle(730, neg(135), {.async = true});
       pros::delay(300);
       // lb.setState(keejLib::LiftState::lowest);

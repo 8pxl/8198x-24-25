@@ -53,7 +53,7 @@ void Lift::spin(double voltage) {
         // std::cout << "error: " << abs(rot -> get_position()- target) << std::endl; 
 ;
         if (voltage == 0 && (abs(rot -> get_position()- target) <= snapRange)) {
-    std::cout << (abs(rot -> get_position()- target)) << std::endl;
+    // std::cout << (abs(rot -> get_position()- target)) << std::endl;
     // std::cout << snapRange << std::endl;
             off = false;
         }

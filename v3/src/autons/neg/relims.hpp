@@ -28,7 +28,7 @@ void relimsNeg() {
 
       //score alliance ring
       // chass.driveAngle(800, neg(10), {});
-      Pt allianceStake = {-25.8, 18.9};
+      Pt allianceStake = {-25.9, 18.6};
       // chass.moveWithin(allianceStake, 14.7, {});
       chass.mtpoint(allianceStake, {.drift = 12, .within = 14.7});
       lb.next();
@@ -40,14 +40,14 @@ void relimsNeg() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {12.5, -43.7};
+      Pt ring1 = {12.5, -45.8};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.drift = 9, .within = 1});
       chass.driveAngle(800, 86, {.vMax = 70, .exit = new Range(40, 10)});
 
       //intake second ring
-      chass.driveAngle(-900, 110, {.vMin = 70, .exit = new Range(200, 10)});
-      chass.driveAngle(-900, 135, {.vMin = 30, .exit = new Range(150, 10)});
+      chass.driveAngle(-500, 110, {.vMin = 70, .exit = new Range(200, 10)});
+      chass.driveAngle(-700, 135, {.vMin = 30, .exit = new Range(150, 10)});
       Pt ring2 = {22.1, -28};
       ringAngle = chass.turnTo(ring2, {.exit = new Range(5, 10)});
       chass.driveAngle(900, ringAngle, {.vMin = 50});
@@ -58,7 +58,7 @@ void relimsNeg() {
       //was 27.4
       Pt corner1 = {27.8, 7};
       // chass.turnTo(corner1, {.t  imeout = 200});
-      chass.mtpoint(corner1, {.timeout = 1200, .exit = new Range(1, 10), .drift = 7});
+      chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 7});
       intake.move(127);
       chass.setTurn(_5);
       double ang = chass.turnTo({41, 17}, {});

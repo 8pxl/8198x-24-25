@@ -27,7 +27,7 @@ void rAwp() {
 
       //score alliance ring
       // chass.driveAngle(800, neg(10), {});
-      Pt allianceStake = {-25.9, 19.2};
+      Pt allianceStake = {-25.9, 18.6};
       // chass.moveWithin(allianceStake, 14.7, {});
       chass.mtpoint(allianceStake, {.drift = 12, .within = 14.7});
       lb.next();
