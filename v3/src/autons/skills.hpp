@@ -49,7 +49,8 @@ void goal1() {
     chass.mtpoint(ring1, {.timeout = 1200, .vMin = 20, .settleRange = 2,  .exit = new Range(5, 10), .drift = 8});
     
     // Pt ring2 = {26.3, -62.58};
-    Pt ring2 = {31.3, -64};
+    //31.3
+    Pt ring2 = {32.3, -64};
     chass.mtpoint(ring2, {.timeout = 1200, .vMin = 30, .settleRange = 10, .exit = new Range(5, 10), .drift = 10});
     chass.driveAngle(-500, 70, {.timeout = 400, .exit = new Range(100, 10)});
     pros::delay(150);
@@ -222,7 +223,7 @@ void corner1() {
     chass.wallReset(3, 10, false);
     // clamp.toggle();
     // chass.driveAngle(1700, neg(88), {.timeout = 1000, .exit = new Range(30, 20)});
-    chass.mtpoint({-12, -127}, {.timeout = 1000, .drift = 5});
+    chass.mtpoint({-15, -125}, {.timeout = 1200, .drift = 5});
     chass.waitUntilSettled();
     
 
@@ -265,7 +266,8 @@ tsukasa.toggle();
     //was34.8
     //was -136
     //was -30.8
-    Pt blueAS = {-29.9, -137.1};
+    //was 29.9
+    Pt blueAS = {-31.3, -137.1};
     // Pt blueAS = {-29, -135};
     chass.turnTo(blueAS, {.timeout  = 600, .exit = new Range(2, 100)});
     Pose pose = chass.getPose();
@@ -318,7 +320,8 @@ void goal2() {
     // chass.useAlternateOffsets(true);
     intake.move(127);
     tsukasa.setState(false);
-    Pt ring1 = {-1.4, -89};
+    //was 1.4 11:17 video
+    Pt ring1 = {-2.4, -89};
     chass.mtpoint(ring1, {.drift = 10, .within = 5});
 
     // chass.turnTo(ring1, {.timeout = 500, .exit = new Range(10, 20)});
@@ -366,7 +369,7 @@ void goal2() {
     pros::delay(150);
     clamp.toggle();
     chass.setAng(_angBig);
-    chass.driveAngle(300, 90, {.timeout = 600});
+    chass.driveAngle(400, 90, {.timeout = 600});
     chass.setAng(_ang);
     chass.wallReset(1, 10, false);
     intake.stopOnColor(red, 1300);
@@ -494,8 +497,9 @@ void hang() {
     odomRelease.setState(true);
     chass.turn(neg(135), {.timeout = 500});
     chass.setTurn(_90);
-    chass.driveAngle(-1900, neg(135), {.timeout = 1200, .vMax = 55, .slew = 4,});
-    pros::delay(400);
+    tsukasa.toggle();
+    chass.driveAngle(-1850, neg(135), {.timeout = 1200, .vMax = 55, .slew = 4,});
+    pros::delay(300);
     lb.setState(keejLib::LiftState::lower);
     chass.driveLin(340, 25, {});
     // chass.driveLin(400, -35, {});
