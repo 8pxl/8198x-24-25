@@ -8,7 +8,7 @@ namespace keejLib {
 
 Intake::Intake(pros::Motor *motor, pros::Optical *optical,
                Color color)
-    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.8), colorEma(1) {
+    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.9), colorEma(1) {
       optical -> set_integration_time(5);
     }
 
@@ -105,7 +105,7 @@ void Intake::handleColorSort(Color col, bool liftClear) {
 }
 
 bool Intake::isJammed(double actual) {
-  return (velocity > 0 && fabs(actual) < 5 && (jamTimer.elapsed() > 400));
+  return (velocity > 0 && (fabs(actual) < 5) && (jamTimer.elapsed() > 400));
 }
 
 void Intake::handleJamProtection(bool liftClear, RobotState * s) {
@@ -133,6 +133,7 @@ void Intake::control() {
   Color col = detectColor();
   double vel = velocityEma.out(motor->get_actual_velocity());
 
+  std::cout << vel << std::endl;
   if (colorToStop != none) {
     handleAutoStop(col);
   } 

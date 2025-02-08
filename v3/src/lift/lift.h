@@ -49,8 +49,8 @@ class Lift {
             {LiftState::idle, LiftState::lowest}
         };
         std::unordered_map<LiftState, double> valueMap = {
-            {LiftState::idle, 9},
-            {LiftState::one, 63 },
+            {LiftState::idle, 5},
+            {LiftState::one, 57 },
             {LiftState::two, 124},
             {LiftState::prime, 349},
             {LiftState::lower, 360 + 121},

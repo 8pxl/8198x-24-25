@@ -46,7 +46,7 @@ namespace robot {
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
     Intake intake(&intakeMotor, &opticalSensor, Color::blue);
     Lift lb(&liftMotor, &rotationSensor, {
-        .kp = 0.035,
+        .kp = 0.039,
         .ki= 0.01,
         .kd = 0.1,
         .maxIntegral = 1000000,

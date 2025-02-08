@@ -57,11 +57,12 @@ void initialize() {
 }
 
 void disabled() {
-    odomPiston.set_value(true);
+    // odomPiston.set_value(true);
 }
 void competition_initialize() {}
 void autonomous() {
-    odomPiston.set_value(false);
+    glb::autonRan = true;
+    odomRelease.setState(false);
     glb::auton();
 }
 
@@ -78,12 +79,15 @@ void opcontrol() {
     //     lb.setAutoControl(true);
     // }
     // intake.stopOnColor(keejLib::red, 10000);
+    if (glb::autonRan) {
+        odomRelease.setState(true);
+    }
     while(true) {
         // lb.setAutoControl(true);        
 
         // std::cout << "his" << std::endl;
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-            init();
+            // init();
             // allianceStake();
             glb::auton();
             // intake.setSorting(true);

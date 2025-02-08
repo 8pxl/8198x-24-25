@@ -69,7 +69,6 @@ void qrPos() {
     intake.move(0);
     lb.next();
     lb.next();
-    lb.next();
     tsukasa.toggle();
     //11.4 > x
     //11.2 > x
@@ -88,9 +87,9 @@ void qrPos() {
     tsukasa.toggle();
     // intake.setSorting(true);
     chass.setLin(_linSmall);
-    chass.driveAngle(-920, neg(150), {.timeout = 900, .exit = new Range(200, 15), .slew=0.01});
+    chass.driveAngle(-920, neg(150), {.timeout = 900, .exit = new Range(200, 15), .slew=3});
     clamp.toggle();
-    chass.driveAngle(-920, neg(150), {.timeout = 360, .exit = new Range(70, 15), .slew=0.01,}, true);
+    chass.driveAngle(-920, neg(150), {.timeout = 360, .exit = new Range(70, 15), .slew=3,}, true);
     // chass.driveAngle(-1000, neg(150), {.async = false, .timeout = 450, .vMin = 0, .exit = new Range(5, 20)});
     chass.setLin(_lin);
     chass.setAng(_ang);
