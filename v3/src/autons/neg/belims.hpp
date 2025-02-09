@@ -61,17 +61,17 @@ void belimsNeg() {
       //go to corner
       // chass.mtpoint({74.0, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
       //was 28.1, 7.2
-      Pt corner1 = {-30.1, 8.3};
+      Pt corner1 = {-32.1, 6.3};
       // chass.turnTo(corner1, {.t  imeout = 200});
-      chass.mtpoint(corner1, {.timeout = 1200, .exit = new Range(1, 10), .drift = 7});
+      chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 7});
       intake.move(127);
       chass.setTurn(_5);
-      double ang = chass.turnTo({-37, 17.0}, {});
+      double ang = chass.turnTo({-38.4, 17.0}, {});
       chass.setTurn(_90);
       // chass.turn(neg(45), {});=
       intake.setJamProtection(false);
       // chass.driveLin(600, 40, {});
-chass.driveAngle(600, ang, {.timeout = 600, .slew = 3});
+chass.driveAngle(800, ang, {.timeout = 600, .slew = 3});
             pros::delay(400);
             chass.driveLin(520, -25, {});
             intake.setJamProtection(true);
@@ -87,11 +87,10 @@ chass.driveAngle(600, ang, {.timeout = 600, .slew = 3});
       Pt ring3 = {29.0, -3.0};
       tsukasa.toggle();
 
-      chass.turn(90, {.timeout = 200});
+      chass.turn(90, {.timeout = 500});
       chass.mtpoint(ring3, {.drift = 10, .within = 5});
 
       intake.move(127);
-      tsukasa.toggle();
       // pros::delay(100);
 
       //touch
@@ -104,7 +103,10 @@ chass.driveAngle(600, ang, {.timeout = 600, .slew = 3});
       */
 
 
-      Pt corner2 = {98, 24.0};
-      chass.mtpoint(corner2, {.timeout = 1200, .exit = new Range(1, 10), .drift = 10, .within = 9});
+      Pt corner2 = {80, 24.0};
+      chass.mtpoint(corner2, {.async = true, .timeout = 1200, .exit = new Range(1, 10), .drift = 10, .within = 9});
+      pros::delay(600);
+      tsukasa.toggle();
+      chass.waitUntilSettled();
       pros::delay(2000);
 }

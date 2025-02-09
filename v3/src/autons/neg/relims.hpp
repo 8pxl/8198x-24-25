@@ -45,7 +45,7 @@ void relimsNeg() {
       Pt ring1 = {12.5, -45.8};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.drift = 9, .within = 1});
-      chass.driveAngle(800, 86, {.vMax = 70, .exit = new Range(40, 10)});
+      chass.driveAngle(900, 86, {.vMax = 70, .exit = new Range(40, 10)});
 
       //intake second ring
       chass.driveAngle(-500, 110, {.vMin = 70, .exit = new Range(200, 10)});
@@ -58,7 +58,7 @@ void relimsNeg() {
       //go to corner
       // chass.mtpoint({-74, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
       //was 27.4
-      Pt corner1 = {29.3, 7};
+      Pt corner1 = {30.3, 7};
       // chass.turnTo(corner1, {.t  imeout = 200});
       chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 7});
       intake.move(127);
@@ -83,12 +83,12 @@ chass.driveAngle(470, ang, {.timeout = 600, .slew = 3});
       Pt ring3 = {-29, -3};
       tsukasa.toggle();
 
-      chass.turn(neg(90), {.timeout = 300});
+      chass.turn(neg(90), {.timeout = 400});
       chass.mtpoint(ring3, {.drift = 10, .within = 5});
 
       intake.move(127);
 
-      Pt corner2 = {-90, 24};
+      Pt corner2 = {-80, 24};
       chass.mtpoint(corner2, {.async = true, .timeout = 1200, .exit = new Range(1, 10), .drift = 10, .within = 9});
       pros::delay(400);
       tsukasa.toggle();

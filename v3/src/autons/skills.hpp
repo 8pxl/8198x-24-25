@@ -170,7 +170,7 @@ void corner1() {
     chass.turnTo(ring1, {.timeout = 500, .exit = new Range(15, 20)});
     chass.mtpoint(ring1, {.timeout = 1200, .vMin = 0, .settleRange = 5, .exit = new Range(5, 10), .drift = 9});
     
-    Pt goal = {1.5, -123.5};
+    Pt goal = {1.5, -122.5};
     // chass.setLin(_linBigger);
     chass.mtpoint(goal, {.async = false, .timeout = 1600, .vMin = 5, .settleRange = 10, .exit = new Range(5, 10), .drift = 8});
     chass.driveAngle(-700, 55, {.timeout = 700, .exit = new Range(30, 10), .slew=3});
@@ -269,7 +269,7 @@ tsukasa.toggle();
     //was 29.9
     //was -31.45
     // Pt blueAS = {-32.45, -137.05};
-        Pt blueAS = {-31.3, -137.1};
+        Pt blueAS = {-31.9, -137.1};
 
     // Pt blueAS = {-29, -135};
     chass.turnTo(blueAS, {.timeout  = 600, .exit = new Range(2, 100)});
