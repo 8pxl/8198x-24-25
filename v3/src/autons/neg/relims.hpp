@@ -28,7 +28,9 @@ void relimsNeg() {
 
       //score alliance ring
       // chass.driveAngle(800, neg(10), {});
-      Pt allianceStake = {-25.9, 18.6};
+      // Pt allianceStake = {-25.9, 18.6};
+            Pt allianceStake = {-25.4, 18.6};
+
       // chass.moveWithin(allianceStake, 14.7, {});
       chass.mtpoint(allianceStake, {.drift = 12, .within = 14.7});
       lb.next();
@@ -56,7 +58,7 @@ void relimsNeg() {
       //go to corner
       // chass.mtpoint({-74, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
       //was 27.4
-      Pt corner1 = {27.8, 7};
+      Pt corner1 = {29.3, 7};
       // chass.turnTo(corner1, {.t  imeout = 200});
       chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 7});
       intake.move(127);
@@ -81,21 +83,21 @@ chass.driveAngle(470, ang, {.timeout = 600, .slew = 3});
       Pt ring3 = {-29, -3};
       tsukasa.toggle();
 
-      /*
       chass.turn(neg(90), {.timeout = 300});
       chass.mtpoint(ring3, {.drift = 10, .within = 5});
 
       intake.move(127);
+
+      Pt corner2 = {-90, 24};
+      chass.mtpoint(corner2, {.async = true, .timeout = 1200, .exit = new Range(1, 10), .drift = 10, .within = 9});
+      pros::delay(400);
       tsukasa.toggle();
-
-      Pt corner2 = {-102, 24};
-      chass.mtpoint(corner2, {.timeout = 1200, .exit = new Range(1, 10), .drift = 10, .within = 9});
-      */
-
+      chass.waitUntilSettled();
+      pros::delay(2000);
       //touch:
-      ang = chass.turnTo({-15, -30}, {.timeout = 800});
-      intake.move(20);
-      lb.next();
-      chass.mtpoint({-13, -32}, {});
+      // ang = chass.turnTo({-15, -30}, {.timeout = 800});
+      // intake.move(20);
+      // lb.next();
+      // chass.mtpoint({-13, -32}, {});
 
 }

@@ -54,7 +54,7 @@ class Lift {
             {LiftState::two, 133},
             {LiftState::prime, 349},
             {LiftState::lower, 360 + 121},
-            {LiftState::lowest, 360 + 325}
+            {LiftState::lowest, 360 + 271}
         };
         
         PID pid;

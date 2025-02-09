@@ -30,7 +30,8 @@ void bAwp() {
 
       //score alliance ring
       // chass.driveAngle(800, 10, {});
-      Pt allianceStake = {25.9, 18.3};
+      //was 25.9
+      Pt allianceStake = {26.05, 18.3};
       // chass.moveWithin(allianceStake, 14.7, {});
       chass.mtpoint(allianceStake, {.drift = 12, .within = 14.7});
       lb.next();
@@ -54,10 +55,10 @@ void bAwp() {
       Pt ring1 = {-12, -45.8};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(4, 10)});
       chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 9});
-      chass.driveAngle(800, neg(86), {.exit = new Range(40, 10)});
+      chass.driveAngle(900, neg(86), {.exit = new Range(40, 10)});
 
       //intake second ring
-      chass.driveAngle(-800, neg(110), {.exit = new Range(100, 10)});
+      chass.driveAngle(-900, neg(110), {.exit = new Range(100, 10)});
       Pt ring2 = {-20.0, -29.0};
       chass.mtpoint(ring2, {.vMin = 50, .within = 4});
       // ringAngle = chass.turnTo(ring2, {.exit = new Range(13, 10)});
@@ -76,7 +77,7 @@ void bAwp() {
 
       //go to corner
       chass.turn(neg(100), {.exit = new Range(15, 10)});
-      chass.mtpoint({86.0, 10.0}, {.exit = new Range(2, 10), .drift = 10, .within = 9});
+      chass.mtpoint({86.0, 10.0}, {.timeout = 1100, .exit = new Range(2, 10), .drift = 10, .within = 9});
       /*
       intake.setJamProtection(false);
       // chass.mtpoint({74.0, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
@@ -98,10 +99,10 @@ void bAwp() {
       chass.waitUntilSettled();
       chass.driveAngle(600, neg(135), {.vMin = 50}); 
       */
-      Pt ring5 = {79.0, -31.0};
+      Pt ring5 = {79.0, -30.0};
       chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 4});
 
-      Pt goal2 = {60.0, -26.3};
+      Pt goal2 = {60.0, -27.3};
       double heading = chass.turnTo(goal2, {.timeout = 300, .exit = new Range(9, 10), .reverse = true});
       intake.stopOnColor(keejLib::blue, 1000);
 
@@ -114,7 +115,7 @@ void bAwp() {
       intake.move(127);
       pros::delay(500);
       chass.turn(neg(135), {.timeout = 500});
-      chass.driveAngle(730, neg(135), {.async = true});
+      chass.driveAngle(690, neg(135), {.async = true});
       pros::delay(300);
       // lb.setState(keejLib::LiftState::lowest);
             intake.setJamProtection(true);

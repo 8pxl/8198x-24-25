@@ -40,9 +40,9 @@ void initialize() {
         // chass.setPose({-p.pos.x, p.pos.y, p.heading});
     // }
     // 
-    if (glb::auton != qrPos && glb::auton != qbPos) {
+    // if ( glb::auton != qbPos) {
         lb.setState(keejLib::LiftState::one);
-    }
+    // }
     robot::lb.startControl();
     // if(glb::auton == qbPos) {
     //     prosController.print(0, 0, "%f", "blue pos");
@@ -88,6 +88,7 @@ void opcontrol() {
         // std::cout << "his" << std::endl;
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             // init();
+            // hang();
             // allianceStake();
             glb::auton();
             // intake.setSorting(true);
