@@ -144,7 +144,7 @@ void qbPos() {
     //24 < x
     // 26 < x
     // 27 < x?
-    chass.moveWithin({17.14, 36.9}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 10), .reverse=false, }, 27.5);
+    chass.moveWithin({17.14, 36.9}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 10), .reverse=false, }, 28.5);
     chass.setAng(_ang);
     claw.toggle();
     // chass.driveAngle(500, 30, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(5, 20), .slew = 2});
@@ -167,7 +167,7 @@ void qbPos() {
     pros::delay(100);
     //1490
     //1400
- Pt fourStack = {9.5, -1.6};
+ Pt fourStack = {9.5, -2.1};
     chass.mtpoint(fourStack, {.async = true, .timeout = 1000, .vMin = 30, .settleRange = 14, .exit = new exit::Range(3, 30), .drift = 20});
     lb.next();
     lb.next();
@@ -176,7 +176,8 @@ void qbPos() {
     intake.move(127);
     chass.setLin(_linSmall);
 
-    Pt corner = {0.4,-14};
+    Pt corner = {0.4,-15};
+        chass.turn(neg(110), {.timeout = 300});
 
     double ang = chass.turnTo(corner, {.timeout = 400});
     intake.setJamProtection(false);
@@ -187,10 +188,10 @@ void qbPos() {
     chass.setLin(_lin);
 
     pros::delay(700);
-    chass.turn(30, {.async = true, .timeout=600, .exit = new Range(3, 20)});
+    chass.turn(135, {.async = true, .timeout=600, .exit = new Range(3, 20)});
     pros::delay(400);
-    clamp.toggle();
     chass.waitUntilSettled();
+    clamp.toggle();
 
     Pt g2Prime = {35, 18.92};
     chass.turnTo(g2Prime,  {.exit = new Range(10, 10),.reverse = true});
@@ -207,12 +208,12 @@ void qbPos() {
     // intake.stopOnColor(Color col, int timeout)
 
     Pt stake = {-4, 55.5};
-    Pt scoringPosition = {2.41, 46.5};
+    Pt scoringPosition = {1.8, 46.5};
     chass.mtpoint(scoringPosition, {.async = true, .exit = new Range(4, 10),.drift = 3});
     pros::delay(200);
     chass.waitUntilSettled();
     chass.setTurn(_5);
-    ang = chass.turnTo(stake, {});
+    ang = chass.turnTo(stake, {.timeout = 600});
     chass.setTurn(_90);
     lb.next();
     chass.driveAngle(200, ang+10, {.timeout = 300});

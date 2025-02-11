@@ -131,7 +131,7 @@ void qrPos() {
     // return;
     
     doink.toggle();
-    chass.moveWithin({-9.9,39.2}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 30), .reverse=false, }, neg(20));
+    chass.moveWithin({-9.9,39.2}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 30), .reverse=false, }, neg(15));
     chass.setAng(_ang);
     claw.toggle();
     // chass.driveAngle(500, neg(30), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(5, 20), .slew = 2});
@@ -151,7 +151,7 @@ void qrPos() {
     clamp.toggle();
     //1490
     //1400
-    Pt fourStack = {-9.5, -0.5};
+    Pt fourStack = {-9.5, -1.1};
     chass.mtpoint(fourStack, {.async = true, .timeout = 1000, .vMin = 30, .settleRange = 14, .exit = new exit::Range(3, 30), .drift = 20});
     lb.next();
     lb.next();
@@ -161,7 +161,7 @@ void qrPos() {
     chass.setLin(_linSmall);
 
     Pt corner = {-0.4,-14};
-
+    chass.turn(110, {.timeout = 300});
     double ang = chass.turnTo(corner, {.timeout = 400});
     intake.setJamProtection(false);
     chass.driveAngle(700, ang, {.async = false, .timeout = 610, .exit = new Range(5, 20)});
@@ -171,15 +171,15 @@ void qrPos() {
     chass.setLin(_lin);
 
     pros::delay(700);
-    chass.turn(neg(30), {.async = true, .timeout=600, .exit = new Range(3, 20)});
+    chass.turn(neg(135), {.async = true, .timeout=600, .exit = new Range(3, 20)});
     pros::delay(400);
-    clamp.toggle();
     chass.waitUntilSettled();
+    clamp.toggle();
 
     Pt g2Prime = {-35, 18.92};
     chass.turnTo(g2Prime,  {.exit = new Range(10, 10),.reverse = true});
     chass.mtpoint(g2Prime, {.drift = 5});
-    chass.driveAngle(-1000, 140, {.async = true,});
+    chass.driveAngle(-1000, 140, {.async = true,.slew = 7});
     pros::delay(600);
     clamp.toggle();
 
@@ -192,11 +192,11 @@ void qrPos() {
 
     Pt stake = {4, 55.5};
     Pt scoringPosition = {-2.41, 46.5};
-    chass.mtpoint(scoringPosition, {.async = true, .exit = new Range(4, 10),.drift = 3});
+    chass.mtpoint(scoringPosition, {.async = true, .timeout = 1400, .exit = new Range(4, 10),.drift = 3});
     pros::delay(200);
     chass.waitUntilSettled();
     chass.setTurn(_5);
-    ang = chass.turnTo(stake, {});
+    ang = chass.turnTo(stake, {.timeout = 500});
     chass.setTurn(_90);
     lb.next();
     chass.driveAngle(200, ang-10, {.timeout = 300});
