@@ -223,8 +223,20 @@ void corner1() {
     chass.wallReset(3, 10, false);
     // clamp.toggle();
     // chass.driveAngle(1700, neg(88), {.timeout = 1000, .exit = new Range(30, 20)});
-    chass.mtpoint({-16.5, -125}, {.timeout = 1200, .drift = 5});
+    // chass.mtpoint({-16.5, -125}, {.timeout = 1200, .drift = 5});
     chass.waitUntilSettled();
+
+    Pt goalPrime = {-9 , -110};
+    chass.mtpoint(goalPrime, {.timeout = 1200});
+    Pt mogo = {-40, -115.5};
+    // chass.setLin(_lin);
+        double ang = chass.turnTo(mogo, {.timeout = 700 , .exit = new Range(8, 20), .reverse = true});
+        intake.move(0);
+    chass.setLin(_linSmall);
+    chass.driveAngle(-900, ang, {.timeout = 1000, .exit = new Range(200, 15), .slew=2.5});
+    clamp.toggle();
+    chass.driveAngle(-900, ang, {.timeout = 300, .exit = new Range(50, 15)}, true);
+    chass.setLin(_lin);
     
 
 
@@ -243,11 +255,9 @@ tsukasa.toggle();
     lb.next();
 
     Pt blueAS = {-31.9, -137.1};
-    chass.turnTo(blueAS, {.timeout  = 600, .exit = new Range(2, 100)});
-    Pose pose = chass.getPose();
-      chass.mtpoint( blueAS, {.settleRange = -1, .drift = 8, .within = 13.6});
-    pose = chass.getPose();
-
+    ang = chass.turnTo(blueAS, {.timeout  = 600, .exit = new Range(2, 100)});
+    chass.driveAngle(1000, ang, {.timeout = 900});
+    chass.driveAngle(-800, ang, {.timeout = 700});
 
     lb.next();
     pros::delay(400);
@@ -263,20 +273,10 @@ tsukasa.toggle();
     // -5< x
     // -113 > x
     // -4 > x
-    Pt goalPrime = {-9 , -110};
     // chass.mtpoint(goalPrime, {.async = false, .timeout = 1200, .vMin = 0, .settleRange = 3, .exit = new Range(3, 90),.drift = 5 });
     // pros::delay(400);
     // chass.turn(90, {.timeout = 600, .exit = new Range(2, 100)});
     // -120 < x
-    Pt mogo = {-40, -115.5};
-    // chass.setLin(_lin);
-        double ang = chass.turnTo(mogo, {.timeout = 700 , .exit = new Range(8, 20), .reverse = true});
-        intake.move(0);
-    chass.setLin(_linSmall);
-    chass.driveAngle(-900, ang, {.timeout = 1000, .exit = new Range(200, 15), .slew=2.5});
-    clamp.toggle();
-    chass.driveAngle(-900, ang, {.timeout = 300, .exit = new Range(50, 15)}, true);
-    chass.setLin(_lin);
     // chass.mtpoint(mogo, {.timeout = 1000, .vMin = 0, .settleRange = 5, .exit = new Range(5, 10)});
 
 
