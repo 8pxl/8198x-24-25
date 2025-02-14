@@ -242,46 +242,11 @@ tsukasa.toggle();
     lb.next();
     lb.next();
 
-    //36 > x
-    //33 > x
-    //20 < x
-    //23 < x
-    // 27 > x ?
-    // 25 < x
-    // 32.8
-    // -29.8 < x
-    // x < -29.4
-    // -29.8 > x
-    // Pt blueAS = {-29.6, -138};
-    // x > -30.8
-    // -29.9
-
-    //-21.2415365831112
-    // Pt blueAS = {-24.2415365831112, -134.53376928669638};
-    //print the pose
-    //was 31.5
-    //was 31.8
-    //was 32.8
-    //was 33.8
-    //was34.8
-    //was -136
-    //was -30.8
-    //was 29.9
-    //was -31.45
-    // Pt blueAS = {-32.45, -137.05};
-        Pt blueAS = {-31.9, -137.1};
-
-    // Pt blueAS = {-29, -135};
+    Pt blueAS = {-31.9, -137.1};
     chass.turnTo(blueAS, {.timeout  = 600, .exit = new Range(2, 100)});
     Pose pose = chass.getPose();
-    // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " heading: " << pose.heading.heading() << std::endl;
-    //11.9 < x
-    // chass.moveWithin(blueAS, 12.7, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
-    // chass.moveWithin(blueAS, 17.537751502925833, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
-    //was 14.3
       chass.mtpoint( blueAS, {.settleRange = -1, .drift = 8, .within = 13.6});
     pose = chass.getPose();
-// std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " heading: " << pose.heading.heading() << std::endl;
 
 
     lb.next();
