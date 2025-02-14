@@ -37,6 +37,7 @@ private:
   Stopwatch jamTimer;
   double sortDist = 570;
   bool jamProtection = true;
+  bool ringSeen = false;
 
   Color colorToStop = none;
 
@@ -47,6 +48,6 @@ private:
   void handleAutoStop(Color colorDetected);
   void handleColorSort(Color col, bool liftClear);
   void handleJamProtection(bool liftClear, RobotState* s);
-  bool isJammed(double actual);
+  bool isJammed(double actual, int tolerance);
 };
 } // namespace keejLib

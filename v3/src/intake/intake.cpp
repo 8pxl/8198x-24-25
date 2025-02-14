@@ -2,13 +2,14 @@
 #include "keejLib/lib.h"
 #include "../robotState/robotState.h"
 #include "keejLib/util.h"
+#include "pros/rtos.hpp"
 #include <ostream>
 
 namespace keejLib {
 
 Intake::Intake(pros::Motor *motor, pros::Optical *optical,
                Color color)
-    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.9), colorEma(1) {
+    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.99), colorEma(1) {
       optical -> set_integration_time(5);
     }
 
@@ -104,20 +105,21 @@ void Intake::handleColorSort(Color col, bool liftClear) {
     }
 }
 
-bool Intake::isJammed(double actual) {
-  return (velocity > 0 && (fabs(actual) < 5) && (jamTimer.elapsed() > 400));
+bool Intake::isJammed(double actual, int tolerance) {
+  return (velocity > 0 && (fabs(actual) < tolerance) && (jamTimer.elapsed() > 400));
 }
 
 void Intake::handleJamProtection(bool liftClear, RobotState * s) {
     // std::cout << "intake jammed! " <<std::endl;
-    if (s->getLiftState() == LiftState::one && autoLift) {
+    if (s->getLiftState() == LiftState::one && autoLift && ringSeen) {
       motor -> move(0);
-      pros::delay(100);
+      pros::delay(20);
       s->setLiftState(LiftState::two);
       pros::delay(100);
       jamTimer.reset();
+      ringSeen = false;
     }
-    else if (liftClear && jamProtection) {
+    else if ((liftClear || !ringSeen) && jamProtection ) {
       Stopwatch sw;
       while (sw.elapsed() < 200) {
         motor->move(-127);
@@ -133,6 +135,9 @@ void Intake::control() {
   Color col = detectColor();
   double vel = velocityEma.out(motor->get_actual_velocity());
 
+  if (col != none) {
+    ringSeen = true;
+  }
   // std::cout << vel << std::endl;
   if (colorToStop != none) {
     handleAutoStop(col);
@@ -140,7 +145,8 @@ void Intake::control() {
   if (colorToSort != none && velocity > 0) {
     handleColorSort(col, liftClear);
   }
-  if(isJammed(vel)) {
+  int tolerance = liftClear ? 17 : 5;
+  if(isJammed(vel, tolerance)) {
     handleJamProtection(liftClear, s);
   }
   else {
@@ -149,6 +155,9 @@ void Intake::control() {
   if (velocity != 0) optical->set_led_pwm(100);
   else optical->set_led_pwm(0);
 
-  if (velocity <= 0.5) jamTimer.reset();
+  if (velocity <= 0) {
+    jamTimer.reset();
+    ringSeen = false;
+  }
 } 
 }// namespace keejLib
