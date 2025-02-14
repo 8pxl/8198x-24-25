@@ -2,6 +2,7 @@
 #include "../../robot.hpp"
 #include "../../lift/lift.h"
 #include "keejLib/util.h"
+#include "pros/rtos.hpp"
 
 using namespace robot;
 // void qrPos() {
@@ -144,11 +145,12 @@ void qrPos() {
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
     chass.turn(135, {.timeout=50, .exit = new Range(3, 20)});
     chass.turn(190, {.timeout=400, .exit = new Range(3, 20)});
-    chass.driveAngle(-750, 200, {.async = false, .timeout = 680, .vMin = 28, .exit = new Range(30, 10)});
+    chass.driveAngle(-750, 190, {.async = false, .timeout = 680, .vMin = 28, .exit = new Range(30, 10)});
     chass.setLin(_linSmall);
     chass.driveAngle(-900, neg(180), {.async = false, .timeout = 600, .vMin = 0, .exit = new Range(5, 20)});
     chass.setLin(_lin);
     clamp.toggle();
+    pros::delay(150);
     //1490
     //1400
     Pt fourStack = {-9.5, -1.1};
@@ -172,9 +174,9 @@ void qrPos() {
 
     pros::delay(700);
     chass.turn(neg(135), {.async = true, .timeout=600, .exit = new Range(3, 20)});
-    pros::delay(400);
-    chass.waitUntilSettled();
+    pros::delay(200);
     clamp.toggle();
+    chass.waitUntilSettled();
 
     Pt g2Prime = {-35, 18.92};
     chass.turnTo(g2Prime,  {.exit = new Range(10, 10),.reverse = true});

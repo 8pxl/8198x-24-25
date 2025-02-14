@@ -160,9 +160,10 @@ void qbPos() {
     chass.driveAngle(-700, neg(180), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(50, 10)});
     chass.setLin(_linSmall);
     // chass.turn(120, {.timeout = 600, .exit = new Range(5, 10)});
-    chass.driveAngle(-700, 151, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(10, 20)});
+    chass.driveAngle(-700, 151, {.async = false, .timeout = 400, .vMin = 0,  .vMax = 40, .exit = new Range(10, 20)});
     // chass.driveAngle(-4, 151, {.async = false, .timeout = 370, .vMin = 0, .exit = new Range(10, 20)});
     chass.setLin(_lin);
+    pros::delay(100);
     clamp.toggle();
     pros::delay(100);
     //1490
@@ -188,15 +189,15 @@ void qbPos() {
     chass.setLin(_lin);
 
     pros::delay(700);
-    chass.turn(135, {.async = true, .timeout=600, .exit = new Range(3, 20)});
-    pros::delay(400);
-    chass.waitUntilSettled();
+    chass.turn(140, {.async = true, .timeout=600, .exit = new Range(3, 20)});
+    pros::delay(200);
     clamp.toggle();
+    chass.waitUntilSettled();
 
     Pt g2Prime = {35, 18.92};
     chass.turnTo(g2Prime,  {.exit = new Range(10, 10),.reverse = true});
     chass.mtpoint(g2Prime, {.drift = 5});
-    chass.driveAngle(-1000, neg(140), {.async = true,});
+    chass.driveAngle(-1000, neg(140), {.async = true, .timeout = 1300, .vMax = 60, .slew = 5});
     pros::delay(600);
     clamp.toggle();
 
