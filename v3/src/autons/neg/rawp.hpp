@@ -15,12 +15,15 @@ void rAwp() {
 
       //grab mogo and score alliance stake;
       // lb.next();
-      chass.driveAngle(-1000, 0, {.async = true, .vMax = 60,.exit = new Range(300, 10), .slew = 3});
-      pros::delay(400);
+      // chass.driveAngle(-1000, 0, {.async = true, .vMax = 60,.exit = new Range(300, 10), .slew = 3});
+      // pros::delay(400);
       // intake.move(127);
-      chass.waitUntilSettled();
+      // chass.waitUntilSettled();
+      chass.driveAngle(-1000, neg(0), {.async = false, .vMax = 60, .exit = new Range(50, 10), .slew = 3}, false);
+      pros::delay(100);
       clamp.toggle();
-      chass.driveAngle(-1000, 0, {.async = false, .vMax = 60, .exit = new Range(50, 10)}, true);
+      pros::delay(100);
+      // chass.driveAngle(-1000, 0, {.async = false, .vMax = 60, .exit = new Range(50, 10)}, true);
 
       // intake.move(0);
       lb.setState(LiftState::lower);
@@ -67,7 +70,7 @@ void rAwp() {
       Pt ring3 = {-29, -3};
       chass.mtpoint(ring3, {.async = true, .drift = 10, .within = 5});
       pros::delay(800);
-      tsukasa.toggle();
+      tsukasa.toggle(); 
       chass.waitUntilSettled();
       tsukasa.toggle();
 
