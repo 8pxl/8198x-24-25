@@ -44,7 +44,7 @@ void Intake::setJamProtection(bool val) {
 }
 
 void Intake::stopOnColor(Color col, int timeout) {
-  velocity = 105;
+  // velocity = 105;
   colorToStop = col;
   autoStopTimer.set(timeout);
 }
