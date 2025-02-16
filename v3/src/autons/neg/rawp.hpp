@@ -19,7 +19,7 @@ void rAwp() {
       // pros::delay(400);
       // intake.move(127);
       // chass.waitUntilSettled();
-      chass.driveAngle(-1000, neg(0), {.async = false, .vMax = 40, .exit = new Range(50, 10)}, false);
+      chass.driveAngle(-1090, neg(0), {.async = false, .timeout = 1000, .vMax = 55, .exit = new Range(50, 10)}, false);
       clamp.toggle();
       pros::delay(100);
       // chass.driveAngle(-1000, 0, {.async = false, .vMax = 60, .exit = new Range(50, 10)}, true);
@@ -79,7 +79,7 @@ void rAwp() {
 
       //go to corner
       // chass.driveAngle(500, imu.get_heading(), {.timeout = 300});
-      chass.turn(100, {.timeout = 500, .exit = new Range(15, 10)});
+      chass.turn(90, {.timeout = 600, .exit = new Range(15, 10)});
       chass.mtpoint({-86, 10}, {.timeout = 1400,.exit = new Range(2, 10), .drift = 10, .within = 9});
       /*
       intake.setJamProtection(false);
@@ -96,18 +96,18 @@ void rAwp() {
       // pros::delay(800);
       */
       clamp.toggle();
-      chass.driveAngle(600, 135, {.vMin = 50}); 
+      chass.driveAngle(550, 135, {.timeout = 600, .vMin = 20}); 
       /*
       // chass.turnTo(ring5, {.async = true, .timeout = 600});
       chass.waitUntilSettled();
       chass.driveAngle(600, 135, {.vMin = 50}); 
       */
       // Pt ring5 = {-79, -31};
-      Pt ring5 = {-79, -30.6};
+      Pt ring5 = {-79, -29.6};
       intake.stopOnColor(keejLib::red, 1000);
       chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 4});
 
-      Pt goal2 = {-60, -27.3};
+      Pt goal2 = {-60, -27.9};
       double heading = chass.turnTo(goal2, {.timeout = 300, .exit = new Range(9, 10), .reverse = true});
 
       //clamp goal
@@ -118,10 +118,11 @@ void rAwp() {
       pros::delay(70);
 
       intake.move(127);
-      pros::delay(500);
+      pros::delay(400);
       chass.turn(160, {.timeout = 200});
-      chass.driveAngle(710, 160, {.async = true});
+      chass.driveAngle(710, 150, {.async = true});
       pros::delay(300);
+      lb.next();
       // lb.setState(keejLib::LiftState::lowest);
             intake.setJamProtection(true);
             chass.waitUntilSettled();

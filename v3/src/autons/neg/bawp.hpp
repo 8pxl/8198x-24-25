@@ -21,7 +21,7 @@ void bAwp() {
 
       // chass.driveAngle(-1000, neg(0), {.async = true, .vMax = 60,.exit = new Range(300, 10), .slew = 3});
       // pros::delay(400);
-      chass.driveAngle(-1000, neg(0), {.async = false, .vMax = 40, .exit = new Range(50, 10)}, false);
+      chass.driveAngle(-1090, neg(0), {.async = false, .timeout = 1000,  .vMax = 55, .exit = new Range(50, 10)}, false);
       clamp.toggle();
       pros::delay(100);
       lb.setState(LiftState::lower);
@@ -97,16 +97,19 @@ void bAwp() {
       // pros::delay(800);
       */
       clamp.toggle();
-      chass.driveAngle(600, neg(135), {.vMin = 50}); 
+      chass.driveAngle(600, neg(135), { .timeout = 600, .vMin = 20}); 
       /*
       // chass.turnTo(ring5, {.async = true, .timeout = 600});
       chass.waitUntilSettled();
       chass.driveAngle(600, neg(135), {.vMin = 50}); 
       */
-      Pt ring5 = {79.0, -30.0};
+      //-29.6
+      //-29.9
+      //-30.1
+      Pt ring5 = {79.0, -30.8};
       chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 4});
 
-      Pt goal2 = {60.0, -27.3};
+      Pt goal2 = {60.0, -27.9};
       double heading = chass.turnTo(goal2, {.timeout = 300, .exit = new Range(9, 10), .reverse = true});
       intake.stopOnColor(keejLib::blue, 1000);
 

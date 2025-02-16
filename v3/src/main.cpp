@@ -1,5 +1,6 @@
 #include "main.h"
 #include "keejLib/util.h"
+#include "lift/states.h"
 #include "pros/misc.h"
 #include "robot.hpp"
 #include "controls.hpp"
@@ -81,6 +82,7 @@ void opcontrol() {
     // intake.stopOnColor(keejLib::red, 10000);
     if (glb::autonRan) {
         odomRelease.setState(true);
+        lb.setState(LiftState::idle);
     }
     while(true) {
         // lb.setAutoControl(true);        

@@ -316,8 +316,8 @@ void goal2() {
     intake.move(80);
         intake.stopOnColor(keejLib::red, 500);
     pros::delay(800);
-    intake.move(127);
-    pros::delay(500);
+    // intake.move(127);
+    // pros::delay(200);
     intake.move(0);
 
     Pt ring3 = {-51, -39};
@@ -328,7 +328,7 @@ void goal2() {
 
     // Pt ring4 = {-80, -18};
     //was -76.5
-    Pt ring4 = {-78.5, -8};
+    Pt ring4 = {-78.5, -10.5};
     chass.mtpoint(ring4, {.timeout = 1400, .vMin = 30, .settleRange = 5, .exit = new Range(8, 10) , .drift = 4, .debug = false});
 
     Pt ring5 = {-99, -7};
@@ -363,7 +363,8 @@ void goal3() {
     chass.mtpoint(prime, {.async = false, .timeout = 1400, .vMin = 20, .settleRange = 5, .exit = new Range(5, 10), .drift = 8 });
     
     //-15.1
-    Pt goal = {-57, -14.9};
+    //14.9
+    Pt goal = {-57, -14.6};
     chass.setTurn(_180);
     double ang = chass.turnTo(goal, {.timeout = 630, .exit = new Range(2, 30), .reverse = true});
     chass.setTurn(_90);
@@ -443,11 +444,11 @@ void corner4() {
     // pros::delay(100);
     // chass.mtpoint(ring3, {.timeout = 1400, .vMin = 30, .settleRange = 5, .exit = new Range(2, 14) });
     // chass.mtpoint({-81, -125}, {.timeout = 1400, .vMin = 30, .settleRange = 5, .exit = new Range(2, 14) });
-    Pt ring4 = {-100, -113};
+    Pt ring4 = {-93, -113};
     // chass.driveAngle(-400, 180, {.timeout = 400, .exit = new Range(10, 10)});
     // chass.driveAngle(-1000, 135, {.timeout = 640, .exit = new Range(10, 10)});
     // chass.driveAngle(-200, 180, {.timeout = 300, .exit = new Range(10, 10)});
-    double ang = chass.turnTo(ring4, {.timeout = 200, .exit = new Range(2, 30)});
+    double ang = chass.turnTo(ring4, {.timeout = 400, .exit = new Range(2, 30)});
     chass.driveAngle(960, ang, {.timeout = 600, .exit = new Range(20, 10)});
 
     
@@ -492,8 +493,8 @@ void hang() {
     chass.driveLin(700, -40, {});
     // lb.setState(keejLib::LiftState::lower);
     // pros::delay(200);
-    chass.driveLin(100, 90, {});
-    chass.driveLin(400, 25, {});
+    chass.driveLin(170, 90, {});
+    chass.driveLin(300, 40, {});
     // chass.driveLin(400, 10, {});
     chass.driveLin(0, 0, {});
     pros::delay(10000);
