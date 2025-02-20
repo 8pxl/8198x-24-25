@@ -1,5 +1,6 @@
 #include "lift.h"
 #include "../robotState/robotState.h"
+#include "liblvgl/widgets/lv_label.h"
 #include "main.h"
 #include "states.h"
 #include <ostream>
@@ -38,9 +39,10 @@ void Lift::calibrate() {
 void Lift::setControl(bool state) {
     off = !state;
     if (state == true) {
-       if (rot -> get_position() > 36000) {
-            setState(LiftState::idle);
-       } 
+        if (rot -> get_position() >= 36000) {
+            if (currentState == LiftState::two || currentState == LiftState::one) {setState(LiftState::one);}
+            else setState(LiftState::idle);
+        }
     }
 }
 
