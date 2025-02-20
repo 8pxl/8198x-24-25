@@ -147,11 +147,16 @@ void qbPos() {
     chass.moveWithin({17.14, 36.9}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 10), .reverse=false, }, 28.5);
     chass.setAng(_ang);
     claw.toggle();
+    auto grab = chass.getPose();
+
     // chass.driveAngle(500, 30, {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(5, 20), .slew = 2});
     chass.driveAngle(-1400, 10, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(800, 40)});
     chass.driveAngle(-1400, 5, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(600, 30)},true);
     chass.driveAngle(-1400, 5, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(55, 10)}, true);
     claw.toggle();
+    auto post = chass.getPose();
+    std::cout << grab.pos.dist(post.pos) << std::endl;
+    if (grab.pos.dist(post.pos) >= 10)  {
     // pros::delay(200);
     chass.driveAngle(-460, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
@@ -168,6 +173,11 @@ void qbPos() {
     pros::delay(100);
     //1490
     //1400
+    }
+    else {
+        chass.driveAngle(-460, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
+        chass.turn(neg(190), {.timeout=400, .exit = new Range(3, 20)});
+    }
  Pt fourStack = {9.5, -2.1};
     chass.mtpoint(fourStack, {.async = true, .timeout = 1000, .vMin = 30, .settleRange = 14, .exit = new exit::Range(3, 30), .drift = 20});
     lb.next();
@@ -208,7 +218,7 @@ void qbPos() {
     // chass.mtpoint(ring,{.drift = 4});
     // intake.stopOnColor(Color col, int timeout)
 
-    Pt stake = {-4, 55.5};
+    Pt stake = {-4, 55.1};
     Pt scoringPosition = {1.8, 46.5};
     chass.mtpoint(scoringPosition, {.async = true, .exit = new Range(4, 10),.drift = 3});
     pros::delay(200);

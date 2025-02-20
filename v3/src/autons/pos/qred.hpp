@@ -3,6 +3,8 @@
 #include "../../lift/lift.h"
 #include "keejLib/util.h"
 #include "pros/rtos.hpp"
+#include <cmath>
+#include <iterator>
 
 using namespace robot;
 // void qrPos() {
@@ -132,14 +134,23 @@ void qrPos() {
     // return;
     
     doink.toggle();
-    chass.moveWithin({-9.9,39.2}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 30), .reverse=false, }, neg(15));
+    chass.moveWithin({-9.9,39.2}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 30), .reverse=false, }, neg(18.4));
     chass.setAng(_ang);
     claw.toggle();
+    auto grab = chass.getPose();
+    chass.driveAngle(-900, neg(18.4), {.timeout = 800});
     // chass.driveAngle(500, neg(30), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(5, 20), .slew = 2});
     chass.driveAngle(-1400, neg(10), {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(800, 40)});
     chass.driveAngle(-1400, 20, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(600, 30)},true);
     chass.driveAngle(-1400, 33, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 10)}, true);
+    // pros::delay(700);
+    auto post = chass.getPose();
+    std::cout << grab.pos.dist(post.pos) << std::endl;
+    if (grab.pos.dist(post.pos) <= 10)  {
+        chass.driveAngle(-1200, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
+    }
     claw.toggle();
+
     chass.driveAngle(-460, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
     doink.toggle();
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
@@ -150,6 +161,11 @@ void qrPos() {
     chass.driveAngle(-900, neg(180), {.async = false, .timeout = 600, .vMin = 0, .exit = new Range(5, 20)});
     chass.setLin(_lin);
     clamp.toggle();
+    // else {
+        // chass.driveAngle(-460, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
+    //     chass.turn(190, {.timeout=400, .exit = new Range(3, 20)});
+
+    // }
     pros::delay(150);
     //1490
     //1400
@@ -193,7 +209,7 @@ void qrPos() {
     // intake.stopOnColor(Color col, int timeout)
 
     Pt stake = {4, 55.5};
-    Pt scoringPosition = {-2.41, 46.5};
+    Pt scoringPosition = {-0.6, 46.5};
     chass.mtpoint(scoringPosition, {.async = true, .timeout = 1400, .exit = new Range(4, 10),.drift = 3});
     pros::delay(200);
     chass.waitUntilSettled();
