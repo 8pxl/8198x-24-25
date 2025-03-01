@@ -3,6 +3,7 @@
 #include "keejLib/lib.h"
 #include "lift/lift.h"
 #include "locolib/distance.h"
+#include "pros/abstract_motor.hpp"
 #include "pros/adi.hpp"
 #include "pros/distance.hpp"
 #include "pros/motor_group.hpp"
@@ -18,8 +19,8 @@ namespace robot {
     
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController); 
-    pros::MotorGroup leftChass({-14,-15,-16});
-    pros::MotorGroup rightChass({11,12,13});
+    pros::MotorGroup leftChass({-14,-15,-16}, pros::MotorGears::blue);
+    pros::MotorGroup rightChass({11,12,13}, pros::MotorGears::blue);
     pros::Motor intakeMotor(9);
     pros::Motor liftMotor(10);
     
@@ -54,7 +55,7 @@ namespace robot {
         .integralThreshold = 50,
     });
     // Lift::setInstance(&lb);
-    DriveTrain dt = keejLib::DriveTrain(&leftChass, &rightChass);
+    DriveTrain dt = keejLib::DriveTrain(&leftChass, &rightChass, {.cartridge = 600});
     //4.64907 1.30551
     // 1.27811 0.703097
     // 1.13273 1.07545
@@ -73,7 +74,6 @@ namespace robot {
         .trackDia = 4.0,
         .vertDia = 2.125,
         .horizDia = 2.75,
-        .gearRatio = 0.75,
     }, &imu, &vertTracker, &horizTracker, &horizDistSensor);
     
     // pros::vision_signature_s_t  redRing = pros::Vision::signature_from_utility(1, 1319, 8061, 4690, -893, 327, -284, 1.300, 0);

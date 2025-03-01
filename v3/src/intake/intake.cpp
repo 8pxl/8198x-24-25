@@ -145,7 +145,7 @@ void Intake::control() {
   if (colorToSort != none && velocity > 0) {
     handleColorSort(col, liftClear);
   }
-  int tolerance = liftClear ? 5 : 21;
+  int tolerance = liftClear ? 5 : 7;
   if(isJammed(vel, tolerance)) {
     handleJamProtection(liftClear, s);
   }

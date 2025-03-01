@@ -57,13 +57,13 @@ void belimsNeg() {
 
       //go to corner
       // chass.mtpoint({74.0, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
-      //was 28.1, 7.2
-      Pt corner1 = {-32.1, 6.9};
+      //was 28.1, 7.2 , -32.2, 6.8
+      Pt corner1 = {-32.1, 7.0};
       // chass.turnTo(corner1, {.t  imeout = 200});
       chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 7});
       intake.move(127);
       chass.setTurn(_5);
-      double ang = chass.turnTo({-39.2, 17.0}, {});
+      double ang = chass.turnTo({-39.2, 17.1}, {});
       chass.setTurn(_90);
       // chass.turn(neg(45), {});=
       intake.setJamProtection(false);
@@ -75,7 +75,7 @@ chass.driveAngle(890, ang, {.timeout = 600, .slew = 3});
       tsukasa.toggle();
       // pros::delay(50);
       intake.move(127);
-      chass.driveAngle(900, neg(45), {.timeout = 680, .slew = 2.4});
+      chass.driveAngle(930, neg(45), {.timeout = 680, .slew = 2.4});
       tsukasa.toggle();
       chass.driveAngle(-600, neg(45), {.timeout = 600, .slew = 2});
       

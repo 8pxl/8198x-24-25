@@ -15,15 +15,21 @@ namespace keejLib {
         double trackDia;
         double vertDia;
         double horizDia;
-        double gearRatio;
     };
     
+    struct DriveTrainConstants {
+        double gearRatio;
+        double cartridge;
+        double wheelDia;
+    };
     class DriveTrain {
         private:
             pros::MotorGroup *leftMotors;
             pros::MotorGroup *rightMotors;
+            DriveTrainConstants dtConsts;
         public:
-            DriveTrain(pros::MotorGroup* leftMotors, pros::MotorGroup* rightMotors) : leftMotors(leftMotors), rightMotors(rightMotors){}
+            DriveTrain(pros::MotorGroup* leftMotors, pros::MotorGroup* rightMotors, DriveTrainConstants dtConsts) : leftMotors(leftMotors), rightMotors(rightMotors), dtConsts(dtConsts){
+            }
             
             void spinVolts(ChassVelocities velocities);
             // void spinVolts(int left, int right);
@@ -33,7 +39,7 @@ namespace keejLib {
             void spinRight(int volts);
             void tare_position();
 
-            double getAvgVelocity();
+            double getAvgVelocity(bool volts = false);
             double getAvgPosition();
     };
     

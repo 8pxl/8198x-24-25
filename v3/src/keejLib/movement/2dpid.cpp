@@ -67,7 +67,7 @@ namespace keejLib {
     }
     
 
-void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin = 0}, bool absolute) {
+void Chassis::driveAngle(double dist, double angle, MotionParams params = { .vMin = 0, .slew = 2}, bool absolute) {
     // chassMutex.take();
     if (params.async) {
         params.async = false;
@@ -79,6 +79,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
         params.exit = new exit::Range(20, 20);
     }
     this -> waitUntilSettled();
+    // double prev = dt -> getAvgVelocity();
     moving = true;
     if (clr == blue) angle = neg(angle);
     Angle targ = Angle(angle, HEADING);
@@ -89,7 +90,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
     double traveled = 0;
     if (!absolute) this -> dt -> tare_position();
     // double prev = chassConsts.wheelDia * M_PI * (vertEnc->get_position()/36000.0);
-    double prev = 0;
+    double prev =  dt -> getAvgVelocity(true);
     while (!params.exit -> exited({.error = fabs(linError)}) && !timeout -> exited({})) {
         linError = dist - (this -> dt -> getAvgPosition());
         if (params.vMin > 0 && linError * sign(dist) < 0) {
@@ -123,7 +124,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = {.vMin
     // chassMutex.give();
 }
 
-void Chassis::mtpoint(Pt target, MotionParams params) {
+void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
     // chassMutex.take();
     if (params.async) {
         params.async = false;
@@ -150,6 +151,7 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
     int prevSide = -2;
     int side;
     double maxSlipSpeed;
+    double prevLin = dt -> getAvgVelocity(true);
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {
         // std::cout << timeout -> exited({}) << std::endl;
@@ -223,6 +225,8 @@ void Chassis::mtpoint(Pt target, MotionParams params) {
         
         linearVel = std::max(fabs(linearVel), params.vMin) * sign(linearVel);
         linearVel = std::min(fabs(linearVel), params.vMax) * sign(linearVel);
+        if (params.slew != 0) linearVel = keejLib::sign(linearVel) * std::min(fabs(prevLin) + params.slew, fabs(linearVel));
+        prevLin = linearVel;
         if (std::abs(linearVel) + std::abs(angularVel) > 127) {
             linearVel = (127 - std::abs(angularVel)) * sign(linearVel);
         }

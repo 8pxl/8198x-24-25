@@ -58,6 +58,7 @@ double Chassis::turnTo(Pt target, MotionParams params) {
         if (params.reverse) targ = targ.reverseDir();
         error = targ.error(Angle(imu -> get_heading(), HEADING));
         double vel = cont.out(error);
+        vel = sign(vel) * std::min(fabs(vel), params.vMax);
         this -> dt -> spinVolts({vel, -vel});
         // std::cout << "turnto: " << error << std::endl;
         pros::delay(10);

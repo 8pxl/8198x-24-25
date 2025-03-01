@@ -40,7 +40,7 @@ void Lift::setControl(bool state) {
     off = !state;
     if (state == true) {
         if (rot -> get_position() >= 36000) {
-            if (currentState == LiftState::two || currentState == LiftState::one) {setState(LiftState::one);}
+            if (currentState == LiftState::two || currentState == LiftState::one) {setState(LiftState::idle);}
             else setState(LiftState::idle);
         }
     }

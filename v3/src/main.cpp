@@ -59,6 +59,7 @@ void initialize() {
 
 void disabled() {
     // odomPiston.set_value(true);
+    // lb.setState(keejLib::LiftState::lower);
 }
 void competition_initialize() {}
 void autonomous() {
@@ -82,10 +83,11 @@ void opcontrol() {
     // intake.stopOnColor(keejLib::red, 10000);
     if (glb::autonRan) {
         odomRelease.setState(true);
-        lb.setState(LiftState::idle);
+        // lb.setState(LiftState::idle);
     }
     while(true) {
-        // lb.setAutoControl(true);        
+        // lb.setAutoControl(true);    
+        intake.setColor(none);
 
         // std::cout << "his" << std::endl;
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {

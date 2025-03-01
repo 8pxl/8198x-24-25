@@ -6,6 +6,7 @@
 #include "pros/motor_group.hpp"
 #include "keejLib/util.h"
 #include "units/units.hpp"
+#include <algorithm>
 #include <numeric>
 
 namespace keejLib {
@@ -32,10 +33,27 @@ void DriveTrain::tare_position() {
     leftMotors->tare_position_all();
     rightMotors->tare_position_all();
 }
-double DriveTrain::getAvgVelocity() {
+double DriveTrain::getAvgVelocity(bool volts) {
     std::vector<double> vl = leftMotors->get_actual_velocity_all();
+    // std::cout << "Left motor velocities: ";
+    for(const auto& v : vl) {
+        std::cout << v << " ";
+    }
+    std::cout << std::endl;
+
     std::vector<double> vr = rightMotors->get_actual_velocity_all();
-    return (std::reduce(vl.begin(), vl.end()) + std::reduce(vr.begin(), vr.end()) / (leftMotors->size() + rightMotors->size()));
+    // std::cout << "Right motor velocities: ";
+    for(const auto& v : vr) {
+        std::cout << v << " ";
+    }
+    std::cout << std::endl;
+    double vel = (std::reduce(vl.begin(), vl.end()) + std::reduce(vr.begin(), vr.end())) / 6;
+    //leftMotors->size() + rightMotors->size()
+    if (volts) {
+        vel = vel * 127/dtConsts.cartridge;
+    }
+    vel = std::clamp(vel, -127.0, 127.0);
+    return (vel);
 }
 
 double DriveTrain::getAvgPosition() {
