@@ -87,7 +87,7 @@ void opcontrol() {
     }
     while(true) {
         // lb.setAutoControl(true);    
-        intake.setColor(none);
+        // intake.setColor(none);
 
         // std::cout << "his" << std::endl;
         if(robot::prosController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
