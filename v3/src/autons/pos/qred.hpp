@@ -134,24 +134,24 @@ void qrPos() {
     // return;
     
     doink.toggle();
-    chass.moveWithin({-9.9,39.2}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 30), .reverse=false, }, neg(18.4));
+    chass.moveWithin({-9.9,39.2}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 30), .reverse=false, }, neg(15.4));
     chass.setAng(_ang);
     claw.toggle();
     auto grab = chass.getPose();
-    chass.driveAngle(-900, neg(18.4), {.timeout = 800});
+    // chass.driveAngle(-900, neg(18.4), {.timeout = 800});
     // chass.driveAngle(500, neg(30), {.async = false, .timeout = 3000, .vMin = 0, .exit = new Range(5, 20), .slew = 2});
-    chass.driveAngle(-1400, neg(10), {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(800, 40)});
+    chass.driveAngle(-1400, neg(14), {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(800, 40)});
     chass.driveAngle(-1400, 20, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(600, 30)},true);
-    chass.driveAngle(-1400, 33, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 10)}, true);
+    chass.driveAngle(-1400, 39, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 10)}, true);
     // pros::delay(700);
     auto post = chass.getPose();
     std::cout << grab.pos.dist(post.pos) << std::endl;
-    if (grab.pos.dist(post.pos) <= 10)  {
+    if (grab.pos.dist(post.pos) <= 5)  {
         chass.driveAngle(-1200, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
     }
     claw.toggle();
 
-    chass.driveAngle(-460, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
+    chass.driveAngle(-460, 0, {.async = true, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
     doink.toggle();
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
     chass.turn(135, {.timeout=50, .exit = new Range(3, 20)});
@@ -185,11 +185,11 @@ void qrPos() {
     chass.driveAngle(700, ang, {.async = false, .timeout = 610, .exit = new Range(5, 20)});
     pros::delay(100);
     chass.driveAngle(-500, ang, {.async = false, .timeout = 600, .vMin = 0, .exit = new Range(5, 200)});
-    intake.setJamProtection(false);
+    intake.setJamProtection(true);
     chass.setLin(_lin);
 
-    pros::delay(700);
-    chass.turn(neg(135), {.async = true, .timeout=600, .exit = new Range(3, 20)});
+    pros::delay(600);
+    chass.turn(neg(135), {.async = true, .timeout=600, .exit = new Range(10, 20)});
     pros::delay(200);
     clamp.toggle();
     chass.waitUntilSettled();
@@ -208,8 +208,8 @@ void qrPos() {
     // chass.mtpoint(ring,{.drift = 4});
     // intake.stopOnColor(Color col, int timeout)
 
-    Pt stake = {4, 55.5};
-    Pt scoringPosition = {-0.6, 46.5};
+    Pt stake = {4, 54.1};
+    Pt scoringPosition = {-0.6, 46.1};
     chass.mtpoint(scoringPosition, {.async = true, .timeout = 1400, .exit = new Range(4, 10),.drift = 3});
     pros::delay(200);
     chass.waitUntilSettled();

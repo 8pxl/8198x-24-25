@@ -40,9 +40,10 @@ void relimsNeg() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {13.1, -45.3};
+      Pt ring1 = {13.1, -44.4};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 9, .slew = 0});
+      pros::delay(100);
       chass.driveAngle(900, 86, {.exit = new Range(40, 10), .slew = 0});
 
       //intake second ring
@@ -56,12 +57,12 @@ void relimsNeg() {
       //go to corner
       // chass.mtpoint({-74, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
       //was 27.4
-      Pt corner1 = {30.3, 6 };
+      Pt corner1 = {30.8, 5.3 };
       // chass.turnTo(corner1, {.t  imeout = 200});
-      chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 7});
+      chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 6});
       intake.move(127);
       chass.setTurn(_5);
-      double ang = chass.turnTo({39.2, 16}, {});
+      double ang = chass.turnTo({39.2, 15}, {});
       chass.setTurn(_90);
       // chass.turn(45, {});=
       intake.setJamProtection(false);
@@ -76,16 +77,16 @@ chass.driveAngle(890, ang, {.timeout = 600, .slew = 3});
       chass.driveAngle(930, 45, {.timeout = 680, .slew = 2.4});
       tsukasa.toggle();
       chass.driveAngle(-600, 45, {.timeout = 600, .slew = 2});
-            ang = chass.turnTo({-33, -30}, {.timeout = 800});
+            ang = chass.turnTo({-33, -30}, {.timeout = 1400});
       intake.move(20);
       intake.setJamProtection(true);
       //was 15,35
       // chass.mtpoint({20, -34}, {.drift = 6});
       lb.setState(keejLib::LiftState::lower);
-      chass.driveAngle(2100, ang, {.async = true, .timeout = 1900, .slew = 0});
+      chass.driveAngle(2100, ang, {.async = true, .timeout = 1500, .slew = 0});
       // pros::delay(600);
       chass.waitUntilSettled();
-      chass.turn(neg(90), {});
+      chass.turn(neg(95), {.timeout = 500});
       // Pt ring3 = {-29, -3};
       // pros::delay(400);
       // ang = chass.turnTo({-15, -30}, {.timeout = 800});

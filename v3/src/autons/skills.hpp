@@ -77,7 +77,7 @@ void goal1() {
     // chass.driveAngle(-780, neg(170), { .timeout = 600, .exit = new Range(40, 20)});
     // chass.driveAngle(100, neg(170), { .timeout = 600, .exit = new Range(40, 20)});
     clamp.toggle();
-    pros::delay(100);
+    pros::delay(280);
     // chass.turn(180, {.timeout = 500, .exit = new Range(1, 50)});
     // chass.wallReset(2, 10);
     // chass.useAlternateOffsets(false);
@@ -121,7 +121,7 @@ void wall1() {
     Pt prime = {25, -73.39};
 
     // chass.turnTo(prime, {.timeout = 600, .exit = new Range(6, 30)});
-    chass.mtpoint(prime, {.async = false, .timeout = 1600, .drift = 5, .slew = 3,});
+    chass.mtpoint(prime, {.async = false, .timeout = 1800, .drift = 5, .slew = 4,});
     
     // chass.driveAngle(600,90.1, { .timeout = 600, .vMin = 30, .exit = new Range(50, 20)});
 
@@ -433,7 +433,7 @@ void corner4() {
     chass.driveAngle(300, 200, {.timeout = 500, .vMin = 20, .exit = new Range(20, 10)});
     chass.mtpoint(ring1, {.timeout = 1400, .vMin = 30, .settleRange = 5, .exit = new Range(4, 14), .within = 4});
     
-    Pt ring2 = {-55, -89};
+    Pt ring2 = {-55, -87};
     chass.turnTo(ring2, {.timeout = 400, .exit = new Range(10, 30)});
 
     chass.mtpoint(ring2, {.timeout = 1400, .vMin = 30, .settleRange = 5, .exit = new Range(2, 14) });

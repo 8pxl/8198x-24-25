@@ -36,15 +36,16 @@ void belimsNeg() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {-12.5, -45.7};
+      Pt ring1 = {-13.1, -44.4};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       intake.setJamProtection(false);
-      chass.mtpoint(ring1, {.drift = 9, .within = 1});
-      pros::delay(300);
-      chass.driveAngle(800, neg(86), {.vMax = 40, .exit = new Range(40, 10)});
+      chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 8, .slew = 0});
+      pros::delay(100);
+      chass.driveAngle(900, neg(86), {.exit = new Range(40, 10), .slew = 0});
+
 
       //intake second ring
-      chass.driveAngle(-600, neg(110), {.vMin = 70, .exit = new Range(200, 10)});
+      chass.driveAngle(-600, neg(110), {.vMin = 70, .exit = new Range(200, 10), .slew = 0});
       chass.driveAngle(-800, neg(140), {.vMin = 30, .exit = new Range(150, 10)});
       intake.setJamProtection(true);
       Pt ring2 = {-22.1, -28.0};
@@ -75,16 +76,16 @@ chass.driveAngle(890, ang, {.timeout = 600, .slew = 3});
       chass.driveAngle(930, neg(45), {.timeout = 680, .slew = 2.4});
       tsukasa.toggle();
       chass.driveAngle(-600, neg(45), {.timeout = 600, .slew = 2});
-            ang = chass.turnTo({33, -30}, {.timeout = 800});
+            ang = chass.turnTo({33, -30}, {.timeout = 1000});
       intake.move(20);
       intake.setJamProtection(true);
       //was 15,35
       // chass.mtpoint({20, -34}, {.drift = 6});
       lb.setState(keejLib::LiftState::lower);
-      chass.driveAngle(2180, ang, {.async = true, .timeout = 1900, .slew = 0});
+      chass.driveAngle(2100, ang, {.async = true, .timeout = 1500, .slew = 0});
       // pros::delay(600);
       chass.waitUntilSettled();
-      chass.turn(90, {});
+      chass.turn(90, {.timeout = 500});
       
 
       //awp

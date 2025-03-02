@@ -162,7 +162,7 @@ void qbPos() {
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
     chass.turn(neg(180), {.timeout=600, .exit = new Range(3, 100)});
     doink.toggle();
-    chass.driveAngle(-700, neg(180), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(50, 10)});
+    chass.driveAngle(-900, neg(180), {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(50, 10)});
     chass.setLin(_linSmall);
     // chass.turn(120, {.timeout = 600, .exit = new Range(5, 10)});
     chass.driveAngle(-700, 151, {.async = false, .timeout = 400, .vMin = 0,  .vMax = 40, .exit = new Range(10, 20)});
