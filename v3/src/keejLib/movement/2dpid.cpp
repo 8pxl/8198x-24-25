@@ -154,21 +154,16 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
     double prevLin = dt -> getAvgVelocity(true);
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {
-        // std::cout << timeout -> exited({}) << std::endl;
         Angle currHeading = pose.heading;
         Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
         if (dir < 0) targetHeading = Angle(reverseDir(targetHeading.heading()), HEADING);
-        // std::cout << reverseDir(targetHeading.heading()) << std::endl;
         double angularError = targetHeading.error(currHeading);
-        // std::cout << angularError << std::endl;`
         double adjHeading = pose.heading.rad();
         if (adjHeading > M_PI) adjHeading = - (2*M_PI - adjHeading);
         double m = tan(adjHeading);
-        //print current coordinates and  target cordinates
         if (params.debug) {
             std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
             std::printf(" target: (%.3f, %.3f, %.3f) \n", target.x, target.y, targetHeading.heading());
-            //print angular error
             std::printf(" angularError: %.3f \n", angularError);
         }
 
@@ -176,7 +171,6 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
             if (std::fabs(angularError) > 20) {
                 angularError = 0;
             }
-            // angularVel = 0;
             double tx = (m *(target.y - pose.pos.y + pose.pos.x*m + target.x/m)) / (m*m + 1);
             double ty = m * (tx - pose.pos.x) + pose.pos.y;
             linearError = pose.pos.dist({tx,ty});
@@ -185,23 +179,16 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
             if (side == 0) side = -1;
             if (adjHeading < 0) side = -side;
             dir = side * (params.reverse ? -1 : 1);
-            // std::cout << tx << " " << ty << std::endl;
-            // std::printf("(%.3f, %.3f, %.3f, (%.3f, %.3f), %d),", pose.pos.x, pose.pos.y, toDeg(adjHeading), tx, ty, dir);
-            // std::printf("(%.3f, %.3f, %.3f, (%.3f, %.3f), %d)\n", pose.pos.x, pose.pos.y, targetHeading.heading(), tx, ty, dir);
         }
         else {
             linearError = pose.pos.dist(target);
-            // std::printf("(%.3f, %.3f, %.3f, (%.3f, %.3f), %d)\n", pose.pos.x, pose.pos.y, targetHeading.heading(), target.x, target.y, dir);
-            // std::printf("(%.3f, %.3f, %.3f, (%.3f, %.3f), %d),", pose.pos.x, pose.pos.y, toDeg(adjHeading), target.x, target.y, dir);
             side = pose.pos.y < (- 1 / m) * (pose.pos.x - target.x) + target.y;
             if (side == 0) side = -1;
             if (adjHeading < 0) side = -side;
             dir = side * (params.reverse ? -1 : 1);
-            // std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
         }
         if (prevSide != -2) {
             if (side != prevSide && params.vMin != 0) {
-                std::cout << "hi" << std::endl;
                 break;
             }
         }
@@ -211,16 +198,12 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
         if (fabs(linearError) < params.settleRange && !close) close = true;
         linearError *= cos(toRad(angularError));
         angularVel = angCont.out(angularError);
-        // std::cout << close << std::endl;
-        
-        // std::cout << angularVel << std::endl;
-        // std::cout << linearError << std::endl;
+
         double linearVel = dir * linCont.out(linearError);
         
         double radius = 1 / fabs(curvature(pose, {target, Angle(0, RAD)}));
         if (params.drift == 0) maxSlipSpeed = 127;
         else maxSlipSpeed = sqrt(params.drift * radius * 9.8);
-        // double maxSlipSpeed = 127 - std::min(127.0, (fabs(angularError) * params.drift));
         linearVel = std::clamp(linearVel, -maxSlipSpeed, maxSlipSpeed);
         
         linearVel = std::max(fabs(linearVel), params.vMin) * sign(linearVel);
