@@ -168,25 +168,20 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
         }
 
         if (close) {
-            if (std::fabs(angularError) > 20) {
-                angularError = 0;
-            }
+            if (std::fabs(angularError) > 20) angularError = 0;
             double tx = (m *(target.y - pose.pos.y + pose.pos.x*m + target.x/m)) / (m*m + 1);
-            double ty = m * (tx - pose.pos.x) + pose.pos.y;
-            linearError = pose.pos.dist({tx,ty});
-            
-            side = pose.pos.y < (- 1 / m) * (pose.pos.x - tx) + ty;
-            if (side == 0) side = -1;
-            if (adjHeading < 0) side = -side;
-            dir = side * (params.reverse ? -1 : 1);
+            target = {
+                tx,
+                m * (tx - pose.pos.x) + pose.pos.y
+            };
         }
-        else {
-            linearError = pose.pos.dist(target);
-            side = pose.pos.y < (- 1 / m) * (pose.pos.x - target.x) + target.y;
-            if (side == 0) side = -1;
-            if (adjHeading < 0) side = -side;
-            dir = side * (params.reverse ? -1 : 1);
-        }
+
+        linearError = pose.pos.dist(target);
+        side = pose.pos.y < (- 1 / m) * (pose.pos.x - target.x) + target.y;
+        if (side == 0) side = -1;
+        if (adjHeading < 0) side = -side;
+        dir = side * (params.reverse ? -1 : 1);
+
         if (prevSide != -2) {
             if (side != prevSide && params.vMin != 0) {
                 break;
