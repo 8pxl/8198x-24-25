@@ -5,11 +5,13 @@
 #include "keejLib/util.h"
 #include "main.h"
 #include "../robotState/robotState.h"
+#include "pros/adi.h"
+#include "pros/adi.hpp"
 
 namespace keejLib {
 class Intake {
 public:
-  Intake(pros::Motor *intake, pros::Optical *optical, Color sort);
+  Intake(pros::Motor *intake, pros::Optical *optical, pros::adi::DigitalIn *limit, Color sort);
   void startControl();
   void setColor(Color c);
   void move(double velocity);
@@ -22,6 +24,7 @@ public:
 private:
   pros::Motor *motor;
   pros::Optical *optical;
+  pros::adi::DigitalIn *limit;
   pros::Task *task = nullptr;
   Pis *piston;
 
@@ -35,7 +38,7 @@ private:
   keejLib::EMA velocityEma;
   keejLib::EMA colorEma;
   Stopwatch jamTimer;
-  double sortDist = 545;
+  double sortDist = 340;
   bool jamProtection = true;
   bool ringSeen = false;
 

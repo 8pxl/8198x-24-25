@@ -2,14 +2,15 @@
 #include "keejLib/lib.h"
 #include "../robotState/robotState.h"
 #include "keejLib/util.h"
+#include "pros/adi.hpp"
 #include "pros/rtos.hpp"
 #include <ostream>
 
 namespace keejLib {
 
-Intake::Intake(pros::Motor *motor, pros::Optical *optical,
+Intake::Intake(pros::Motor *motor, pros::Optical *optical, pros::adi::DigitalIn *limit,
                Color color)
-    : motor(motor), optical(optical), colorToSort(color), velocityEma(0.99), colorEma(1) {
+    : motor(motor), optical(optical), limit(limit), colorToSort(color), velocityEma(0.99), colorEma(1) {
       optical -> set_integration_time(5);
     }
 
@@ -94,9 +95,13 @@ void Intake::handleColorSort(Color col, bool liftClear) {
     if (taskBlocked && liftClear) {
         motor -> tare_position();
         jamTimer.reset();
-        while (motor->get_position() < sortDist && jamTimer.elapsed() < 2000) {
-          // std::cout << motor -> get_position() << std::endl;
-          motor->move(127);
+        bool prev = 0;
+        while (jamTimer.elapsed() < 2000) {
+            double curr = limit -> get_value();
+            if (!curr && prev) break;
+            prev = curr;
+            motor->move(127);
+            pros::delay(10);
         }
         motor->move(-50);
         pros::delay(160);
@@ -138,7 +143,6 @@ void Intake::control() {
   if (col != none) {
     ringSeen = true;
   }
-  // std::cout << vel << std::endl;
   if (colorToStop != none) {
     handleAutoStop(col);
   } 

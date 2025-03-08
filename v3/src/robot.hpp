@@ -29,10 +29,11 @@ namespace robot {
     pros::adi::DigitalOut doinkClawPiston('c');
     pros::adi::DigitalOut odomPiston('g');
     pros::adi::DigitalOut intakePiston('d');
+    pros::adi::DigitalIn limit('e');
     pros::Rotation rotationSensor(18);
     pros::Rotation vertTracker(-20);
     pros::Rotation horizTracker(8);
-    pros::Optical opticalSensor(1);
+    pros::Optical opticalSensor(7);
     pros::Vision vision(21);
     pros::Imu imu(17);
     // pros::Distance vertDistSensor(20);
@@ -45,8 +46,8 @@ namespace robot {
     // Pis colorSort({colorSortPiston}, false);
     
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
-    Intake intake(&intakeMotor, &opticalSensor, Color::blue);
-    Lift lb(&liftMotor, &rotationSensor, {
+    Intake intake(&intakeMotor, &opticalSensor, &limit, Color::blue);
+    Lift lb(&liftMotor, &rotationSensor,  {
         .kp = 0.039,
         .ki= 0.01,
         .kd = 0.1,
