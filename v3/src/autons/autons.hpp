@@ -18,17 +18,8 @@ void test() {
     chass.setAng(_ang);
     chass.setMTP(_chassLin, _chassAng);
     chass.setLin(_lin);
-    Pt blueAS = {-27.2415365831112, -138.53376928669638};
-    // Pt blueAS = {-29, -135};
-    chass.turnTo(blueAS, {.timeout  = 600, .exit = new Range(2, 100)});
-    Pose pose = chass.getPose();
-    std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " heading: " << pose.heading.heading() << std::endl;
-    //11.9 < x
-    // chass.moveWithin(blueAS, 12.7, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
-    // chass.moveWithin(blueAS, 17.537751502925833, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
-      chass.mtpoint( blueAS, {.drift = 8, .within = 14.7});
-    pose = chass.getPose();
-std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " heading: " << pose.heading.heading() << std::endl;
+    
+    chass.swingTo({10,10}, 5, {});
 
 }
 

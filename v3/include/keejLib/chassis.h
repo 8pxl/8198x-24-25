@@ -133,6 +133,7 @@ namespace keejLib {
                                               double absDist);
           void turn(double angle, MotionParams params);
           double turnTo(Pt target, MotionParams params);
+          void swingTo(Pt target, double radius, MotionParams params);
           void driveAngle(double dist, double angle, MotionParams params,
                           bool absolute = false);
           void mtpose(Pose target, double dLead, MotionParams params);
