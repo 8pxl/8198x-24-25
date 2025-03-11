@@ -7,7 +7,7 @@
 
 using namespace robot;
 
-void relimsNeg() {
+void rwallNeg() {
       chass.setTurn(_90);
       chass.setAng(_ang);
       chass.setLin(_lin);
@@ -50,8 +50,21 @@ void relimsNeg() {
       chass.driveAngle(-700, 135, {.vMin = 40, .exit = new Range(150, 10)});
       Pt ring2 = {22.1, -28};
       ringAngle = chass.turnTo(ring2, {.exit = new Range(14, 10)});
+      lb.next();
       chass.driveAngle(600, ringAngle, {.vMin = 50});
       chass.driveAngle(-200,40, {.vMin = 50, .exit = new Range(90, 10)});
+      
+      Pt stake = {41, -53.1};
+      Pt scoringPosition = {37, -41.1};
+      chass.mtpoint(scoringPosition, {.async = true, .timeout = 1400, .exit = new Range(4, 10),.drift = 3});
+      pros::delay(200);
+      lb.setState(keejLib::LiftState::prime);
+      chass.waitUntilSettled();
+      chass.setTurn(_5);
+      double ang = chass.turnTo(stake, {.timeout = 500});
+      chass.setTurn(_90);
+      lb.next();
+      
 
       //go to corner
       // chass.mtpoint({-74, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
@@ -61,7 +74,7 @@ void relimsNeg() {
       chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 6});
       intake.move(127);
       chass.setTurn(_5);
-      double ang = chass.turnTo({39.2, 15}, {.timeout = 600});
+    ang = chass.turnTo({39.2, 15}, {.timeout = 600});
       chass.setTurn(_90);
       // chass.turn(45, {});=
       intake.setJamProtection(false);
@@ -109,13 +122,6 @@ chass.driveAngle(890, ang, {.timeout = 630, .slew = 3});
           chass.driveAngle(900, neg(90), {});
     
           intake.move(127);
-    
-          // Pt corner2 = {-80, 24};
-          // chass.mtpoint(corner2, {.async = true, .timeout = 1200, .exit = new Range(1, 10), .drift = 10, .within = 9});
-          // pros::delay(400);
-          // tsukasa.toggle();
-          // chass.waitUntilSettled();
-          // pros::delay(2000);
       }
       pros::delay(2000);
 
