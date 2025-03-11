@@ -41,6 +41,7 @@ private:
   double sortDist = 340;
   bool jamProtection = true;
   bool ringSeen = false;
+  int colorCount = 0;
 
   Color colorToStop = none;
 

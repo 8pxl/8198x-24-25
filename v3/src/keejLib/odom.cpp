@@ -15,10 +15,10 @@ void Chassis::startTracking() {
             while (true) {
                 // std::cout << "hi1" << std::endl;
                 updateOdom();
-                if (sw.elapsed() > 50) {
-                    sw.reset();
-                    std::cout << dt -> getAvgVelocity(true) << std::endl;
-                }
+                // if (sw.elapsed() > 50) {
+                //     sw.reset();
+                //     std::cout << dt -> getAvgVelocity(true) << std::endl;
+                // }
                     // std::cout << "hi" << std::endl;
                     // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.heading() << std::endl;
         // std::cout << "hi2" << std::endl;

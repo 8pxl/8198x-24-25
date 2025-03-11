@@ -36,14 +36,14 @@ void rAwp() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {22.1, -30};
+      Pt ring1 = {22.1, -29};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(70, 10)});
       chass.mtpoint(ring1, {.vMin = 60, .exit = new Range(7, 10), .drift = 6, .slew = 0});
 
 
       //intake second ring
       // chass.driveAngle(-900, 110, {.exit = new Range(100, 10)});
-      Pt ring2 = {27, -44.4};
+      Pt ring2 = {27, -45.4};
       chass.driveAngle(700, 125, {.timeout = 400});
       chass.driveAngle(400, 180, {.timeout = 300});
       chass.mtpoint(ring2, {.vMax = 50, .drift = 9,});
@@ -99,7 +99,7 @@ void rAwp() {
       // Pt ring5 = {-79, -31};
       Pt ring5 = {-79, -29.6};
       intake.stopOnColor(keejLib::red, 1000);
-      chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 4});
+      chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 3});
 
       Pt goal2 = {-60, -27.9};
       // double heading = chass.turnTo(goal2, {.timeout = 300, .exit = new Range(9, 10), .reverse = true});

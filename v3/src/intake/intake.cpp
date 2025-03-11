@@ -77,23 +77,22 @@ void Intake::handleAutoStop(Color col) {
 }
 
 void Intake::handleColorSort(Color col, bool liftClear) {
-  // switch (col) {
-  //     case none:
-  //       break;
-  //     case red:
-  //       std::cout << "Color: Red" << std::endl;
-  //       break;
-  //     case blue:
-  //       std::cout << "Color: Blue" << std::endl;
-  //       break;
-  //   }
+  switch (col) {
+      case none:
+        break;
+      case red:
+        std::cout << "Color: Red" << std::endl;
+        break;
+      case blue:
+        std::cout << "Color: Blue" << std::endl;
+        break;
+    }
     if (col != none) {
       if (col == oppositeColor(col)) taskBlocked = false;
       if (col == colorToSort) taskBlocked = true;
     }
 
     if (taskBlocked && liftClear) {
-        motor -> tare_position();
         jamTimer.reset();
         bool prev = 0;
         while (jamTimer.elapsed() < 2000) {
