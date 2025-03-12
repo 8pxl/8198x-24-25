@@ -95,7 +95,11 @@ void Intake::handleColorSort(Color col, bool liftClear) {
     if (taskBlocked && liftClear) {
         jamTimer.reset();
         bool prev = 0;
+        motor -> tare_position();
         while (jamTimer.elapsed() < 2000) {
+            if (motor -> get_position() < sortDist){
+                continue;
+            }
             double curr = limit -> get_value();
             if (!curr && prev) break;
             prev = curr;
