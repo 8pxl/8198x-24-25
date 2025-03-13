@@ -54,7 +54,8 @@ Color Intake::getDetected() { return colorDetected; }
 
 Color Intake::detectColor() {
   int check = 2;
-  double hue = colorEma.out(optical->get_hue());
+  double hue = optical->get_hue();
+  std::cout << hue << std::endl;
   Color color = none;
   while (check-- >= 0) {
     color = static_cast<Color>(check);

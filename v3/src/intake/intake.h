@@ -30,7 +30,7 @@ private:
 
   bool autoLift = true;
   std::unordered_map<Color, std::pair<double, double>> colorHues{
-      {red, {1, 14}}, {blue, {203, 224}}};
+      {red, {1, 14}}, {blue, {203, 220}}};
   double velocity = 0;
   bool taskBlocked = false;
   Color colorDetected = none;
