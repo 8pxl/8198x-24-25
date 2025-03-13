@@ -1,7 +1,9 @@
+#pragma once
 #include "../robot.hpp"
 #include "keejLib/util.h"
 #include "main.h"
 #include "../globals.hpp"
+using namespace robot;
 
 void turnToRing(int timeout) {
     int sigId;
@@ -30,4 +32,18 @@ void turnToRing(int timeout) {
         pros::delay(10);
         // robot::dt.spinVolts(vel, -vel);
     }
+}
+
+void intakeCorner(double ang1, double ang2) {
+    intake.move(127);
+    chass.driveAngle(990, ang1, {.timeout = 630, .vMax = 60, .slew = 3});
+    intake.setJamProtection(false);
+    chass.driveAngle(-290, ang1, {.timeout = 300, .vMax = 35});
+    intake.setJamProtection(true);
+    tsukasa.toggle();
+    intake.move(127);
+    pros::delay(300);
+    chass.driveAngle(890, ang2, {.timeout = 680, .vMax = 60, .slew = 2.4});
+    intake.setJamProtection(false);
+    tsukasa.toggle();
 }
