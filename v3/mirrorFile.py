@@ -3,8 +3,8 @@ import os
 import re
 
 
-path = "src/autons/neg/rawp.hpp"
-write = "src/autons/neg/bawp.hpp"
+path = "src/autons/neg/relims.hpp"
+write = "src/autons/neg/belims.hpp"
 f = open(path, 'r')
 w = open(write, 'w')
 

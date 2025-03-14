@@ -4,6 +4,7 @@
 #include "keejLib/control.h"
 #include "keejLib/util.h"
 #include "pros/rtos.hpp"
+#include "../funcs.hpp"
 
 using namespace robot;
 
@@ -25,9 +26,9 @@ void relimsNeg() {
       lb.next();
       pros::delay(200);
 
-      chass.mtpoint({-1.4, -5}, {.timeout = 1100, .vMin = 40, .exit = new Range(3, 10), .drift = 9,});
-      chass.driveAngle(-300, 0, {.async = false, .timeout = 1000, .vMin = 30, .vMax = 55,.exit = new Range(90, 10)});
-      chass.driveAngle(-800, 0, {.async = false, .timeout = 1000, .vMin = 20, .vMax = 55, .exit = new Range(80, 10)});
+      chass.mtpoint({-3.9, -12.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+      chass.driveAngle(-400, 20, {.async = false, .timeout = 1000, .vMin = 60, .vMax = 75,.exit = new Range(130, 10)});
+      chass.driveAngle(-550, 20, {.async = false, .timeout = 1000, .vMin = 60, .vMax = 70, .exit = new Range(100, 10)});
       clamp.toggle();
       pros::delay(100);
 
@@ -39,7 +40,7 @@ void relimsNeg() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {12.1, -42.5};
+      Pt ring1 = {12.1, -42.8};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 9, .slew = 0});
       pros::delay(100);
@@ -63,21 +64,7 @@ void relimsNeg() {
       chass.setTurn(_5);
       double ang = chass.turnTo({39.2, 15}, {.timeout = 600});
       chass.setTurn(_90);
-      // chass.turn(45, {});=
-      intake.setJamProtection(false);
-      // chass.driveLin(600, 40, {});
-chass.driveAngle(890, ang, {.timeout = 630, .slew = 3});
-            intake.setJamProtection(false);
-            chass.driveLin(410, -25, {});
-            intake.setJamProtection(true);
-      tsukasa.toggle();
-      intake.move(127);
-      pros::delay(300);
-      chass.driveAngle(890, 45, {.timeout = 680, .slew = 2.4});
-      intake.setJamProtection(false);
-      tsukasa.toggle();
-      chass.driveAngle(-600, 45, {.timeout = 600, .slew = 2});
-      intake.setJamProtection(true);
+      intakeCorner(ang, 45);
 
       
       bool touch = false;
@@ -106,7 +93,7 @@ chass.driveAngle(890, ang, {.timeout = 630, .slew = 3});
           tsukasa.toggle();
           chass.mtpoint(ring3, {.drift = 10, .within = 5});
           tsukasa.toggle();
-          chass.driveAngle(900, neg(90), {});
+          chass.driveAngle(2300, neg(90), {});
     
           intake.move(127);
     

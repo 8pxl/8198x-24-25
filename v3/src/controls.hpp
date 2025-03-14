@@ -18,7 +18,7 @@ void driver() {
     // else intakeMotor.move(0);
     // std::cout << released[R1] << std::endl;
     if (state[R1] && state[R2]) intake.move(-127);
-    else if (state[R1]) intake.move(127);
+    else if (state[R1] || tsukasa.getState()) intake.move(127);
     else intake.move(0);
     
     if (state[NR1] && tsukasa.getState()) {

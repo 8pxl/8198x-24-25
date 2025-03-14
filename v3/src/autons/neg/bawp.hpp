@@ -27,7 +27,7 @@ void bAwp() {
 
       chass.mtpoint({1.5, -7.0}, {.timeout = 1100, .vMin = 55, .exit = new Range(5, 10), .drift = 9,});
       chass.driveAngle(-300, neg(0), {.async = false, .timeout = 1000, .vMin = 30, .vMax = 55,.exit = new Range(90, 10)});
-      chass.driveAngle(-1020, neg(0), {.async = false, .timeout = 1000, .vMin = 45, .vMax = 70, .exit = new Range(80, 10)});
+      chass.driveAngle(-1020, neg(5), {.async = false, .timeout = 1000, .vMin = 45, .vMax = 70, .exit = new Range(80, 10)});
       clamp.toggle();
       pros::delay(100);
 
@@ -90,6 +90,7 @@ void bAwp() {
       // pros::delay(800);
       */
       chass.turn(neg(135), {.exit = new Range(10, 10)});
+      intake.setJamProtection(true);
       pros::delay(200);
       clamp.toggle();
       chass.driveAngle(550, neg(135), {.timeout = 600, .vMin = 60}); 

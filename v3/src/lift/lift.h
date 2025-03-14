@@ -52,7 +52,7 @@ class Lift {
             {LiftState::idle, 5},
             {LiftState::one, 75.5},
             {LiftState::two, 137},
-            {LiftState::prime, 349},
+            {LiftState::prime, 357},
             {LiftState::lower, 360 + 129},
             {LiftState::lowest, 360 + 271}
         };

@@ -151,7 +151,7 @@ void qrPos() {
     }
     claw.toggle();
 
-    chass.driveAngle(-460, 0, {.async = true, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
+    chass.driveAngle(-560, 0, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(35, 20)});
     doink.toggle();
     chass.turn(90, {.timeout=150, .exit = new Range(3, 20)});
     chass.turn(135, {.timeout=50, .exit = new Range(3, 20)});

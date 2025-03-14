@@ -2,6 +2,7 @@
 #include "keejLib/util.h"
 #include "lift/states.h"
 #include "pros/misc.h"
+#include "pros/rtos.hpp"
 #include "robot.hpp"
 #include "controls.hpp"
 #include "globals.hpp"
@@ -24,11 +25,21 @@ void initialize() {
     // intake.startControl();
     chass.startTracking();
     
-    int clr = cont.select({"red", "blue"});
-    glb::color = clr ? red : blue;
-    
-    intake.setColor(oppositeColor(static_cast<Color>(clr)));
-    glb::auton = autons.autonsList[cont.select(autons.names)];
+    int clr = cont.select({"red", "blue", "driver"});
+    if (clr == 2) {
+        intake.setColor(keejLib::none);
+        odomRelease.setState(true);
+    }
+    else {
+        glb::color = clr ? red : blue;
+        intake.setColor(oppositeColor(static_cast<Color>(clr)));
+        if (clr == red) {
+            glb::auton = redAutons.autonsList[cont.select(redAutons.names)];
+        }
+        else {
+            glb::auton = blueAutons.autonsList[cont.select(blueAutons.names)];
+        }
+    }
     
     // int clr = red;
     // glb::auton = skills;
@@ -36,13 +47,13 @@ void initialize() {
     // }
     
     // if (glb::color == blue) {
-        // Pose p 
-    // = chass.getPose();
+        // Pose p = chass.getPose();
         // chass.setPose({-p.pos.x, p.pos.y, p.heading});
     // }
     // 
     // if ( glb::auton != qbPos) {
         lb.setState(keejLib::LiftState::one);
+        pros::delay(50);
     // }
     robot::lb.startControl();
     // if(glb::auton == qbPos) {
@@ -83,6 +94,8 @@ void opcontrol() {
     // intake.stopOnColor(keejLib::red, 10000);
     if (glb::autonRan) {
         odomRelease.setState(true);
+        intake.setAutoLift(true);
+
         // lb.setState(LiftState::idle);
     }
     while(true) {
