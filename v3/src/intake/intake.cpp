@@ -121,8 +121,9 @@ bool Intake::isJammed(double actual, int tolerance) {
 void Intake::handleJamProtection(bool liftClear, RobotState * s) {
     // std::cout << "intake jammed! " <<std::endl;
     if (s->getLiftState() == LiftState::one && autoLift && ringSeen) {
+      motor -> move(-40);
+      pros::delay(50);
       motor -> move(0);
-      pros::delay(20);
       s->setLiftState(LiftState::two);
       pros::delay(100);
       jamTimer.reset();

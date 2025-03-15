@@ -21,13 +21,25 @@ void bAwp() {
             Pt allianceStake = {25.6, 18.4};
 
       // chass.moveWithin(allianceStake, 14.7, {});
+      /* OLD CLAMP
       chass.mtpoint(allianceStake, {.drift = 2, .within = 13.8});
       lb.next();
       pros::delay(200);
 
-      chass.mtpoint({1.5, -7.0}, {.timeout = 1100, .vMin = 55, .exit = new Range(5, 10), .drift = 9,});
+      chass.mtpoint({1.1, -7.0}, {.timeout = 1100, .vMin = 55, .exit = new Range(5, 10), .drift = 9,});
       chass.driveAngle(-300, neg(0), {.async = false, .timeout = 1000, .vMin = 30, .vMax = 55,.exit = new Range(90, 10)});
-      chass.driveAngle(-1020, neg(5), {.async = false, .timeout = 1000, .vMin = 45, .vMax = 70, .exit = new Range(80, 10)});
+      chass.driveAngle(-1020, neg(8), {.async = false, .timeout = 1000, .vMin = 45, .vMax = 70, .exit = new Range(80, 10)});
+      clamp.toggle();
+      pros::delay(100);
+      */
+      
+      chass.mtpoint(allianceStake, {.drift = 2, .within = 13.4});
+      lb.next();
+      pros::delay(200);
+
+      chass.mtpoint({3.1, -12.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+      chass.driveAngle(-400, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 75,.exit = new Range(130, 10)});
+      chass.driveAngle(-550, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 70, .exit = new Range(100, 10)});
       clamp.toggle();
       pros::delay(100);
 
