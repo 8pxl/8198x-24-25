@@ -1,6 +1,7 @@
 #include "constants.hpp"
 #include "keejLib/control.h"
 #include "keejLib/util.h"
+#include "pros/abstract_motor.hpp"
 #include "pros/rtos.hpp"
 #include <functional>
 using namespace robot;
@@ -51,7 +52,7 @@ void goal1() {
     
     // Pt ring2 = {26.3, -62.58};
     //32.3
-    Pt ring2 = {31.3, -64};
+    Pt ring2 = {31.3, -64.8};
     chass.mtpoint(ring2, {.timeout = 1200, .vMin = 30, .settleRange = 10, .exit = new Range(5, 10), .drift = 10});
     chass.driveAngle(-500, 70, {.timeout = 400, .exit = new Range(100, 10)});
     pros::delay(150);
@@ -137,6 +138,7 @@ void wall1() {
     intake.move(0);
     lb.next();
     chass.mtpoint(stake, {.timeout = 800, .drift = 2.5, .within = 3.6});
+    intake.move(127);
 
     // chass.setTurn(_ttp);
     // chass.turnTo(stake, {.timeout = 700, .exit = new Range(1, 200)});
@@ -464,7 +466,7 @@ void corner4() {
     // double ang = chass.turnTo(ring4, {.timeout = 400, .exit = new Range(2, 30)});
     // chass.driveAngle(960, 200, {.timeout = 600, .exit = new Range(20, 10)});
     Pt ring3 = {-76.01, -112};
-    chass.driveAngle(-400, 120, {.timeout = 500});
+    chass.driveAngle(-400, 120, {.timeout = 400});
     double ang = chass.turnTo(ring3, {.timeout = 340, .exit = new Range(9, 10)});
     chass.driveAngle(900, 40, {.timeout = 600, .exit = new Range(20, 10)});
     // chass.mtpoint(ring3, {.timeout = 800});
@@ -472,13 +474,13 @@ void corner4() {
 
     
     // chass.turn(50, {.timeout = 800, .exit = new Range(3, 10)});
-    chass.driveAngle(-700, 40, {.timeout = 500, .exit = new Range(20, 10)});
+    chass.driveAngle(-500, 40, {.timeout = 500, .exit = new Range(20, 10)});
 
     // clamp.toggle();
     // chass.driveAngle(700, 45, {.timeout = 300, .exit = new Range(20, 10)});
 clamp.toggle();
 pros::delay(100);
-    chass.driveAngle(-400, 30, {.timeout = 700, .vMin = 80, .exit = new Range(20, 10)});
+    chass.driveAngle(-600, 30, {.timeout = 700, .vMin = 80, .exit = new Range(20, 10)});
     intake.move(0);
 
     
@@ -505,6 +507,7 @@ pros::delay(100);
 void hang() {
     //-50, -87
     lb.setState(keejLib::LiftState::prime);
+    liftMotor.set_brake_mode(pros::MotorBrake::hold);
     chass.setTurn(_180);
     odomRelease.setState(true);
     chass.turn(neg(135), {.timeout = 500});

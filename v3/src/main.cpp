@@ -1,6 +1,7 @@
 #include "main.h"
 #include "keejLib/util.h"
 #include "lift/states.h"
+#include "pros/abstract_motor.hpp"
 #include "pros/misc.h"
 #include "pros/rtos.hpp"
 #include "robot.hpp"
@@ -69,10 +70,13 @@ void initialize() {
 }
 
 void disabled() {
+    liftMotor.set_brake_mode(pros::MotorBrake::hold);
     // odomPiston.set_value(true);
     // lb.setState(keejLib::LiftState::lower);
 }
-void competition_initialize() {}
+void competition_initialize() {
+    liftMotor.set_brake_mode(pros::MotorBrake::hold);
+}
 void autonomous() {
     glb::autonRan = true;
     odomRelease.setState(false);

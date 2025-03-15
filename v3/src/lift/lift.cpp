@@ -2,6 +2,7 @@
 #include "../robotState/robotState.h"
 #include "liblvgl/widgets/lv_label.h"
 #include "main.h"
+#include "pros/motors.h"
 #include "states.h"
 #include <ostream>
 

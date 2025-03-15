@@ -40,7 +40,7 @@ void relimsNeg() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {12.1, -42.8};
+      Pt ring1 = {12.1, -43.8};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 9, .slew = 0});
       pros::delay(100);
@@ -67,7 +67,7 @@ void relimsNeg() {
       intakeCorner(ang, 45);
 
       
-      bool touch = false;
+      bool touch = true;
       if(touch) {
           ang = chass.turnTo({-33, -30}, {.timeout = 1400});
     //was 15,35

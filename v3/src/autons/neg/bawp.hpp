@@ -37,6 +37,8 @@ void bAwp() {
       lb.next();
       pros::delay(200);
 
+      // chass.mtpoint({0.5, -11.4}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+
       chass.mtpoint({3.1, -12.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
       chass.driveAngle(-400, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 75,.exit = new Range(130, 10)});
       chass.driveAngle(-550, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 70, .exit = new Range(100, 10)});
@@ -75,20 +77,20 @@ void bAwp() {
       // chass.driveAngle(600, 60, {.timeout = 350, .vMin = 40, .exit = new Range(100, 10)});
       // chass.turn(45, {.exit = new Range(15, 10)});
 
-      Pt ring3 = {31.0, -3.0};
+      Pt ring3 = {34.0, 0.5};
       chass.mtpoint(ring3, {.async = true, .drift = 10, .within = 5, .slew = 4});
-      pros::delay(600);
+      pros::delay(500);
       tsukasa.toggle(); 
       chass.waitUntilSettled();
-      tsukasa.toggle();
+      tsukasa.toggle(); 
 
       //go to corner
       // chass.turn(neg(90), {.timeout = 600, .exit = new Range(15, 10)});
       // chass.driveAngle(500, 120, {.vMin = 50});
-      chass.mtpoint({88.5, -8.0}, {.timeout = 1400,.exit = new Range(2, 10), .drift = 5, .within = 9});
+      chass.mtpoint({88.5, -7.0}, {.timeout = 1400,.exit = new Range(2, 10), .drift = 5, .within = 9});
       intake.setJamProtection(false);
       // chass.mtpoint({74.0, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
-      Pt corner = {99.0, 15.0};
+      Pt corner = {100, 15.0};
       intake.move(127);
       double ang =chass.turnTo(corner, {.timeout = 330});
       chass.driveAngle(1900, ang, {.timeout = 1000, .vMax = 90, .slew = 4});
@@ -101,8 +103,8 @@ void bAwp() {
       chass.turn(neg(140), {.async = true, .timeout = 800});
       // pros::delay(800);
       */
-      chass.turn(neg(135), {.exit = new Range(10, 10)});
       intake.setJamProtection(true);
+      chass.turn(neg(135), {.vMax = 70, .exit = new Range(10, 10)});
       pros::delay(200);
       clamp.toggle();
       chass.driveAngle(550, neg(135), {.timeout = 600, .vMin = 60}); 
@@ -112,9 +114,10 @@ void bAwp() {
       chass.driveAngle(600, neg(135), {.vMin = 50}); 
       */
       // Pt ring5 = {79.0, -31.0};
-      Pt ring5 = {79, -29.6};
+      Pt ring5 = {79, -29.9};
+      robot::intake.move(100);
       intake.stopOnColor(keejLib::blue, 1000);
-      chass.mtpoint(ring5, {.exit = new Range(4, 10), .drift = 6, .within = 3});
+      chass.mtpoint(ring5, {.timeout = 1000, .vMin = 30, .exit = new Range(4, 10), .drift = 6, .within = 3});
 
       Pt goal2 = {60.0, -27.9};
       // double heading = chass.turnTo(goal2, {.timeout = 300, .exit = new Range(9, 10), .reverse = true});
