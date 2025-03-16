@@ -39,9 +39,12 @@ void bAwp() {
 
       // chass.mtpoint({0.5, -11.4}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
 
-      chass.mtpoint({3.1, -12.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
-      chass.driveAngle(-400, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 75,.exit = new Range(130, 10)});
-      chass.driveAngle(-550, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 70, .exit = new Range(100, 10)});
+      // chass.mtpoint({3.9, -12.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+      // chass.driveAngle(-400, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 75,.exit = new Range(130, 10)});
+      // chass.driveAngle(-550, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 70, .exit = new Range(100, 10)});
+      chass.mtpoint({0.9, -7.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+      chass.driveAngle(-400, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 65,.exit = new Range(130, 10)});
+      chass.driveAngle(-680, neg(30), {.async = false, .timeout = 1000, .vMin = 50, .vMax = 65, .exit = new Range(100, 10)});
       clamp.toggle();
       pros::delay(100);
 

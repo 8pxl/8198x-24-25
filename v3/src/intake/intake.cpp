@@ -56,16 +56,21 @@ Color Intake::detectColor() {
   int check = 2;
   double hue = optical->get_hue();
   std::cout << hue << std::endl;
-  Color color = none;
-  while (check-- >= 0) {
-    color = static_cast<Color>(check);
-    if (inRange(hue, colorHues[color])) {
-      colorDetected = color;
-      return color;
-    }
+  if ((hue > colorHues[red].first) || (hue < colorHues[red].second)) {
+      colorCount[red]++;
+      if (colorCount[red] > 4) {
+          colorCount[red] = 0;
+          return red;
+      }
   }
-  colorDetected = color;
-
+  else if (inRange(hue, colorHues[blue])) {
+      colorCount[blue]++;
+      if (colorCount[blue] > 4) {
+          colorCount[blue] = 0;
+          return blue;
+      }
+  }
+  colorDetected = none;
   return none;
 }
 
@@ -162,7 +167,11 @@ void Intake::control() {
     motor->move(velocity);
   }
   if (velocity != 0) optical->set_led_pwm(100);
-  else optical->set_led_pwm(0);
+  else {
+      optical->set_led_pwm(0);
+      colorCount[blue] = 0;
+      colorCount[red] = 0;
+  }
 
   if (velocity <= 0) {
     jamTimer.reset();

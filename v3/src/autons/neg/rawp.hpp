@@ -24,9 +24,12 @@ void rAwp() {
       lb.next();
       pros::delay(200);
 
-      chass.mtpoint({-1.5, -7}, {.timeout = 1100, .vMin = 55, .exit = new Range(5, 10), .drift = 9,});
-      chass.driveAngle(-300, 0, {.async = false, .timeout = 1000, .vMin = 30, .vMax = 55,.exit = new Range(90, 10)});
-      chass.driveAngle(-1020, 0, {.async = false, .timeout = 1000, .vMin = 45, .vMax = 70, .exit = new Range(80, 10)});
+      // chass.mtpoint({-1.5, -7}, {.timeout = 1100, .vMin = 55, .exit = new Range(5, 10), .drift = 9,});
+      // chass.driveAngle(-300, 0, {.async = false, .timeout = 1000, .vMin = 30, .vMax = 55,.exit = new Range(90, 10)});
+      // chass.driveAngle(-1020, 0, {.async = false, .timeout = 1000, .vMin = 45, .vMax = 70, .exit = new Range(80, 10)});
+      chass.mtpoint({-0.9, -7.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+      chass.driveAngle(-400, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 65,.exit = new Range(130, 10)});
+      chass.driveAngle(-680, neg(30), {.async = false, .timeout = 1000, .vMin = 50, .vMax = 65, .exit = new Range(100, 10)});
       clamp.toggle();
       pros::delay(100);
       
@@ -103,9 +106,9 @@ void rAwp() {
       intake.setJamProtection(true);
       chass.turn(135, {.vMax = 70, .exit = new Range(10, 10)});
       clamp.toggle();
-      pros::delay(200);
+      // pros::delay(200);
 
-      chass.driveAngle(550, 135, {.timeout = 600, .vMin = 60}); 
+      chass.driveAngle(520, 135, {.timeout = 600, .vMin = 60}); 
       /*
       // chass.turnTo(ring5, {.async = true, .timeout = 600});
       chass.waitUntilSettled();

@@ -28,16 +28,15 @@ void belimsNeg() {
       lb.next();
       pros::delay(200);
 
-      chass.mtpoint({4.1, -12.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
-      chass.driveAngle(-400, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 75,.exit = new Range(130, 10)});
-      chass.driveAngle(-550, neg(20), {.async = false, .timeout = 1000, .vMin = 60, .vMax = 70, .exit = new Range(100, 10)});
+      chass.mtpoint({0.9, -10.4}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+      chass.driveAngle(-400, neg(20), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50,.exit = new Range(130, 10)});
+      chass.driveAngle(-680, neg(25), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
       clamp.toggle();
       pros::delay(100);
-
-      // intake.move(0);
+            // intake.move(0);
 
       //go to center rings
-      chass.mtpoint({4.0, -31.4}, {.exit = new Range(10, 10), .drift = 10, .slew = 0});
+      chass.mtpoint({4.7, -31}, {.exit = new Range(10, 10), .drift = 10, .slew = 0});
       intake.move(127);
       lb.setState(LiftState::idle);
 
@@ -59,12 +58,12 @@ void belimsNeg() {
       //go to corner
       // chass.mtpoint({74.0, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
       //was 27.4
-      Pt corner1 = {-30.8, 5.3};
+      Pt corner1 = {-30.8, 5.5};
       // chass.turnTo(corner1, {.t  imeout = 200});
       chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 6});
       intake.move(127);
       chass.setTurn(_5);
-      double ang = chass.turnTo({-39.2, 15.0}, {.timeout = 600});
+      double ang = chass.turnTo({-39.6, 15.0}, {.timeout = 600});
       chass.setTurn(_90);
       intakeCorner(ang, neg(45));
 

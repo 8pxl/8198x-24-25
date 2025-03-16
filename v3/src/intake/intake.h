@@ -7,6 +7,7 @@
 #include "../robotState/robotState.h"
 #include "pros/adi.h"
 #include "pros/adi.hpp"
+#include <unordered_map>
 
 namespace keejLib {
 class Intake {
@@ -30,7 +31,10 @@ private:
 
   bool autoLift = true;
   std::unordered_map<Color, std::pair<double, double>> colorHues{
-      {red, {0.01, 9}}, {blue, {210, 227}}};
+      {red, {350, 9}}, {blue, {210, 227}}};
+  std::unordered_map<Color, int> colorCount{
+      {red, 0}, {blue, 0}
+  };
   double velocity = 0;
   bool taskBlocked = false;
   Color colorDetected = none;
@@ -41,7 +45,6 @@ private:
   double sortDist = 300;
   bool jamProtection = true;
   bool ringSeen = false;
-  int colorCount = 0;
 
   Color colorToStop = none;
 

@@ -26,9 +26,12 @@ void relimsNeg() {
       lb.next();
       pros::delay(200);
 
-      chass.mtpoint({-3.9, -12.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
-      chass.driveAngle(-400, 20, {.async = false, .timeout = 1000, .vMin = 60, .vMax = 75,.exit = new Range(130, 10)});
-      chass.driveAngle(-550, 20, {.async = false, .timeout = 1000, .vMin = 60, .vMax = 70, .exit = new Range(100, 10)});
+      // chass.mtpoint({-3.4, -12.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+      // chass.driveAngle(-400, 20, {.async = false, .timeout = 1000, .vMin = 60, .vMax = 75,.exit = new Range(130, 10)});
+      // chass.driveAngle(-550, 20, {.async = false, .timeout = 1000, .vMin = 60, .vMax = 70, .exit = new Range(100, 10)});
+      chass.mtpoint({-0.9, -10.4}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+      chass.driveAngle(-400, (20), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50,.exit = new Range(130, 10)});
+      chass.driveAngle(-680, (25), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
       clamp.toggle();
       pros::delay(100);
 
@@ -57,17 +60,17 @@ void relimsNeg() {
       //go to corner
       // chass.mtpoint({-74, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
       //was 27.4
-      Pt corner1 = {30.8, 5.3 };
+      Pt corner1 = {30.8, 5.5 };
       // chass.turnTo(corner1, {.t  imeout = 200});
       chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 6});
       intake.move(127);
       chass.setTurn(_5);
-      double ang = chass.turnTo({39.2, 15}, {.timeout = 600});
+      double ang = chass.turnTo({39.6, 15}, {.timeout = 600});
       chass.setTurn(_90);
       intakeCorner(ang, 45);
 
       
-      bool touch = true;
+      bool touch = false;
       if(touch) {
           ang = chass.turnTo({-33, -30}, {.timeout = 1400});
     //was 15,35
