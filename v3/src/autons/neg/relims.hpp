@@ -29,28 +29,31 @@ void relimsNeg() {
       // chass.mtpoint({-3.4, -12.8}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
       // chass.driveAngle(-400, 20, {.async = false, .timeout = 1000, .vMin = 60, .vMax = 75,.exit = new Range(130, 10)});
       // chass.driveAngle(-550, 20, {.async = false, .timeout = 1000, .vMin = 60, .vMax = 70, .exit = new Range(100, 10)});
-      chass.mtpoint({-0.9, -10.4}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
+      chass.mtpoint({-0.9, -10.3}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
       chass.driveAngle(-400, (20), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50,.exit = new Range(130, 10)});
-      chass.driveAngle(-680, (25), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
+      chass.driveAngle(-680, (30), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
       clamp.toggle();
       pros::delay(100);
 
       // intake.move(0);
 
       //go to center rings
-      chass.mtpoint({-4, -31.4}, {.exit = new Range(10, 10), .drift = 10, .slew = 0});
+      // chass.mtpoint({-4, -31.4}, {.exit = new Range(10, 10), .drift = 10, .slew = 0});
       intake.move(127);
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {12.1, -43.8};
+      Pt ring1 = {12.1, -43.9};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 9, .slew = 0});
       pros::delay(100);
-      chass.driveAngle(900, 90, {.exit = new Range(40, 10), .slew = 3});
+      chass.driveAngle(1050, 90, {.timeout = 800, .exit = new Range(40, 10), .slew = 3});
+      // chass.driveAngle(-700, 90, {.exit = new Range(40, 10), .slew = 3});
+      // chass.driveAngle(700, 90, {.exit = new Range(40, 10), .slew = 3});
+      
 
       //intake second ring
-      chass.driveAngle(-500, 110, {.vMin = 70, .exit = new Range(200, 10), .slew = 0});
+      chass.driveAngle(-700, 110, {.vMin = 70, .exit = new Range(200, 10), .slew = 0});
       chass.driveAngle(-700, 135, {.vMin = 40, .exit = new Range(150, 10)});
       Pt ring2 = {22.1, -28};
       ringAngle = chass.turnTo(ring2, {.exit = new Range(14, 10)});
@@ -60,7 +63,7 @@ void relimsNeg() {
       //go to corner
       // chass.mtpoint({-74, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
       //was 27.4
-      Pt corner1 = {30.8, 5.5 };
+      Pt corner1 = {30.4, 6.1 };
       // chass.turnTo(corner1, {.t  imeout = 200});
       chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 6});
       intake.move(127);
@@ -68,6 +71,7 @@ void relimsNeg() {
       double ang = chass.turnTo({39.6, 15}, {.timeout = 600});
       chass.setTurn(_90);
       intakeCorner(ang, 45);
+      chass.driveAngle(-700, 45, {.timeout = 700, .vMin = 70});
 
       
       bool touch = false;
@@ -88,15 +92,15 @@ void relimsNeg() {
       
       }
       else {
-          Pt ring3 = {-29, -3};
+          Pt ring3 = {-29, -2};
     
     
     
           chass.turn(neg(90), {.timeout = 600});
           tsukasa.toggle();
           chass.mtpoint(ring3, {.drift = 10, .within = 5});
-          tsukasa.toggle();
-          chass.driveAngle(2300, neg(90), {});
+          // tsukasa.toggle();
+          // chass.driveAngle(2300, neg(70), {});
     
           intake.move(127);
     

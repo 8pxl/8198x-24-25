@@ -55,20 +55,26 @@ Color Intake::getDetected() { return colorDetected; }
 Color Intake::detectColor() {
   int check = 2;
   double hue = optical->get_hue();
-  std::cout << hue << std::endl;
-  if ((hue > colorHues[red].first) || (hue < colorHues[red].second)) {
-      colorCount[red]++;
-      if (colorCount[red] > 4) {
-          colorCount[red] = 0;
-          return red;
-      }
-  }
-  else if (inRange(hue, colorHues[blue])) {
-      colorCount[blue]++;
-      if (colorCount[blue] > 4) {
-          colorCount[blue] = 0;
-          return blue;
-      }
+  double dist = optical ->get_proximity();
+  int distRange = 100;
+  int count = 2;
+  // std::cout << dist << std::endl;
+  if (dist > distRange) {
+    if ((hue > colorHues[red].first) || (hue < colorHues[red].second)) {
+        colorCount[red]++;
+        if (colorCount[red] > count) {
+            colorCount[red] = 0;
+            return red;
+        }
+    }
+    else if (inRange(hue, colorHues[blue])) {
+        colorCount[blue]++;
+        // std::cout << colorCount[blue] <<std::endl;
+        if (colorCount[blue] > count) {
+            colorCount[blue] = 0;
+            return blue;
+        }
+    }
   }
   colorDetected = none;
   return none;
