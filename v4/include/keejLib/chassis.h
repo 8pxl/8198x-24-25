@@ -136,8 +136,6 @@ namespace keejLib {
                                               PID *lCont, PID *rCont,
                                               double absDist);
           
-          double mtpAngleError(Pt target, int dir);
-          std::pair<double, double> desaturate(std::pair<double, double> velocities);
           // bool detectSideSwitch(int &prevSide, double linearError, double vMin);
           
           void turn(double angle, MotionParams params);

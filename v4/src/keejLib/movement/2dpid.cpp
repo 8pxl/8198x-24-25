@@ -148,25 +148,14 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
     double pct = 0;
     bool close = false;
     int dir = params.reverse ? -1 : 1;
-    double angularVel;
     std::optional<int> prevSide;
     int side;
-    double maxSlipSpeed;
     
     VelocityManager velCalc(dt -> getLastCommanded(), 0, params.vMin, params.vMax, params.angMin, params.angMax);
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {
         //calculate angle error
-        Angle currHeading = pose.heading;
-        Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
-        if (dir < 0) targetHeading = Angle(reverseDir(targetHeading.heading()), HEADING);
-        double angularError = targetHeading.error(currHeading);
-        
-        if (params.debug) {
-            std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
-            std::printf(" target: (%.3f, %.3f, %.3f) \n", target.x, target.y, targetHeading.heading());
-            std::printf(" angularError: %.3f \n", angularError);
-        }
+        double angularError = mtpAngleError(pose, target, dir);
         
         double adjHeading = pose.heading.rad();
         if (adjHeading > M_PI) adjHeading = - (2*M_PI - adjHeading);
@@ -202,19 +191,25 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
         prevSide = side;
         if (fabs(linearError) < params.settleRange && !close) close = true;
         linearError *= cos(toRad(angularError));
-
+        
+        //calculate output velocities
         double linearVel = dir * linCont.out(linearError);
-        angularVel = angCont.out(angularError);
+        double angularVel = angCont.out(angularError);
         
         //calc max slip speed
-        double radius = 1 / fabs(curvature(pose, {target, Angle(0, RAD)}));
-        if (params.drift == 0) maxSlipSpeed = 127;
-        else maxSlipSpeed = sqrt(params.drift * radius * 9.8);
+        double maxSlipSpeed = calculateMaxSlipSpeed(pose, target, params.drift);
         
+        //update limits
         velCalc.setLinMax(std::min(maxSlipSpeed, params.vMax));
+        
         dt -> spinVolts(velCalc.update({linearVel, angularVel}));
         pros::delay(10);
         // std::cout << lVel << " " << rVel << std::endl;
+        if (params.debug) {
+            std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
+            // std::printf(" target: (%.3f, %.3f, %.3f) \n", target.x, target.y, targetHeading.heading());
+            std::printf(" angularError: %.3f \n", angularError);
+        }
     }
     dt -> spinAll(0);
     moving = false;

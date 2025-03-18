@@ -1,6 +1,7 @@
 #pragma once
 
 #include "keejLib/lib.h"
+#include "util.h"
 
 double keejLib::toRad(double deg) {
     return deg * M_PI / 180;
@@ -38,6 +39,13 @@ double keejLib::fromStandard(double rad) {
 
 double keejLib::reverseDir(double heading) {
     return(fmod(heading + 180, 360));
+}
+
+double keejLib::mtpAngleError(const Pose& pose, const Pt& target, int dir) {
+    Angle currHeading = pose.heading;
+    Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
+    if (dir < 0) targetHeading = Angle(reverseDir(targetHeading.heading()), HEADING);
+    return targetHeading.error(currHeading);
 }
 
 keejLib::Angle::Angle() {
