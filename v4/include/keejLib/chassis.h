@@ -57,6 +57,8 @@ namespace keejLib {
         double vStart = 0;
         double vMin = 0;
         double vMax = 127;
+        double angMin = 0;
+        double angMax = 127;
         double settleRange;
         double settleTime;
         Exit* exit = nullptr;

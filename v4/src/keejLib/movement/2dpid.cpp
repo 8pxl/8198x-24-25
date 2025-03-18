@@ -152,7 +152,8 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
     std::optional<int> prevSide;
     int side;
     double maxSlipSpeed;
-    double prevLin = dt -> getAvgVelocity(true);
+    
+    VelocityManager velCalc(dt -> getLastCommanded(), 0, params.vMin, params.vMax, params.angMin, params.angMax);
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {
         //calculate angle error
@@ -201,28 +202,17 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
         prevSide = side;
         if (fabs(linearError) < params.settleRange && !close) close = true;
         linearError *= cos(toRad(angularError));
-        angularVel = angCont.out(angularError);
 
         double linearVel = dir * linCont.out(linearError);
+        angularVel = angCont.out(angularError);
         
         //calc max slip speed
         double radius = 1 / fabs(curvature(pose, {target, Angle(0, RAD)}));
         if (params.drift == 0) maxSlipSpeed = 127;
         else maxSlipSpeed = sqrt(params.drift * radius * 9.8);
-        //
-        linearVel = std::clamp(linearVel, -maxSlipSpeed, maxSlipSpeed);
         
-        linearVel = std::max(fabs(linearVel), params.vMin) * sign(linearVel);
-        linearVel = std::min(fabs(linearVel), params.vMax) * sign(linearVel);
-        if (params.slew != 0) linearVel = keejLib::sign(linearVel) * std::min(fabs(prevLin) + params.slew, fabs(linearVel));
-        prevLin = linearVel;
-        if (std::abs(linearVel) + std::abs(angularVel) > 127) {
-            linearVel = (127 - std::abs(angularVel)) * sign(linearVel);
-        }
-        double lVel = linearVel + angularVel;
-        double rVel = linearVel - angularVel;
-        // double x = angCont.out(angularError)
-        dt -> spinVolts({lVel, rVel});
+        velCalc.setLinMax(std::min(maxSlipSpeed, params.vMax));
+        dt -> spinVolts(velCalc.update({linearVel, angularVel}));
         pros::delay(10);
         // std::cout << lVel << " " << rVel << std::endl;
     }

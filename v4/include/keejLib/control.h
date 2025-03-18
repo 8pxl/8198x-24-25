@@ -96,10 +96,10 @@ namespace keejLib {
                 double vl = 0, 
                 double va = 0, 
                 double slew = 0,
-                double linMin = -1, 
-                double linMax = std::numeric_limits<double>::max(),
-                double angMin = -1, 
-                double angMax = std::numeric_limits<double>::max())
+                double linMin = 0, 
+                double linMax = 127,
+                double angMin = 0, 
+                double angMax = 127)
                 : vl(vl), va(va), linMin(linMin), linMax(linMax), angMin(angMin), angMax(angMax), slew(slew) {}
             ChassVelocities update(std::pair<double, double> vals);
             
