@@ -98,4 +98,14 @@ Pt translate(Pt a) {
     return {-a.x, a.y};
 }
 
+double calculateMaxSlipSpeed(const Pose& pose, const Pt& target, double drift) {
+    double radius = 1 / fabs(curvature(pose, {target, Angle(0, RAD)}));
+    
+    if (drift == 0) {
+        return 127;
+    } else {
+        return sqrt(drift * radius * 9.8);
+    }
+}
+
 }
