@@ -7,6 +7,8 @@ namespace keejLib {
     struct exitParams {
         double error;
         Pose pose;
+        Pt target;
+        Angle targetHeading;
     };
     
     class Exit {
@@ -38,10 +40,12 @@ namespace keejLib {
         
         class Perp: public Exit {
             private:
-                Pose target;
-                double slope;
+                std::optional<Pt> target;
+                std::optional<Angle> targetHeading;
+                std::optional<int> side;
             public:
-                Perp(Pose target);
+                Perp();
+                Perp(Pt target, Angle targetHeading);
                 bool exited(exitParams params) override;
         };
     }

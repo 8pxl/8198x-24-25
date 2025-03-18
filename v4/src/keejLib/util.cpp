@@ -107,15 +107,15 @@ double calculateMaxSlipSpeed(const Pose& pose, const Pt& target, double drift) {
     }
 }
 
-int computeSide(Pose& pose, const Pt& target) {
-    double adjHeading = pose.heading.rad();
+int computeSide(const Pt& curr, const Pt& target, Angle heading) {
+    double adjHeading = heading.rad();
     if (adjHeading > M_PI) {
         adjHeading = -(2 * M_PI - adjHeading);
     }
     
     double m = tan(adjHeading);
     
-    int side = (pose.pos.y < (-1 / m) * (pose.pos.x - target.x) + target.y) ? 1 : -1;
+    int side = (curr.y < (-1 / m) * (curr.x - target.x) + target.y) ? 1 : -1;
     
     if (adjHeading < 0) {
         side = -side;
