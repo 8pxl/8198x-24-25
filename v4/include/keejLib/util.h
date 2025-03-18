@@ -139,6 +139,7 @@ namespace keejLib {
     double curvature(Pose pose, Pose other);
     double calculateMaxSlipSpeed(const Pose& pose, const Pt& target, double drift);
     double mtpAngleError(const Pose& pose, const Pt& target, int dir);
+    int computeSide(const Pose& pose, const Pt& target);
 
     template <typename T>
     bool inRange(T val, std::pair<T, T> range) {

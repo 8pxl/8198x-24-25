@@ -150,17 +150,19 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
     
     VelocityManager velCalc(dt -> getLastCommanded(), 0, params.vMin, params.vMax, params.angMin, params.angMax);
     //https://www.desmos.com/calculator/cnp2vnubnx
-    while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {
-        //calculate angle error        
-        double adjHeading = pose.heading.rad();
-        if (adjHeading > M_PI) adjHeading = - (2*M_PI - adjHeading);
-        double m = tan(adjHeading);
+    while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {  
+
         
         //restrict angular velocity if 
         if (close) velCalc.setAngMax(0);
         else velCalc.setAngMax(params.angMax);
         
         //exit if side has switched
+        
+        double adjHeading = pose.heading.rad();
+        if (adjHeading > M_PI) adjHeading = - (2*M_PI - adjHeading);
+        double m = tan(adjHeading);
+        
         side = (pose.pos.y < (- 1 / m) * (pose.pos.x - target.x) + target.y) ? 1 : -1;
         if (adjHeading < 0) side = -side;
 

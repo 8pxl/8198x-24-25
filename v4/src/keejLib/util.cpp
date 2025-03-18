@@ -100,12 +100,28 @@ Pt translate(Pt a) {
 
 double calculateMaxSlipSpeed(const Pose& pose, const Pt& target, double drift) {
     double radius = 1 / fabs(curvature(pose, {target, Angle(0, RAD)}));
-    
     if (drift == 0) {
         return 127;
     } else {
         return sqrt(drift * radius * 9.8);
     }
+}
+
+int computeSide(Pose& pose, const Pt& target) {
+    double adjHeading = pose.heading.rad();
+    if (adjHeading > M_PI) {
+        adjHeading = -(2 * M_PI - adjHeading);
+    }
+    
+    double m = tan(adjHeading);
+    
+    int side = (pose.pos.y < (-1 / m) * (pose.pos.x - target.x) + target.y) ? 1 : -1;
+    
+    if (adjHeading < 0) {
+        side = -side;
+    }
+    
+    return side;
 }
 
 }
