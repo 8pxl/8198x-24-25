@@ -138,40 +138,27 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
         params.exit = new exit::Range(3, 20);
     }
     moving = true;
-    if (clr == blue) target = translate(target);
 
     Exit* timeout = new exit::Timeout(params.timeout);
     PID linCont(mtpLin);
     PID angCont(mtpAng);
     double dist = pose.pos.dist(target);
-    double linearError = dist;
     double pct = 0;
     bool close = false;
-    int dir = params.reverse ? -1 : 1;
     std::optional<int> prevSide;
     int side;
     
     VelocityManager velCalc(dt -> getLastCommanded(), 0, params.vMin, params.vMax, params.angMin, params.angMax);
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {
-        //calculate angle error
-        double angularError = mtpAngleError(pose, target, dir);
-        
+        //calculate angle error        
         double adjHeading = pose.heading.rad();
         if (adjHeading > M_PI) adjHeading = - (2*M_PI - adjHeading);
         double m = tan(adjHeading);
         
-        //recalculate target point / reset angular error if close
-        if (close) {
-            if (std::fabs(angularError) > 20) angularError = 0;
-            double tx = (m *(target.y - pose.pos.y + pose.pos.x*m + target.x/m)) / (m*m + 1);
-            target = {
-                tx,
-                m * (tx - pose.pos.x) + pose.pos.y
-            };
-        }
-        
-        linearError = pose.pos.dist(target);
+        //restrict angular velocity if 
+        if (close) velCalc.setAngMax(0);
+        else velCalc.setAngMax(params.angMax);
         
         //exit if side has switched
         side = (pose.pos.y < (- 1 / m) * (pose.pos.x - target.x) + target.y) ? 1 : -1;
@@ -182,14 +169,19 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
                 break;
             }
         }
+        prevSide = side;
         
         //calculate direction based on side
-        dir = side * (params.reverse ? -1 : 1);
+        int dir = side * (params.reverse ? -1 : 1);
         
+        //compute errors
+        double linearError = pose.pos.dist(target);
+        double angularError = mtpAngleError(pose, target, dir);
         if (params.within > 0) linearError -= params.within;
-        dist = linearError;
-        prevSide = side;
-        if (fabs(linearError) < params.settleRange && !close) close = true;
+        dist = linearError; //sets the true error before using cosine scaling
+        
+        if (fabs(linearError) < params.settleRange) close = true;
+        else close = false;
         linearError *= cos(toRad(angularError));
         
         //calculate output velocities
@@ -204,14 +196,14 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
         
         dt -> spinVolts(velCalc.update({linearVel, angularVel}));
         pros::delay(10);
-        // std::cout << lVel << " " << rVel << std::endl;
+        
         if (params.debug) {
             std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
             // std::printf(" target: (%.3f, %.3f, %.3f) \n", target.x, target.y, targetHeading.heading());
             std::printf(" angularError: %.3f \n", angularError);
         }
     }
-    dt -> spinAll(0);
+    if (params.vMin != 0) dt -> spinAll(0);
     moving = false;
     // chassMutex.give();
 }
