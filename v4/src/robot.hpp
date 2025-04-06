@@ -19,10 +19,10 @@ namespace robot {
     
     pros::Controller prosController(pros::E_CONTROLLER_MASTER);
     keejLib::Controller cont = keejLib::Controller(prosController); 
-    pros::MotorGroup leftChass({-14,-15,-16}, pros::MotorGears::blue);
-    pros::MotorGroup rightChass({11,12,13}, pros::MotorGears::blue);
-    pros::Motor intakeMotor(9);
-    pros::Motor liftMotor(10);
+    pros::MotorGroup leftChass({-20,-19,-18}, pros::MotorGears::blue);
+    pros::MotorGroup rightChass({17,13,12}, pros::MotorGears::blue);
+    pros::Motor intakeMotor(-11);
+    pros::Motor liftMotor(10, pros::MotorGears::green);
     
     pros::adi::DigitalOut clampPiston('a');
     pros::adi::DigitalOut doinkArmPiston('b');
@@ -30,14 +30,14 @@ namespace robot {
     pros::adi::DigitalOut odomPiston('g');
     pros::adi::DigitalOut intakePiston('d');
     pros::adi::DigitalIn limit('e');
-    pros::Rotation rotationSensor(18);
-    pros::Rotation vertTracker(-20);
-    pros::Rotation horizTracker(8);
-    pros::Optical opticalSensor(7);
-    pros::Vision vision(21);
-    pros::Imu imu(17);
+    pros::Rotation rotationSensor(22);
+    pros::Rotation vertTracker(-22);
+    pros::Rotation horizTracker(22);
+    pros::Optical opticalSensor(22);
+    pros::Vision vision(22);
+    pros::Imu imu(22);
     // pros::Distance vertDistSensor(20);
-    pros::Distance horizDistSensor(2);
+    pros::Distance horizDistSensor(22);
     Pis clamp({clampPiston}, false);
     Pis doink({doinkArmPiston}, false);
     Pis claw({doinkClawPiston}, false);
@@ -48,8 +48,8 @@ namespace robot {
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
     Intake intake(&intakeMotor, &opticalSensor, &limit, Color::blue);
     Lift lb(&liftMotor, &rotationSensor,  {
-        .kp = 0.039,
-        .ki= 0.01,
+        .kp = 0.44,
+        .ki= 0.08,
         .kd = 0.1,
         .maxIntegral = 1000000,
         .tolerance = 0,
