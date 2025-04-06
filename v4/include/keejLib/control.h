@@ -45,7 +45,9 @@ namespace keejLib {
                 std::optional<int> side;
             public:
                 Perp();
+                Perp(Pt target);
                 Perp(Pt target, Angle targetHeading);
+                int computeSide(exitParams params);
                 bool exited(exitParams params) override;
         };
     }

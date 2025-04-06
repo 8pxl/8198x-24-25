@@ -88,6 +88,9 @@ namespace keejLib {
             
             PIDConstants mtpLin;
             PIDConstants mtpAng;
+            
+            PIDConstants mtposeLin;
+            PIDConstants mtposeAng;
             Pose pose;
             EMA velEMA = EMA(0.5);
             pros::Task* odomTask = nullptr;
@@ -121,6 +124,7 @@ namespace keejLib {
           void setLin(PIDConstants linear);
           void setAng(PIDConstants angular);
           void setMTP(PIDConstants lin, PIDConstants ang);
+          void setMTPose(PIDConstants lin, PIDConstants ang);
           void setTurn(PIDConstants turn);
           void setColor(Color c);
           void waitUntilSettled();

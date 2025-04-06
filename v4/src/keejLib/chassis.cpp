@@ -158,6 +158,13 @@ void Chassis::setMTP(PIDConstants lin, PIDConstants ang) {
     // chassMutex.give()
 }
 
+void Chassis::setMTPose(PIDConstants lin, PIDConstants ang) {
+    // chassMutex.take();
+    mtposeLin= lin;
+    mtposeAng = ang;
+    // chassMutex.give()
+}
+
 void Chassis::setTurn(PIDConstants turn) {
     // chassMutex.take();
     turnConsts = turn;
