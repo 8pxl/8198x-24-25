@@ -143,7 +143,7 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
     double dist = pose.pos.dist(target);
     bool close = false;
     
-    VelocityManager velCalc(dt -> getLastCommanded(), 0, params.vMin, params.vMax, params.angMin, params.angMax);
+    VelocityManager velCalc(dt -> getLastCommanded(), 0, params.slew, params.vMin, params.vMax, params.angMin, params.angMax);
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {  
 
@@ -186,9 +186,11 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
         pros::delay(10);
         
         if (params.debug) {
-            std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
+            // std::cout << "linear vel" << linearVel << " angular vel: " << angularVel << std::endl;
+            // std::cout << maxSlipSpeed << std::endl;
+            // std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
             // std::printf(" target: (%.3f, %.3f, %.3f) \n", target.x, target.y, targetHeading.heading());
-            std::printf(" angularError: %.3f \n", angularError);
+            // std::printf(" angularError: %.3f \n", angularError);
         }
     }
     if (params.vMin != 0) dt -> spinAll(0);
@@ -204,19 +206,19 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
         return;
     }
     this -> waitUntilSettled();
-    if (params.exit == nullptr) params.exit = new exit::Range(3, 20);
+    if (params.exit == nullptr) params.exit = new exit::Range(1, 20);
     moving = true;
 
     Exit* timeout = new exit::Timeout(params.timeout);
     exit::Perp* perp = new exit::Perp(target.pos, target.heading);
-    PID linCont(mtpLin);
-    PID angCont(mtpAng);
+    PID linCont(mtposeLin);
+    PID angCont(mtposeAng);
     double dist = pose.pos.dist(target.pos);
     bool close = false;
     Pt targetPoint;
     
-    VelocityManager velCalc(dt -> getLastCommanded(), 0, params.vMin, params.vMax, params.angMin, params.angMax);
-    //https://www.desmos.com/calculator/cnp2vnubnx
+    VelocityManager velCalc(dt -> getLastCommanded(), 0, params.slew, params.vMin, params.vMax, params.angMin, params.angMax);
+    // https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {  
         
         //restrict angular and adjust target point when close
@@ -246,7 +248,8 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
         dist = linearError; //sets the true error before using cosine scaling
         double angularError = mtpAngleError(pose, targetPoint, dir);
         if (params.within > 0) linearError -= params.within;
-        if (close) linearError *= cos(toRad(angularError));
+        // if (close) linearError *= cos(toRad(angularError));
+        linearError *= cos(toRad(angularError));
         
         if (fabs(dist) < params.settleRange) close = true;
         else close = false;
@@ -265,9 +268,10 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
         pros::delay(10);
         
         if (params.debug) {
-            std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
+            // std::cout << targetPoint.x << " " << targetPoint.y << std::endl;
+            // std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
             // std::printf(" target: (%.3f, %.3f, %.3f) \n", target.x, target.y, targetHeading.heading());
-            std::printf(" angularError: %.3f \n", angularError);
+            // std::printf(" angularError: %.3f \n", angularError);
         }
     }
     if (params.vMin != 0) dt -> spinAll(0);
