@@ -17,18 +17,15 @@ double VelocityController::getVoltage(double curr) {
 
 ChassVelocities VelocityManager::update(std::pair<double, double> vals) {
     if (slew.has_value()) vl = sign(vals.first) * std::min(fabs(vl) + slew.value(), fabs(vals.first));
-    vl = sign(vl) * std::clamp(fabs(vl), linMin, linMax);
-    va = sign(va) * std::clamp(fabs(va), angMin, angMax);
-    
+    // std::cout << linMin << " " << linMax << " " << angMin << " " << angMax << std::endl;
+    vl = sign(vals.first) * std::clamp(fabs(vals.first), linMin, linMax);
+    va = sign(vals.second) * std::clamp(fabs(vals.second), angMin, angMax);
+    // std::cout << "vl: " << vl << " va: " << va << std::endl;
     //desaturate
-    double left = vl - va;
-    double right = vl + va;
-    double sum = fabs(left) + fabs(right);
-    if (sum >= 127) {
-        left /= sum;
-        right /= sum;
+    if ((fabs(vl) + fabs(va)) > 127) {
+        vl = (127 - fabs(va)) * sign(vl);
     }
-    return {left, right};
+    return {vl + va, vl-va};
 }
 void VelocityManager::setLinMin(double newLinMin) {
     linMin = newLinMin;
