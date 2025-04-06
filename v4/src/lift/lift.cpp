@@ -1,5 +1,6 @@
 #include "lift.h"
 #include "../robotState/robotState.h"
+#include "keejLib/util.h"
 #include "liblvgl/widgets/lv_label.h"
 #include "main.h"
 #include "pros/motors.h"
@@ -28,19 +29,26 @@ void Lift::startControl() {
 }
 
 void Lift::calibrate() {
-    double angle = rot -> get_position();
-    // std::cout << "old angle: " << angle << std::endl;
-    if (angle > 32000) {
-        // std::cout << "set to: " << angle - 36000 << std::endl;
-        rot ->set_position(angle - 36000);
+    double current = motor -> get_current_draw();
+    while (current < 980) {
+        motor -> move(-30);
+        current = motor -> get_current_draw();
+        // std::cout << current << std::endl;
     }
+    motor -> tare_position();
+    motor -> move(0);
+    // std::cout << "old angle: " << angle << std::endl;
+    // if (angle > 32000) {
+    //     // std::cout << "set to: " << angle - 36000 << std::endl;
+    //     rot ->set_position(angle - 36000);
+    // }
     // std::cout << "new angle: " << rot -> get_position() << std::endl;
 
 }
 void Lift::setControl(bool state) {
     off = !state;
     if (state == true) {
-        if (rot -> get_position() >= 36000) {
+        if (motor -> get_position() >= 800) {
             if (currentState == LiftState::two || currentState == LiftState::one) {setState(LiftState::idle);}
             else setState(LiftState::idle);
         }
@@ -55,7 +63,7 @@ void Lift::spin(double voltage) {
         // std::cout << "target: " << target << std::endl;
         // std::cout << "error: " << abs(rot -> get_position()- target) << std::endl; 
 ;
-        if (voltage == 0 && (abs(rot -> get_position()- target) <= snapRange)) {
+        if (voltage == 0 && (abs(motor -> get_position()- target) <= snapRange)) {
     // std::cout << (abs(rot -> get_position()- target)) << std::endl;
     // std::cout << snapRange << std::endl;
             off = false;
@@ -65,19 +73,21 @@ void Lift::spin(double voltage) {
 
 void Lift::control() {
     if (off) return;
-    double angle = rot -> get_position();
+    // double angle = rot -> get_position();
+    double angle = (motor -> get_position()) * 0.4;
     // if (angle > 360 * 100 && (currentState  == LiftState::two)|| ) {
     //     currentState = LiftState::idle;
     // }
-    error = angle - target;
+    error =  target - angle;
+    std::cout << error << std::endl;
     auto s = RobotState::getInstance();
     currentState = s->getLiftState();
     setTarget(currentState);
     // if (currentState == LiftState::idle && error < 250) {
     //     motor -> move(0);
     // }
-    // std::cout << "angle: " << angle << std::endl;
-    motor -> move(pid.out(error) + kf * cos(angle + angleOffset));
+    std::cout << "target: " << target << std::endl;
+    motor -> move((pid.out(error) + kf * cos(angle + angleOffset)));
 }
 
 void Lift::setState(LiftState state) {
@@ -96,6 +106,6 @@ void Lift::prev() {
 }
 
 void Lift::setTarget(LiftState state) {
-    target = valueMap[state] * 100;
+    target = valueMap[state];
 }
 }

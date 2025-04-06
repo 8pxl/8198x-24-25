@@ -49,21 +49,21 @@ class Lift {
             {LiftState::idle, LiftState::lowest}
         };
         std::unordered_map<LiftState, double> valueMap = {
-            {LiftState::idle, 5},
-            {LiftState::one, 75.5},
-            {LiftState::two, 137},
-            {LiftState::prime, 357},
+            {LiftState::idle, 0},
+            {LiftState::one, 174},
+            {LiftState::two, 226},
+            {LiftState::prime, 476},
             {LiftState::lower, 360 + 129},
             {LiftState::lowest, 360 + 271}
         };
         
         PID pid;
-        double angleOffset = 44;
+        double angleOffset = 0;
         double kf = 0;
         double target;
         double error = 0;
         bool off = false;
-        const int snapRange = 4000;
+        const int snapRange = 10;
         
        	LiftState currentState;
 
