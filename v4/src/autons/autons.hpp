@@ -14,14 +14,18 @@
 
 using namespace robot;
 using namespace exit;
+#define h(x) keejLib::Angle(x, HEADING)
 
 void test() {
     chass.setTurn(_90);
     chass.setAng(_ang);
     chass.setMTP(_chassLin, _chassAng);
+chass.setMTPose(_mposeLin, _mposeAng);
     chass.setLin(_lin);
     
-    chass.swingTo({10,10}, 5, {});
+    // chass.swingTo({10,10}, 5, {});
+    chass.mtpose({{30,30}, h(0)}, 0.5, {.timeout = 10000, .vMin = 0, .settleRange = 8, .drift = 2, .debug = true});
+    // chass.mtpoint({15,15}, {.drift = 2, .debug = true});
 
 }
 
@@ -38,5 +42,5 @@ void triangulatePoint() {
 
 // keejLib::Autons autons = {{skills,  belimsNeg, relimsNeg, rwallNeg, bwallNeg,  bAwp, rAwp, qbPos, qrPos, test}, {"skills", "blue elims neg", "red elims neg", "red wall neg", "blue wall neg", "blue awp", "red awp", "bPos", "rPos", "test"}};
 
-keejLib::Autons redAutons = {{skills, relimsNeg, rwallNeg, rAwp, qrPos}, {"skills", "red elims neg", "red wall neg", "red awp", "red pos"}};
+keejLib::Autons redAutons = {{test, skills, relimsNeg, rwallNeg, rAwp, qrPos}, {"skills", "red elims neg", "red wall neg", "red awp", "red pos"}};
 keejLib::Autons blueAutons = {{belimsNeg, bwallNeg, bAwp, qbPos}, {"blue elims neg", "blue wall neg", "blue awp", "blue pos"}};

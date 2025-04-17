@@ -110,6 +110,9 @@ namespace keejLib {
     struct Pose {
         Pt pos;
         keejLib::Angle heading;
+        // Pose() : pos({0, 0}), heading(keejLib::Angle(0, HEADING)) {}
+        // Pose(Pt pos, Angle angle) : pos(pos), heading(angle) {}
+        // Pose(Pt pos, double heading) : pos(pos), heading(Angle(heading, HEADING)) {}
     };
     
     struct ChassVelocities {

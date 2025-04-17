@@ -14,7 +14,7 @@ using namespace robot;
 void initialize() {
     imu.reset(true);
     chass.startTracking();
-    robot::intake.startControl();
+    // robot::intake.startControl();
     
     int clr = cont.select({"red", "blue", "driver"});
     if (clr == 2) {
@@ -33,6 +33,7 @@ void initialize() {
     }
     
     lb.setState(keejLib::LiftState::one);
+    liftMotor.set_brake_mode(pros::MotorBrake::hold);
     pros::delay(50);
     robot::lb.startControl();
 }

@@ -83,9 +83,9 @@ void Lift::control() {
     auto s = RobotState::getInstance();
     currentState = s->getLiftState();
     setTarget(currentState);
-    // if (currentState == LiftState::idle && error < 250) {
-    //     motor -> move(0);
-    // }
+    if (currentState == LiftState::idle && error < 20) {
+        motor -> move(0);
+    }
     std::cout << "target: " << target << std::endl;
     motor -> move((pid.out(error) + kf * cos(angle + angleOffset)));
 }
@@ -95,6 +95,7 @@ void Lift::setState(LiftState state) {
     setTarget(currentState);
     auto s = RobotState::getInstance();
     s -> setLiftState(currentState);
+    pid.resetIntegral();
 }
 
 void Lift::next() {

@@ -156,7 +156,7 @@ PIDConstants _chassAngBig = {
     .integralThreshold = 3,
 };
 
-PIDConstants mposeLin = {
+PIDConstants _mposeLin = {
     .kp = 5.7,
     .ki = 0,
     .kd = 0,
@@ -165,8 +165,8 @@ PIDConstants mposeLin = {
     .integralThreshold = 3,
 };
 
-PIDConstants mposeAng = {
-    .kp = 1.6,
+PIDConstants _mposeAng = {
+    .kp = 1.3,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 1000,

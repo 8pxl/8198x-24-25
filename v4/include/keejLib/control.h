@@ -78,6 +78,7 @@ namespace keejLib {
             double out(double error);
             double getError();
             double getDerivative();
+            void resetIntegral();
     };
     
     std::vector<double> generateProfile(double dist, ProfileParams pp, ProfileLimits pl);

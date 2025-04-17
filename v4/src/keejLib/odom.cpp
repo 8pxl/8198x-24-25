@@ -39,7 +39,7 @@ void Chassis::startTracking() {
                     // std::cout << "standard: " << pose.heading.rad() << std::endl;
                 // }
                                 // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " <<horizDist -> get() << std::endl;
-                //  std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
+                 // std::printf("(%.3f, %.3f, %.3f),", pose.pos.x, pose.pos.y, pose.heading.heading());
                 pros::delay(10);
             }
         }};
