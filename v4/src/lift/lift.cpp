@@ -31,7 +31,7 @@ void Lift::startControl() {
 void Lift::calibrate() {
     double current = motor -> get_current_draw();
     while (current < 980) {
-        motor -> move(-30);
+        motor -> move(-50 );
         current = motor -> get_current_draw();
         // std::cout << current << std::endl;
     }
@@ -73,20 +73,24 @@ void Lift::spin(double voltage) {
 
 void Lift::control() {
     if (off) return;
-    // double angle = rot -> get_position();
+    auto s = RobotState::getInstance();
+    currentState = s->getLiftState();
+    setTarget(currentState);
     double angle = (motor -> get_position()) * 0.4;
     // if (angle > 360 * 100 && (currentState  == LiftState::two)|| ) {
     //     currentState = LiftState::idle;
     // }
     error =  target - angle;
-    std::cout << error << std::endl;
-    auto s = RobotState::getInstance();
-    currentState = s->getLiftState();
-    setTarget(currentState);
+    // std::cout << error << std::endl;
     if (currentState == LiftState::idle && error < 20) {
         motor -> move(0);
+        if (calibrateTimer.elapsed() > 8000 && idleTimer.elapsed() >5000) {
+            calibrate();
+            calibrateTimer.reset();
+        }
     }
-    std::cout << "target: " << target << std::endl;
+    else (idleTimer.reset());
+    // std::cout << "target: " << target << std::endl;
     motor -> move((pid.out(error) + kf * cos(angle + angleOffset)));
 }
 

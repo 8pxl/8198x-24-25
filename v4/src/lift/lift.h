@@ -1,5 +1,6 @@
 #pragma once
 
+#include "keejLib/util.h"
 #include "main.h"
 #include "keejLib/lib.h"
 #include "pros/rtos.hpp"
@@ -50,11 +51,11 @@ class Lift {
         };
         std::unordered_map<LiftState, double> valueMap = {
             {LiftState::idle, 0},
-            {LiftState::one, 174-50},
-            {LiftState::two, 226-50},
+            {LiftState::one, 174-40},
+            {LiftState::two, 226-30},
             {LiftState::prime, 476},
-            {LiftState::lower, 360 + 129},
-            {LiftState::lowest, 360 + 271}
+            {LiftState::lower, 360 + 250},
+            {LiftState::lowest, 360 + 700}
         };
         
         PID pid;
@@ -63,6 +64,8 @@ class Lift {
         double target;
         double error = 0;
         bool off = false;
+        Stopwatch idleTimer;
+        Stopwatch calibrateTimer;
         const int snapRange = 30;
         
        	LiftState currentState;
