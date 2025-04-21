@@ -1,3 +1,4 @@
+#include "keejLib/chassis.h"
 #include "keejLib/control.h"
 #include "keejLib/lib.h"
 #include "keejLib/util.h"
@@ -114,7 +115,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = { .vMi
         if (std::abs(vl) + std::abs(va) > 127) {
           vl = (127 - std::abs(va)) * sign(vl);
         }
-        vl = sign(vl) * std::min(fabs(prev) + params.slew, fabs(vl));
+        if (params.slew !=0) vl = sign(vl) * std::min(fabs(prev) + params.slew, fabs(vl));
         prev = vl;
         
         this -> dt -> spinVolts({vl + va, vl - va});
@@ -186,7 +187,9 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
         pros::delay(10);
         
         if (params.debug) {
-            // std::cout << "linear vel" << linearVel << " angular vel: " << angularVel << std::endl;
+            std::cout << "linear vel: " << linearVel << " angular vel: " << angularVel << std::endl;
+            std::cout << linearError << std::endl;
+            // std::cout <<"linmin" <<
             // std::cout << maxSlipSpeed << std::endl;
             // std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
             // std::printf(" target: (%.3f, %.3f, %.3f) \n", target.x, target.y, targetHeading.heading());
@@ -198,10 +201,10 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
     // chassMutex.give();
 }
 
-void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
+void Chassis::mtpose(Pose target, double dLead, MotionParams params, double gLead, double gSettle) {
     if (params.async) {
         params.async = false;
-        pros::Task task([&]() { mtpose(target, dLead,  params);});
+        pros::Task task([&]() { mtpose(target, dLead, params, gLead);});
         pros::delay(10);
         return;
     }
@@ -223,15 +226,30 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
         
         //restrict angular and adjust target point when close
         if (close) {
-            velCalc.setAngMax(0);
+            // velCalc.setAngMax(0);
             targetPoint = target.pos;
         }
         else {
             velCalc.setAngMax(params.angMax);
             double h = std::hypot(pose.pos.x - target.pos.x, pose.pos.y - target.pos.y);
             targetPoint = {target.pos.x - (h * sin(toRad(target.heading.heading())) * dLead), target.pos.y - (h * cos(toRad(target.heading.heading())) * dLead)}; //carrot point
+            if (gLead != -1) {
+                Pt carrot = {targetPoint.x * gLead, targetPoint.y * gLead};
+                MotionParams gParams = params;
+                gParams.vMin = mtposeLin.kp * (gSettle + targetPoint.dist(target.pos));
+                gParams.settleRange = params.settleRange;
+                gParams.exit = new exit::Range(gSettle, 10);
+                gParams.timeout = params.timeout / 1.8;
+                gParams.async = false;
+                gParams.debug = true;
+                std::cout << "starting mtp!" << std::endl;
+                moving = false;
+                this->mtpoint(carrot, gParams);
+                moving = true;
+                gLead = -1;
+            }
         }
-        
+    
         //perp line exit
         if (params.vMin != 0) {
             if (perp->exited({.pose = pose, .targetHeading = pose.heading})) {
@@ -244,9 +262,11 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
         int dir = side * (params.reverse ? -1 : 1);
         
         //compute errors
-        double linearError = pose.pos.dist(targetPoint);
+        double linearError = pose.pos.dist(target.pos);
         dist = linearError; //sets the true error before using cosine scaling
-        double angularError = mtpAngleError(pose, targetPoint, dir);
+        double angularError;
+        if (close) angularError = target.heading.error(pose.heading);
+        else angularError = mtpAngleError(pose, targetPoint, dir);
         if (params.within > 0) linearError -= params.within;
         // if (close) linearError *= cos(toRad(angularError));
         linearError *= cos(toRad(angularError));
@@ -268,7 +288,7 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params) {
         pros::delay(10);
         
         if (params.debug) {
-            // std::cout << targetPoint.x << " " << targetPoint.y << std::endl;
+            std::cout << targetPoint.x << " " << targetPoint.y << std::endl;
             // std::printf("curr: (%.3f, %.3f, %.3f) \n", pose.pos.x, pose.pos.y, pose.heading.heading());
             // std::printf(" target: (%.3f, %.3f, %.3f) \n", target.x, target.y, targetHeading.heading());
             // std::printf(" angularError: %.3f \n", angularError);
