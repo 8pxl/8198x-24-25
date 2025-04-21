@@ -14,21 +14,20 @@ double VelocityController::getVoltage(double curr) {
     return(pid.out(error));
 }
 
-// https://www.desmos.com/calculator/vku6xvwphr
 ChassVelocities VelocityManager::update(std::pair<double, double> vals) {
     if (slew.has_value()) vl = sign(vals.first) * std::min(fabs(vl) + slew.value(), fabs(vals.first));
     // std::cout << linMin << " " << linMax << " " << angMin << " " << angMax << std::endl;
     vl = sign(vals.first) * std::clamp(fabs(vals.first), linMin, linMax);
     va = sign(vals.second) * std::clamp(fabs(vals.second), angMin, angMax);
     // std::cout << "vl: " << vl << " va: " << va << std::endl;
-    //desaturate
-    double ratio = ((vl + va) / (vl - va));
-    vl = (127 * (1+ratio)) / (2*ratio);
-    va = 127 - vl;
-    // if ((fabs(vl) + fabs(va)) > 127) {
-    //     vl = (127 - fabs(va)) * sign(vl);
-    // }
-    return {vl + va, vl-va};
+    //desaturate;
+    // vl = (127 * (1+ratio)) / (2*ratio);
+    // va = 127 - vl;
+    double left = vl + va;
+    double right = vl - va;
+    double sum = fabs(left) + fabs(right);
+    if (sum < 127) return {left, right};
+    return {127 * (left/sum), 127 * (right/sum)};
 }
 void VelocityManager::setLinMin(double newLinMin) {
     linMin = newLinMin;
