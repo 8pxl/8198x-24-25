@@ -90,10 +90,10 @@ Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pro
 // {}
 
 
-Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, std::pair<double, double> alternateOffsets, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : 
+Chassis::Chassis(keejLib::DriveTrain *dt, keejLib::ChassConstants constants, pros::Imu *imu, pros::Rotation *vertEnc, pros::Rotation *horizEnc) : 
     dt(dt), 
     chassConsts(constants), 
-    alternateOffsets(alternateOffsets), 
+    // alternateOffsets(alternateOffsets), 
     imu(imu), 
     vertEnc(vertEnc), 
     horizEnc(horizEnc)
@@ -109,7 +109,7 @@ std::pair<double, double> Chassis::measureOffsets(int iterations) {
         std::pair<double, double> deltaEnc = {0, 0};
         imu -> reset(true);
         double imuStart = imu -> get_heading();
-        double vel = i%2 == 0 ? 30 : -30;
+        double vel = i%2 == 0 ? 40 : -40;
         // this -> turn(target, {.async = true, .timeout=1000, .exit = new exit::Range(0.01, 500)});
         this->dt->spinVolts({vel, -vel});
         Stopwatch s;
@@ -160,7 +160,7 @@ void Chassis::setMTP(PIDConstants lin, PIDConstants ang) {
 
 void Chassis::setMTPose(PIDConstants lin, PIDConstants ang) {
     // chassMutex.take();
-    mtposeLin= lin;
+    mtposeLin = lin;
     mtposeAng = ang;
     // chassMutex.give()
 }
