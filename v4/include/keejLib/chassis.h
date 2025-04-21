@@ -7,6 +7,7 @@
 #include "pros/rtos.hpp"
 #include "util.h"
 #include "control.h"
+#include <cmath>
 
 namespace keejLib {
     struct ChassConstants {
@@ -48,14 +49,14 @@ namespace keejLib {
     struct PrevOdom {
         double vert = 0;
         double horiz = 0;
-        Angle theta = Angle(0, DEG);
+        Angle theta = Angle(0, HEADING);
     };
     
     struct MotionParams {
         bool async;
         int timeout = 3000;
         double vStart = 0;
-        double vMin = 0;
+        double vMin = 13;
         double vMax = 127;
         double angMin = 0;
         double angMax = 127;
@@ -112,8 +113,7 @@ namespace keejLib {
           Chassis &operator=(Chassis &&) = delete;
           Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu,
                   pros::Rotation *vertEnc, pros::Rotation *horizEnc, pros::Distance *horizDist);
-          Chassis(DriveTrain *dt, ChassConstants constants,
-                  std::pair<double, double> alternateOffsets, pros::Imu *imu,
+          Chassis(DriveTrain *dt, ChassConstants constants, pros::Imu *imu,
                   pros::Rotation *vertEnc, pros::Rotation *horizEnc);
 
           // loco::ParticleFilter<50> mcl;
@@ -147,7 +147,7 @@ namespace keejLib {
           void swingTo(Pt target, double radius, MotionParams params);
           void driveAngle(double dist, double angle, MotionParams params,
                           bool absolute = false);
-          void mtpose(Pose target, double dLead, MotionParams params);
+          void mtpose(Pose target, double dLead, MotionParams params, double gLead = -1, double gSettle = 10);
           void mtpoint(Pt target, MotionParams params);
           void moveWithin(Pt targ, double dist, MotionParams params,
                           double angle = -1);
