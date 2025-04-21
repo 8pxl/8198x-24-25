@@ -4,6 +4,8 @@
 #include "main.h"
 #include "../globals.hpp"
 using namespace robot;
+#define h(x) keejLib::Angle(x, HEADING)
+
 
 void turnToRing(int timeout) {
     int sigId;
