@@ -17,7 +17,7 @@ void Chassis::startTracking() {
                 updateOdom();
                 // if (sw.elapsed() > 50) {
                 //     sw.reset();
-                //     std::cout << dt -> getAvgVelocity(true) << std::endl;
+                    // std::cout << dt -> getAvgVelocity(true) << std::endl;
                 // }
                     // std::cout << "hi" << std::endl;
                     // std::cout << "x: " << pose.pos.x << " y: " << pose.pos.y << " theta: " << pose.heading.heading() << std::endl;
@@ -54,14 +54,15 @@ void Chassis::updateOdom() {
     if (rot == PROS_ERR_F) {
         currTheta= prev.theta;
     }
-    else currTheta = Angle(imu -> get_heading(), AngleType::HEADING);
+    else currTheta = Angle(rot, AngleType::HEADING);
     // encMutex.take();
     double currVert = (vertEnc -> get_position() / 100.0);
     double currHoriz = (horizEnc -> get_position() / 100.0);
     // encMutex.give();
     // std::cout << "currVert: " << currVert << " currHoriz: " << currHoriz << std::endl;
     double dTheta = toRad(currTheta.error(prev.theta));
-    // std::cout << toDeg(dTheta) << std::endl;
+    // std::cout << rot << std::endl;
+    // std::cout << dTheta << std::endl;
     
     // alternateMutex.take();
     double dVert;
@@ -87,7 +88,7 @@ void Chassis::updateOdom() {
     double dy = dVert;
     
     
-    // std::cout << "dx: " << dx << " dy: " << dy << std::endl;
+    // std::cout << "dx: " << dx << " dy: " <<dy << std::endl;
     double locX = 0;
     double locY = 0;
     
@@ -98,9 +99,19 @@ void Chassis::updateOdom() {
         locX = 2 * sin(dTheta / 2) * (dx / dTheta + chassConsts.horizWidth);
         locY = 2 * sin(dTheta / 2) * (dy / dTheta + chassConsts.vertWidth);
     }
+    // if (fabs(dx) > 0.01 )
+    // {
+    //     double drift = (dx - (dTheta * chassConsts.horizWidth)) / (dTheta * chassConsts.horizWidth);
+    // // if (fabs(drift) > 0.001) std::cout << drift <<std::endl;
+    //     std::cout << drift <<std::endl;
+    // }
+        // std::cout << (dTheta * chassConsts.horizWidth) - dx << std::endl;
+    // if (fabs(locX) > 0.1) {
+    // }
     
     // std::cout << "x: " << dHoriz << " y: " << locY << std::endl;
     // update globals
+    // std::cout <<  2 * sin(dTheta / 2) << std::endl;
     pose.pos.x += locY * sin(avgHeading) - (locX * cos(avgHeading));
     pose.pos.y += locY * cos(avgHeading) + (locX * sin(avgHeading));
     pose.heading = currTheta;
