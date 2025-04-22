@@ -38,4 +38,13 @@ bool exit::Perp::exited(exitParams params) {
     side = newSide;
     return false;
 }
+
+exit::Within::Within(Pt target, double range, int timeout) : target(target), range(range), timeout(timeout), sw(Stopwatch()) {};
+
+bool exit::Within::exited(exitParams params) {
+    if (params.pose.pos.dist(target) > range) {
+        sw.reset();
+    }
+    return (sw.elapsed() > timeout);
+}
 }

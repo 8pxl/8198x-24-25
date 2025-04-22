@@ -50,6 +50,18 @@ namespace keejLib {
                 int computeSide(exitParams params);
                 bool exited(exitParams params) override;
         };
+        
+        class Within: public Exit {
+            private:
+                Pt target;
+                double range;
+                int timeout;
+                Stopwatch sw;
+            public:
+                Within(Pt target, double range, int timeout);
+                bool exited(exitParams params) override;
+        };
+        
     }
     
     struct PIDConstants {
@@ -102,12 +114,14 @@ namespace keejLib {
             VelocityManager(
                 double vl = 0, 
                 double va = 0, 
-                double slew = 0,
+                double s = 0,
                 double linMin = 0, 
                 double linMax = 127,
                 double angMin = 0, 
                 double angMax = 127)
-                : vl(vl), va(va), linMin(linMin), linMax(linMax), angMin(angMin), angMax(angMax), slew(slew) {}
+                : vl(vl), va(va), linMin(linMin), linMax(linMax), angMin(angMin), angMax(angMax) {
+                    if (s != 0) slew = s;
+                }
             ChassVelocities update(std::pair<double, double> vals);
             
             void setLinMin(double newLinMin);
