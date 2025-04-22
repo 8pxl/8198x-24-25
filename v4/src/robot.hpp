@@ -25,9 +25,9 @@ namespace robot {
     pros::Motor liftMotor(10, pros::MotorGears::green);
     
     pros::adi::DigitalOut clampPiston('a');
-    pros::adi::DigitalOut rightDoinker('b');
-    pros::adi::DigitalOut leftDoinker('c');
-    pros::adi::DigitalOut intakePiston('d');
+    pros::adi::DigitalOut rightDoinker('e');
+    pros::adi::DigitalOut intakePiston('c');
+    pros::adi::DigitalOut leftDoinker('d');
     pros::adi::DigitalIn limit('f');
     pros::Rotation rotationSensor(22);
     pros::Rotation vertTracker(8);
