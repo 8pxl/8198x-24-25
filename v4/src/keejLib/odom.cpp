@@ -1,3 +1,4 @@
+#include "chassis.h"
 #include "keejLib/lib.h"
 #include "keejLib/util.h"
 #include "locolib/distance.h"
@@ -10,6 +11,7 @@ void Chassis::startTracking() {
     if (odomTask == nullptr) {
         vertEnc -> reset_position();
         horizEnc -> reset_position();
+        prev = {0,0, Angle(imu -> get_heading(), HEADING)};
         odomTask = new pros::Task{[=] {
             Stopwatch sw;
             while (true) {
