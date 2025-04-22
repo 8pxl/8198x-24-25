@@ -106,7 +106,8 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params = { .vMi
         double vl = linCont.out(linError);
         if (std::fabs(vl) < params.vMin) {
             // vl = params.vMin * sign(vl);
-            vl = std::min(params.vMin, std::fabs(vl) + params.slew) * sign(vl);
+            // if (params.slew != 0) vl = std::min(params.vMin, std::fabs(vl) + params.slew) * sign(vl);
+            vl = params.vMin * sign(vl);
         }
         if (std::abs(vl) > params.vMax) {
             vl = params.vMax * sign(vl);
@@ -143,7 +144,6 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
     PID angCont(mtpAng);
     double dist = pose.pos.dist(target);
     bool close = false;
-    
     VelocityManager velCalc(dt -> getLastCommanded(), 0, params.slew, params.vMin, params.vMax, params.angMin, params.angMax);
     //https://www.desmos.com/calculator/cnp2vnubnx
     while (!timeout -> exited({}) && !params.exit -> exited({.error = dist, .pose = pose })) {  
@@ -183,9 +183,10 @@ void Chassis::mtpoint(Pt target, MotionParams params = {.slew = 4}) {
         //update limits
         velCalc.setLinMax(std::min(maxSlipSpeed, params.vMax));
         
-        dt -> spinVolts(velCalc.update({linearVel, angularVel}));
+        auto vels = velCalc.update({linearVel,angularVel});
+        dt -> spinVolts(vels);
         pros::delay(10);
-        
+        std::cout << vels.left << ", " << vels.right << std::endl;
         if (params.debug) {
             std::cout << "linear vel: " << linearVel << " angular vel: " << angularVel << std::endl;
             std::cout << linearError << std::endl;
