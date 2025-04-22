@@ -19,15 +19,14 @@ ChassVelocities VelocityManager::update(std::pair<double, double> vals) {
     // std::cout << linMin << " " << linMax << " " << angMin << " " << angMax << std::endl;
     vl = sign(vals.first) * std::clamp(fabs(vals.first), linMin, linMax);
     va = sign(vals.second) * std::clamp(fabs(vals.second), angMin, angMax);
-    // std::cout << "vl: " << vl << " va: " << va << std::endl;
+    std::cout << "vl: " << vl << " va: " << va << std::endl;
     //desaturate;
     // vl = (127 * (1+ratio)) / (2*ratio);
     // va = 127 - vl;
-    double left = vl + va;
-    double right = vl - va;
-    double sum = fabs(left) + fabs(right);
-    if (sum < 127) return {left, right};
-    return {127 * (left/sum), 127 * (right/sum)};
+    if (std::abs(vl) + std::abs(va) > 127) {
+      vl = (127 - std::abs(va)) * sign(vl);
+    }
+    return {vl + va, vl - va};
 }
 void VelocityManager::setLinMin(double newLinMin) {
     linMin = newLinMin;
