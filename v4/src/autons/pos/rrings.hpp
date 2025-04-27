@@ -38,10 +38,10 @@ void rringsPos(){
     chass.mtpoint({12.6, -45.7}, {});
     chass.setTurn(_5);
     // chass.setLin(_linBigger);
-    chass.driveAngle(150, 159, {});
+    chass.driveAngle(150, 159, {.exit = new Range(40, 10)});
     ldoink.toggle();
     pros::delay(300);
-    chass.driveAngle(-160, 144, {});
+    chass.driveAngle(-160, 144, {.exit = new Range(50, 10)});
     rdoink.toggle();
     pros::delay(300);
     chass.setLin(_lin);
@@ -56,9 +56,10 @@ void rringsPos(){
     intake.move(127);
     chass.driveAngle(700, 168, {.vMin = 60, .exit = new Range(150, 10)});
     chass.driveAngle(600, neg(140), { .exit = new Range(150, 10)});
-    chass.mtpoint({-35, -35}, {.vMin = 100, .exit = new Range(4, 10)});
+    chass.mtpoint({-30, -35}, {.vMin = 90, .exit = new Range(4, 10)});
     
-    chass.driveAngle(-580, neg(90), {.vMin = 80, .exit = new Range(90, 10)});
+    chass.driveAngle(-300, neg(90), {.vMin = 80, .exit = new Range(90, 10)});
+    chass.driveAngle(-250, neg(45), {.vMin = 30, .exit = new Range(90, 10)});
 
     //go to corner
     Pt corner1 = {-46.8, 2.9};
@@ -74,8 +75,9 @@ void rringsPos(){
     chass.driveAngle(-300, 135, {.exit = new Range(60, 10)});
     intake.move(0);
     clamp.toggle();
-    chass.driveAngle(2500, 145, {.async = true});
+    chass.driveAngle(2500, 128, {.async = true});
+    // chass.mtpoint({6, -28}, {});
     pros::delay(400);
-    lb.next();
+    lb.setState(keejLib::LiftState::two);
     chass.waitUntilSettled();
 }

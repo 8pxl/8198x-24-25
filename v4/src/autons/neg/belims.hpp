@@ -16,21 +16,22 @@ void belimsNeg() {
 
       //grab mogo and score alliance stake;
       // lb.next();
-      Pose p = chass.getPose();
-      chass.setPose({-p.pos.x, p.pos.y, p.heading});
-      lb.setState(LiftState::lower);
+      lb.setState(LiftState::alliance);
 
       //score alliance ring
-            Pt allianceStake = {25.6, 18.4};
 
       // chass.moveWithin(allianceStake, 14.7, {});
-      chass.mtpoint(allianceStake, {.drift = 2, .within = 13.4});
-      lb.next();
-      pros::delay(200);
+      // chass.driveAngle(180, 43, {.timeout = 700});
+      chass.driveLin(700, 22, {});
+      chass.driveAngle(-200, 43, { .timeout = 400, .vMin = 100,});
+      lb.setState(LiftState::idle);
 
-      chass.mtpoint({0.9, -10.3}, {.timeout = 1100, .vMin = 85, .exit = new Range(3, 10), .drift = 9,});
-      chass.driveAngle(-400, neg(20), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50,.exit = new Range(130, 10)});
-      chass.driveAngle(-680, neg(30), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
+      chass.mtpoint({-8.6, -19.6}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.8
+      });
+      // pros::delay(100000);
+      // chass.mtpose({{-8, -19.6}, h(0)}, 0.5, {.timeout = 1100, .vMin = 60,.settleRange = 5, .exit = new Range(3, 10), .drift = 6,});
+      // chass.driveAngle(-400, 0, {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50,.exit = new Range(130, 10)});
+      chass.driveAngle(-600, 0, {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
       clamp.toggle();
       pros::delay(100);
             // intake.move(0);
@@ -41,75 +42,46 @@ void belimsNeg() {
       lb.setState(LiftState::idle);
 
       //intake first ring
-      Pt ring1 = {-12.1, -43.9};
+      Pt ring1 = {-23.1, -48.4};
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 9, .slew = 0});
       pros::delay(100);
-      chass.driveAngle(1100, neg(90), {.exit = new Range(40, 10), .slew = 3});
-      // chass.driveAngle(-700, 90, {.exit = new Range(40, 10), .slew = 3});
-      // chass.driveAngle(700, 90, {.exit = new Range(40, 10), .slew = 3});
+      chass.driveAngle(800, neg(90), {.exit = new Range(40, 10), .slew = 3});
       
-
       //intake second ring
       chass.driveAngle(-700, neg(110), {.vMin = 70, .exit = new Range(200, 10), .slew = 0});
       chass.driveAngle(-700, neg(135), {.vMin = 40, .exit = new Range(150, 10)});
-      Pt ring2 = {-22.1, -28.0};
+      Pt ring2 = {-33.1, -31.0};
       ringAngle = chass.turnTo(ring2, {.exit = new Range(14, 10)});
-      chass.driveAngle(600, ringAngle, {.vMin = 50});
-      chass.driveAngle(-200, neg(40), {.vMin = 50, .exit = new Range(90, 10)});
+      chass.driveAngle(600, ringAngle, {.vMin = 90});
+      // chass.mtpoint(ring2, {.vMin = 90, .exit = new Range(3,10)});
+      chass.driveAngle(-300, neg(50), {.vMin = 80, .exit = new Range(90, 10)});
 
       //go to corner
-      // chass.mtpoint({74.0, 2.5}, {.exit = new Range(6, 10), .drift = 7, .within = 6});
-      //was 27.4
-      Pt corner1 = {-30.4, 6.1};
-      // chass.turnTo(corner1, {.t  imeout = 200});
-      chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(1, 10), .drift = 6});
+      Pt corner1 = {-41.4, 3.2};
+      chass.mtpoint(corner1, {.timeout = 1500, .exit = new Range(1, 10), .drift = 6});
       intake.move(127);
       chass.setTurn(_5);
-      double ang = chass.turnTo({-39.6, 15.0}, {.timeout = 600});
+      double ang = chass.turnTo({-50.6, 11.0}, {.timeout = 600});
       chass.setTurn(_90);
       intakeCorner(ang, neg(45));
 
       
       bool touch = false;
       if(touch) {
-          ang = chass.turnTo({33.0, -30.0}, {.timeout = 1400});
-    //was 15,35
-    // chass.mtpoint({-20.0, -34.0}, {.drift = 6});
-        // pros::delay(50);                ang = chass.turnTo({33.0, -30.0}, {.timeout = 1400});
-        // intake.move(20);
-        // intake.setJamProtection(true);
-        //was 15,35
-        // chass.mtpoint({-20.0, -34.0}, {.drift = 6});
+          ang = chass.turnTo({22.0, -34.0}, {.timeout = 1400});
         lb.setState(keejLib::LiftState::lower);
         chass.driveAngle(2100, ang, {.async = true, .timeout = 1500, .slew = 0});
-        // pros::delay(600);
         chass.waitUntilSettled();
         chass.turn(95, {.timeout = 500});
       
       }
       else {
-          Pt ring3 = {29.0, -3.0};
-    
-    
-    
+          Pt ring3 = {18.0, -3.0};
           chass.turn(90, {.timeout = 600});
           tsukasa.toggle();
-          chass.mtpoint(ring3, {.drift = 10, .within = 5});
+          chass.mtpoint(ring3, {.drift = 18, .within = 5});
           tsukasa.toggle();
-          // chass.driveAngle(2100, 80, {.exit = new Range(100, 10)});
-          // intake.move(127);
-          // doink.toggle();
-          // chass.driveAngle(1000, 60, {.timeout = 600});
-          // chass.turn(neg(136), {});
-          
-    
-          // Pt corner2 = {80.0, 24.0};
-          // chass.mtpoint(corner2, {.async = true, .timeout = 1200, .exit = new Range(1, 10), .drift = 10, .within = 9});
-          // pros::delay(400);
-          // tsukasa.toggle();
-          // chass.waitUntilSettled();
-          // pros::delay(2000);
       }
       pros::delay(2000);
 
