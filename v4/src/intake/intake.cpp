@@ -8,9 +8,9 @@
 
 namespace keejLib {
 
-Intake::Intake(pros::Motor *motor, pros::Optical *optical, pros::adi::DigitalIn *limit,
+Intake::Intake(pros::Motor *motor, pros::Optical *optical, pros::Distance *distance,
                Color color)
-    : motor(motor), optical(optical), limit(limit), colorToSort(color), velocityEma(0.99), colorEma(1) {
+    : motor(motor), optical(optical), distance(distance), colorToSort(color), velocityEma(0.99), colorEma(1) {
       optical -> set_integration_time(5);
     }
 
@@ -56,7 +56,7 @@ Color Intake::detectColor() {
   int check = 2;
   double hue = optical->get_hue();
   double dist = optical ->get_proximity();
-  int distRange = 100;
+  int distRange = 40;
   int count = 2;
   // std::cout << dist << std::endl;
   if (dist > distRange) {
@@ -88,6 +88,10 @@ void Intake::handleAutoStop(Color col) {
   }
 }
 
+bool Intake::ringSensed() {
+    return (distance -> get_distance() < 40);
+}
+
 void Intake::handleColorSort(Color col, bool liftClear) {
   switch (col) {
       case none:
@@ -112,7 +116,7 @@ void Intake::handleColorSort(Color col, bool liftClear) {
             if (motor -> get_position() < sortDist){
                 continue;
             }
-            double curr = limit -> get_value();
+            double curr = ringSensed();
             if (!curr && prev) break;
             prev = curr;
             motor->move(127);
@@ -132,11 +136,9 @@ bool Intake::isJammed(double actual, int tolerance) {
 void Intake::handleJamProtection(bool liftClear, RobotState * s) {
     // std::cout << "intake jammed! " <<std::endl;
     if (s->getLiftState() == LiftState::one && autoLift && ringSeen) {
-      motor -> move(-40);
-      pros::delay(50);
       motor -> move(0);
       s->setLiftState(LiftState::two);
-      pros::delay(100);
+      pros::delay(200);
       jamTimer.reset();
       ringSeen = false;
     }
@@ -155,6 +157,7 @@ void Intake::control() {
   bool liftClear = !(liftState == LiftState::one || liftState == LiftState::two);
   Color col = detectColor();
   double vel = velocityEma.out(motor->get_actual_velocity());
+  std::cout << distance->get_distance() << std::endl;
 
   if (col != none) {
     ringSeen = true;

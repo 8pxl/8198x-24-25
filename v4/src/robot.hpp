@@ -32,8 +32,9 @@ namespace robot {
     pros::Rotation rotationSensor(22);
     pros::Rotation vertTracker(8);
     pros::Rotation horizTracker(-9);
-    pros::Optical opticalSensor(6);
-    pros::Distance intakeDistance(7);
+    pros::Optical opticalSensor(4);
+    pros::Distance rushDistance(1);
+    pros::Distance intakeDistance(2);
     pros::Imu imu(18);
     pros::Vision vision(22);
     // pros::Distance vertDistSensor(20);
@@ -44,7 +45,7 @@ namespace robot {
     // Pis colorSort({colorSortPiston}, false);
     
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
-    Intake intake(&intakeMotor, &opticalSensor, &limit, Color::blue);
+    Intake intake(&intakeMotor, &opticalSensor, &intakeDistance, Color::blue);
     Lift lb(&liftMotor, &rotationSensor,  {
         .kp = 0.6,
         .ki= 0.08,

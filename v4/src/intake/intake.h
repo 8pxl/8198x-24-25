@@ -12,7 +12,7 @@
 namespace keejLib {
 class Intake {
 public:
-  Intake(pros::Motor *intake, pros::Optical *optical, pros::adi::DigitalIn *limit, Color sort);
+  Intake(pros::Motor *intake, pros::Optical *optical, pros::Distance *distance, Color sort);
   void startControl();
   void setColor(Color c);
   void move(double velocity);
@@ -25,6 +25,7 @@ public:
 private:
   pros::Motor *motor;
   pros::Optical *optical;
+  pros::Distance *distance;
   pros::adi::DigitalIn *limit;
   pros::Task *task = nullptr;
   Pis *piston;
@@ -52,6 +53,7 @@ private:
   void control();
 
   Timer autoStopTimer= Timer(1000);
+  bool ringSensed();
   void handleAutoStop(Color colorDetected);
   void handleColorSort(Color col, bool liftClear);
   void handleJamProtection(bool liftClear, RobotState* s);
