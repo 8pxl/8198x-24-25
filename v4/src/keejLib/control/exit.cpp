@@ -1,6 +1,8 @@
 #include "keejLib/control.h"
 #include "keejLib/lib.h"
+#include "keejLib/util.h"
 #include <cmath>
+#include <ostream>
 
 namespace keejLib {
 exit::Timeout::Timeout(int timeout) : sw(Stopwatch()), timeout(timeout) {};
@@ -46,5 +48,16 @@ bool exit::Within::exited(exitParams params) {
         sw.reset();
     }
     return (sw.elapsed() > timeout);
+}
+
+exit::DistanceSensor::DistanceSensor(pros::Distance *distance, double threshold, int startDelay, int delay) : distance(distance), threshold(threshold), startDelay(startDelay), delay(delay), timer(delay), startTimer(startDelay) {
+    startTimer.start();
+}
+
+bool exit::DistanceSensor::exited(exitParams params){
+    std::cout << distance ->get_distance() << std::endl;
+    if (!startTimer.done()) return false;
+    if (distance -> get_distance() < threshold) timer.start();
+    return (timer.done());
 }
 }

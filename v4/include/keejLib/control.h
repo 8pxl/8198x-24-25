@@ -1,5 +1,6 @@
 #pragma once
 #include "main.h"
+#include "pros/distance.hpp"
 #include "util.h"
 
 namespace keejLib {
@@ -62,6 +63,18 @@ namespace keejLib {
                 bool exited(exitParams params) override;
         };
         
+        class DistanceSensor: public Exit {
+            private:
+                pros::Distance *distance;
+                double threshold;
+                int delay;
+                int startDelay;
+                Timer timer;
+                Timer startTimer;
+            public: 
+                DistanceSensor(pros::Distance *distance, double threshold, int startDelay, int delay);
+                bool exited(exitParams params) override;
+        };
     }
     
     struct PIDConstants {
