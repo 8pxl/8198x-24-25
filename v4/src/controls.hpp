@@ -12,9 +12,9 @@ void driver() {
     dt.spinVolts(cont.drive(1, keejLib::Controller::driveMode::arcade));
     std::vector<bool> state = cont.getAll(ALLBUTTONS);
     
-    if (state[R1] && state[R2]) intakeMotor.move(-127);
-    else if (state[R1]) intakeMotor.move(127);
-    else intakeMotor.move(0);
+    if (state[R1] && state[R2]) intake.move(-127);
+    else if (state[R1]) intake.move(127);
+    else intake.move(0);
     
     if (state[NR1] && tsukasa.getState()) tsukasa.toggle();
     
@@ -40,10 +40,9 @@ void driver() {
         }
     }
     
-    if (state[NRIGHT]) doink.toggle();
+    if (state[NRIGHT]) ldoink.toggle();
     if (state[NY]) clamp.toggle();
     
-    if (state[NA]) claw.toggle();
     if (state[NUP]) tsukasa.toggle();
     // if (state[NDOWN]) {
     //     // test();
@@ -59,7 +58,6 @@ void driver() {
         // triangulatePoint();
     }
     if (state[NX]) {
-        odomPiston.set_value(true);
     }
     if (state[NB]) {
         if (intake.getColor() == none) {
