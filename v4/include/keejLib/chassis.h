@@ -63,12 +63,14 @@ namespace keejLib {
         double settleRange;
         double settleTime;
         Exit* exit = nullptr;
-        double mtpRotBias;
         double rotationCut;
         double drift = 0;
         bool reverse = false;
         double within = 0;
         double slew = 0;
+        double turnBias = -1;
+        // std::optional<double> biasTo;
+        // double biasConstant = 0.5;  
         bool debug = false;
     };
 
@@ -95,7 +97,7 @@ namespace keejLib {
             Pose pose;
             EMA velEMA = EMA(0.5);
             pros::Task* odomTask = nullptr;
-            PrevOdom prev = {0,0};
+            PrevOdom prev;
             bool moving = false;
             Color clr = red;
             pros::Mutex encMutex = pros::Mutex();

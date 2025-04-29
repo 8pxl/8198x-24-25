@@ -29,29 +29,19 @@ ChassVelocities VelocityManager::update(std::pair<double, double> vals) {
     return {vl + va, vl - va};
 }
 void VelocityManager::setLinMin(double newLinMin) {
-    linMin = newLinMin;
+    if (newLinMin < linMax) linMin = newLinMin;
 }
 
 void VelocityManager::setLinMax(double newLinMax) {
-    linMax = newLinMax;
-    if (linMin > linMax) {
-        //should not be here
-        std::cout << "lin min > max !!" << std::endl;
-        std::swap(linMin, linMax); 
-    }
+    if (newLinMax > linMin) linMax = newLinMax;
 }
 
 void VelocityManager::setAngMin(double newAngMin) {
-    angMin = newAngMin;
+    if (newAngMin < angMax) angMin = newAngMin;
 }
 
 void VelocityManager::setAngMax(double newAngMax) {
-    angMax = newAngMax;
-    if (angMin > angMax) {
-        //should not be here
-        std::cout << "ang min > max !!" << std::endl;
-        std::swap(angMin, angMax);
-    }
+    if (newAngMax > angMin) angMax = newAngMax;
 }
 
 void VelocityManager::setSlew(double newSlew) {
