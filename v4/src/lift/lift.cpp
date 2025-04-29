@@ -4,12 +4,14 @@
 #include "liblvgl/widgets/lv_label.h"
 #include "main.h"
 #include "pros/motors.h"
+#include "pros/rtos.hpp"
 #include "states.h"
 #include <ostream>
 
 namespace keejLib {
 
 Lift::Lift(pros::Motor *motor, pros::Rotation *rot, PIDConstants constants) : motor(motor), rot(rot) {
+    // std::cout << motor->is_installed() << std::endl;
     currentState = LiftState::idle;
     pid = keejLib::PID(constants);
 }
@@ -29,10 +31,20 @@ void Lift::startControl() {
 }
 
 void Lift::calibrate() {
+    bool x = motor -> is_installed();
+    if (x) {
+        std::cout << "motor is installed" << std::endl;
+    }
+    else {
+        std::cout << "motor is not installed" << std::endl;
+    }
     double current = motor -> get_current_draw();
+    pros::delay(100);
+    motor -> move(-70);
+    pros::delay(100);
     while (current < 980) {
-        motor -> move(-50 );
         current = motor -> get_current_draw();
+        pros::delay(10);
         // std::cout << current << std::endl;
     }
     motor -> tare_position();
@@ -82,16 +94,17 @@ void Lift::control() {
     // }
     error =  target - angle;
     // std::cout << error << std::endl;
-    if (currentState == LiftState::idle && error < 20) {
+    // std::cout << "angle" << angle << std::endl;
+    motor -> move((pid.out(error) + kf * cos(angle + angleOffset)));
+    if (currentState == LiftState::idle && fabs(error) < 70) {
         motor -> move(0);
-        if (calibrateTimer.elapsed() > 8000 && idleTimer.elapsed() >5000) {
+        if (calibrateTimer.elapsed() > 18000 && idleTimer.elapsed() > 5000) {
             calibrate();
             calibrateTimer.reset();
         }
     }
     else (idleTimer.reset());
     // std::cout << "target: " << target << std::endl;
-    motor -> move((pid.out(error) + kf * cos(angle + angleOffset)));
 }
 
 void Lift::setState(LiftState state) {

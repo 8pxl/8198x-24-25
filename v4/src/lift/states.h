@@ -7,6 +7,7 @@ namespace keejLib {
         two,
         prime,
         lower,
+        alliance,
         lowest
     };
 }
