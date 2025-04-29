@@ -53,18 +53,28 @@ int Stopwatch::elapsed() {
 
 Timer::Timer(int timeout) {
     set(timeout);
-    sw = Stopwatch();
 }
 
 void Timer::reset() {
-    sw.reset();
+    startTime = pros::millis();
 }
 
 void Timer::set(int timeout) {
     this->timeout = timeout;
 }
+
+void Timer::start() {
+    if (live) return;
+    startTime = pros::millis();
+    live = true;
+}
+void Timer::stop() {
+    live = false;
+}
+
 bool Timer::done() {
-    return sw.elapsed() > timeout;
+    if (!live) return false;
+    return (pros::millis() - startTime) > timeout;
 }
 //credit: lemlib
 double curvature(Pose pose, Pose other) {

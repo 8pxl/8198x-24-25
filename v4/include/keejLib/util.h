@@ -56,11 +56,14 @@ namespace keejLib {
 
     class Timer {
         private: 
-            Stopwatch sw;
+            int startTime;
             int timeout;
+            bool live = false;
         public:
             Timer(int timeout);
             void reset();
+            void start();
+            void stop();
             void set(int timeout);
             bool done();
     };
