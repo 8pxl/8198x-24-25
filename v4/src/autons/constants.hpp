@@ -121,7 +121,7 @@ PIDConstants _ang {
 };
 
 PIDConstants _angBig {
-    .kp = 2.4,
+    .kp = 3,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 0,
@@ -139,7 +139,7 @@ PIDConstants _chassLin = {
 };
 
 PIDConstants _chassAng = {
-    .kp = 2.1,
+    .kp = 2.3,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 1000,
@@ -148,7 +148,7 @@ PIDConstants _chassAng = {
 };
 
 PIDConstants _chassAngBig = {
-    .kp = 2,
+    .kp = 2.6,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 1000,
@@ -174,6 +174,14 @@ PIDConstants _mposeAng = {
     .integralThreshold = 3,
 };
 
+PIDConstants _mposeAngMogo = {
+    .kp = 0.2,
+    .ki = 0,
+    .kd = 0,
+    .maxIntegral = 1000,
+    .tolerance = 0,
+    .integralThreshold = 3,
+};
 PIDConstants _ttp {
     .kp = 8,
     .ki = 0.5,

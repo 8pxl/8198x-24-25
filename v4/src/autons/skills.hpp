@@ -46,7 +46,7 @@ void goal1() {
     
     Pt ring1 = {-3.9, -38};
     chass.turnTo(ring1, {.timeout = 500, .exit = new Range(4, 30)});
-    intake.move(127);
+    intakeMotor.move(127);
     // chass.turnTo(ring1, {.timeout = 700, .exit = new Range(1, 30)});
     chass.mtpoint(ring1, {.timeout = 1200, .vMin = 20, .settleRange = 2,  .exit = new Range(5, 10), .drift = 8});
     
@@ -509,7 +509,6 @@ void hang() {
     lb.setState(keejLib::LiftState::prime);
     liftMotor.set_brake_mode(pros::MotorBrake::hold);
     chass.setTurn(_180);
-    odomRelease.setState(true);
     chass.turn(neg(135), {.timeout = 500});
     chass.setTurn(_90);
     tsukasa.toggle();
