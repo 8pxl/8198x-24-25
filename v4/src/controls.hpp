@@ -3,6 +3,7 @@
 #include "intake/intake.h"
 #include "keejLib/lib.h"
 #include "keejLib/util.h"
+#include "lift/states.h"
 #include "robot.hpp"
 #include "autons/autons.hpp"
 
@@ -12,38 +13,71 @@ void driver() {
     dt.spinVolts(cont.drive(1, keejLib::Controller::driveMode::arcade));
     std::vector<bool> state = cont.getAll(ALLBUTTONS);
     
-    if (state[R1] && state[R2]) intake.move(-127);
-    else if (state[R1]) intake.move(127);
-    else intake.move(0);
-    
-    if (state[NR1] && tsukasa.getState()) tsukasa.toggle();
-    
-    if (state[L1]) {lb.setControl(false); lb.spin(127);}
-    else if (state[L2]) {
-        lb.setControl(false); lb.spin(-127);
+    if (state[Y]) {
+        if (state[NR1]) rdoink.toggle();
+        if (state[NL1]) ldoink.toggle();
+        if (state[NR2]) clamp.toggle();
+        if (state[NL2]) worldsWinningMech.toggle();
+        if (state[NY && state[RIGHT]]) lb.setState(keejLib::LiftState::prime);
     }
-    else lb.spin(0);
-    
-    if (state[R2]) {
-        lb.setControl(true);
-        // if (state[L1]) lb.spin(-127);
-        // else if (state[L2]) lb.spin(127);
-        // else lb.spin(0);
+    else if (state[RIGHT]) {
+        if (state[NRIGHT] && state[Y]) tsukasa.toggle();
+        if (state[NL1]) lb.next();
+        if (state[NL2]) lb.prev();
+        if (state[NR2]) lb.setState(keejLib::LiftState::idle);
+        if (state[NR1]) lb.setState(keejLib::LiftState::one);
+    }
+    else {
+        if (state[R1]) intake.move(127);
+        else if (state[R2]) intake.move(-127);
+        else intake.move(0);
         
-        if (state[NL1]) {
-            // lb.setControl(true);
-            lb.next();
+        if (state[L1]) {
+            lb.setControl(false); 
+            lb.spin(127);
         }
-        if (state[NL2]) {
-            // lb.setControl(true);
-            lb.prev();
+        else if (state[L2]) {
+            lb.setControl(false); lb.spin(-127);
         }
+        else lb.spin(0);
     }
+    // if (state[R1] && state[R2]) intake.move(-127);
+    // else if (state[R1]) intake.move(127);
+    // else intake.move(0);
     
-    if (state[NRIGHT]) ldoink.toggle();
-    if (state[NY]) clamp.toggle();
+    // if (state[NR1] && tsukasa.getState()) tsukasa.toggle();
     
-    if (state[NUP]) tsukasa.toggle();
+    // if (state[L1]) {lb.setControl(false); lb.spin(127);}
+    // else if (state[L2]) {
+    //     lb.setControl(false); lb.spin(-127);
+    // }
+    // else lb.spin(0);
+    
+    // if (state[R2]) {
+    //     lb.setControl(true);
+    //     // if (state[L1]) lb.spin(-127);
+    //     // else if (state[L2]) lb.spin(127);
+    //     // else lb.spin(0);
+        
+    //     if (state[NL1]) {
+    //         // lb.setControl(true);
+    //         lb.next();
+    //     }
+    //     if (state[NL2]) {
+    //         // lb.setControl(true);
+    //         lb.prev();
+    //     }
+    // }
+    
+    // if (state[NRIGHT]) {
+    //     // ldoink.toggle();
+    //     worldsWinningMech.toggle();
+    // }
+    // // if (state[Y]) {
+    // //     clamp.toggle();
+    // // }
+    
+    // if (state[NUP]) tsukasa.toggle();
     // if (state[NDOWN]) {
     //     // test();
     //     // rPos();
@@ -57,16 +91,16 @@ void driver() {
         prosController.print(0, 0, "%.2f, %.2f, %.2f", p.pos.x, p.pos.y, p.heading.heading());
         // triangulatePoint();
     }
-    if (state[NX]) {
+    // if (state[NX]) {
+    // }
+if (state[NB]) {
+    if (intake.getColor() == none) {
+        intake.setColor(glb::color);
     }
-    if (state[NB]) {
-        if (intake.getColor() == none) {
-            intake.setColor(glb::color);
-        }
-        else {
-            intake.setColor(none);
-        }
-        // intake.setColor( static_cast<Color>((intake.getColor() + 1) % 3));
+    else {
+        intake.setColor(none);
     }
+    // intake.setColor( static_cast<Color>((intake.getColor() + 1) % 3));
+}
 }
 
