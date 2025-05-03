@@ -142,7 +142,7 @@ void Intake::handleJamProtection(bool liftClear, RobotState * s) {
       jamTimer.reset();
       ringSeen = false;
     }
-    else if ((liftClear || !ringSeen) && jamProtection ) {
+    else if ((!ringSeen) && jamProtection ) {
       Stopwatch sw;
       while (sw.elapsed() < 200) {
         motor->move(-127);
@@ -159,7 +159,7 @@ void Intake::control() {
   double vel = velocityEma.out(motor->get_actual_velocity());
   std::cout << distance->get_distance() << std::endl;
 
-  if (col != none) {
+  if (ringSensed()) {
     ringSeen = true;
   }
   if (colorToStop != none) {
@@ -168,7 +168,7 @@ void Intake::control() {
   if (colorToSort != none && velocity > 0) {
     handleColorSort(col, liftClear);
   }
-  int tolerance = liftClear ? 5 : 7;
+  int tolerance = liftClear ? 5 : 9;
   if(isJammed(vel, tolerance)) {
     handleJamProtection(liftClear, s);
   }
