@@ -157,5 +157,6 @@ namespace keejLib {
           void wallReset(int wall, int numReadings, bool createTask = true);
 
           void driveLin(int time, double speed, MotionParams params);
+          void holdPos(double angle, double target, double timeout, MotionParams params);
     };
 }
