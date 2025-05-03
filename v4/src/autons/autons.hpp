@@ -3,8 +3,6 @@
 #include "keejLib/lib.h"
 #include "../robot.hpp"
 #include "keejLib/util.h"
-#include "pos/qred.hpp"
-#include "pos/qblue.hpp"
 #include "neg/relims.hpp"
 #include "pros/rtos.hpp"
 #include "skills.hpp"
@@ -66,5 +64,5 @@ void triangulatePoint() {
 
 // keejLib::Autons autons = {{skills,  belimsNeg, relimsNeg, rwallNeg, bwallNeg,  bAwp, rAwp, qbPos, qrPos, test}, {"skills", "blue elims neg", "red elims neg", "red wall neg", "blue wall neg", "blue awp", "red awp", "bPos", "rPos", "test"}};
 
-keejLib::Autons redAutons = {{test, skills, relimsNeg, rwallNeg, rAwp, qrPos}, {"test", "skills", "red elims neg", "red wall neg", "red awp", "red pos", "red rings pos"}};
-keejLib::Autons blueAutons = {{belimsNeg, bwallNeg, bAwp, qbPos}, {"blue elims neg", "blue wall neg", "blue awp", "blue pos"}};
+keejLib::Autons redAutons = {{test, skills, relimsNeg, rwallNeg, rAwp, rwallNeg, rringsPos}, {"test", "skills", "elims neg", "wall neg", "awp", "wall pos", "rings pos"}};
+keejLib::Autons blueAutons = {{belimsNeg, bwallNeg, bAwp, bwallNeg}, {"blue elims neg", "blue wall neg", "blue awp", "blue pos"}};

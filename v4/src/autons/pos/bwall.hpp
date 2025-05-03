@@ -9,7 +9,7 @@
 
 using namespace robot;
 
-void qbPos() {
+void wbPos() {
     chass.setTurn(_90);
     chass.setAng(_angBig);
     chass.setLin(_lin);
@@ -71,9 +71,4 @@ void qbPos() {
 
     ang = chass.turnTo(corner, {.timeout = 400});
     intakeCorner(ang, neg(135));
-
-    // Pt ring = {-20, 31};
-    // chass.turn(90, {.timeout = 400});
-    // chass.mtpoint(ring,{.drift = 4});
-    // intake.stopOnColor(Color col, int timeout)
 }
