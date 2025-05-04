@@ -4,6 +4,7 @@
 #include "keejLib/control.h"
 #include "keejLib/util.h"
 #include "pros/rtos.hpp"
+#include "../funcs.hpp"
 
 using namespace robot;
 
@@ -16,18 +17,19 @@ void bAwp() {
 
       //score alliance ring
 
-      chass.driveLin(700, 26, {});
+      chass.driveLin(700, 25, {});
       chass.driveAngle(-200, 43, { .timeout = 400, .vMin = 100,});
       lb.setState(LiftState::idle);
 
-      chass.mtpoint({-8.6, -19.5}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.8
+      chass.mtpoint({-9.5, -16.7}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.8
       });
-      chass.driveAngle(-500, 0, {.async = false, .timeout = 1000, .vMin = 50, .vMax = 55, .exit = new Range(50, 10)});
-      // pros::delay(300);
+      chass.driveAngle(-300, neg(30), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
+      chass.driveAngle(-500, neg(36), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
       clamp.toggle();
       // chass.driveAngle(-250, neg(20), {.async = false, .timeout = 1000, .vMin = 30, .vMax = 40, .exit = new Range(50, 10)});
       
       chass.waitUntilSettled();
+      pros::delay(200);
       intake.move(127);
 
       // Intake first ring
@@ -38,17 +40,17 @@ void bAwp() {
       
       // Intake second ring
       Pt ring2 = {-32.0, -49.9};
-      chass.driveAngle(900, neg(125), {.timeout = 600});
+      chass.driveAngle(700, neg(145), {.timeout = 600});
       chass.driveAngle(500, neg(180), {.timeout = 300});
-      chass.mtpoint(ring2, {.vMax = 50,.exit = new Range(6, 10),  .drift = 9});
-      chass.driveAngle(700, 89, {.vMin = 30, .exit = new Range(40, 10), .slew = 0});
+      chass.mtpoint(ring2, {.vMin = 50, .vMax = 70,.exit = new Range(6, 10),  .drift = 9});
+      chass.driveAngle(700, 89, {.vMin = 70, .exit = new Range(40, 10), .slew = 0});
       chass.driveAngle(200, 80, {.vMin = 70, .exit = new Range(40, 10), .slew = 0});
       
       intake.setJamProtection(true);
       
       // Go to third ring
       Pt ring3 = {23.0, -7.9};
-      chass.mtpoint(ring3, {.async = true, .exit = new Range (9, 10), .drift = 10, .within = 7, .slew = 4});
+      chass.mtpoint(ring3, {.async = true,.vMin = 90, .exit = new Range (9, 10), .drift = 10, .within = 7, .slew = 4});
       pros::delay(500);
       tsukasa.toggle();
       chass.waitUntilSettled();
@@ -64,7 +66,10 @@ void bAwp() {
       // Clamp second goal
       intake.setJamProtection(true);
       rdoink.toggle();
-      chass.driveAngle(730, 60, {.timeout = 650, .vMin = 20,});
+      Pt corner = {68, 5};
+      chass.mtpoint(corner, {.vMin = 40, .exit = new Range(3, 10), .within = 3,});
+      intakeCorner(45, 45);
+      chass.driveAngle(300, 45, {.timeout = 650, .vMin = 20,});
       chass.turn(neg(80), {.exit = new Range(50, 10)});
       rdoink.toggle();
       clamp.toggle();
@@ -81,12 +86,12 @@ void bAwp() {
       pros::delay(200);
       intake.move(127);
       chass.waitUntilSettled();
-      chass.mtpoint({33, -38}, {.async = true, .timeout = 1100, .vMin = 80,});
-      pros::delay(500);
+      chass.mtpoint({33, -37}, {.async = true, .timeout = 1100, .vMin = 80,});
+      pros::delay(900);
       // lb.setState(LiftState::prime);
       intake.move(0);
       chass.waitUntilSettled();
-      chass.driveAngle(-950, 45, {});
+      chass.driveAngle(-700, 45, {.timeout = 600});
       lb.setState(keejLib::LiftState::two);
       
       // // Clamp second goal
