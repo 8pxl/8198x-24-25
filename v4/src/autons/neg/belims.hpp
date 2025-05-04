@@ -22,16 +22,19 @@ void belimsNeg() {
 
       // chass.moveWithin(allianceStake, 14.7, {});
       // chass.driveAngle(180, 43, {.timeout = 700});
-      chass.driveLin(700, 22, {});
+      chass.driveLin(700, 28, {});
       chass.driveAngle(-200, 43, { .timeout = 400, .vMin = 100,});
       lb.setState(LiftState::idle);
 
-      chass.mtpoint({-8.6, -19.6}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.8
+      chass.mtpoint({-10.9, -17.6}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.8
       });
       // pros::delay(100000);
       // chass.mtpose({{-8, -19.6}, h(0)}, 0.5, {.timeout = 1100, .vMin = 60,.settleRange = 5, .exit = new Range(3, 10), .drift = 6,});
       // chass.driveAngle(-400, 0, {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50,.exit = new Range(130, 10)});
-      chass.driveAngle(-600, 0, {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
+      // chass.driveAngle(-300, 0, {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
+      chass.driveAngle(-500, neg(30), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
+      chass.driveAngle(-400, neg(36), {.async = false, .timeout = 1000, .vMin = 50, .vMax = 60, .exit = new Range(100, 10)});
+      // chass.driveAngle(-400, neg(50), {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
       clamp.toggle();
       pros::delay(100);
             // intake.move(0);
@@ -53,12 +56,13 @@ void belimsNeg() {
       chass.driveAngle(-700, neg(135), {.vMin = 40, .exit = new Range(150, 10)});
       Pt ring2 = {-33.1, -31.0};
       ringAngle = chass.turnTo(ring2, {.exit = new Range(14, 10)});
-      chass.driveAngle(600, ringAngle, {.vMin = 90});
+      chass.driveAngle(600, ringAngle, {.vMin = 90, .exit = new Range(100, 10), });
       // chass.mtpoint(ring2, {.vMin = 90, .exit = new Range(3,10)});
       chass.driveAngle(-300, neg(50), {.vMin = 80, .exit = new Range(90, 10)});
 
       //go to corner
-      Pt corner1 = {-41.4, 3.2};
+      Pt corner1 = {-41.4, 4.6};
+      worldsWinningMech.toggle();
       chass.mtpoint(corner1, {.timeout = 1500, .exit = new Range(1, 10), .drift = 6});
       intake.move(127);
       chass.setTurn(_5);
@@ -67,10 +71,12 @@ void belimsNeg() {
       intakeCorner(ang, neg(45));
 
       
-      bool touch = false;
+      bool touch = true;
       if(touch) {
+          pros::delay(600);
           ang = chass.turnTo({22.0, -34.0}, {.timeout = 1400});
         lb.setState(keejLib::LiftState::lower);
+        worldsWinningMech.toggle();
         chass.driveAngle(2100, ang, {.async = true, .timeout = 1500, .slew = 0});
         chass.waitUntilSettled();
         chass.turn(95, {.timeout = 500});
@@ -80,6 +86,7 @@ void belimsNeg() {
           Pt ring3 = {18.0, -3.0};
           chass.turn(90, {.timeout = 600});
           tsukasa.toggle();
+          worldsWinningMech.toggle();
           chass.mtpoint(ring3, {.drift = 18, .within = 5});
           tsukasa.toggle();
       }
