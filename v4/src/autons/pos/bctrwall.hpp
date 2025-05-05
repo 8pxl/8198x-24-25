@@ -42,7 +42,8 @@ void bctrwallPos(){
     // tsukasa.toggle();
     chass.waitUntilSettled();
     intake.move(0);
-    chass.mtpoint({-11.9, -46.3}, {.settleRange = 6, .exit = new Range(3, 10),.drift = 4});
+    //8.9
+    chass.mtpoint({-9.1, -46.4}, {.settleRange = 6, .exit = new Range(3, 10),.drift = 4});
     chass.setTurn(_5);
     // chass.setLin(_linBigger);
     chass.driveAngle(150, neg(165), {.timeout = 470,.exit = new Range(40, 10)});
@@ -69,7 +70,7 @@ void bctrwallPos(){
     chass.driveAngle(-250, 45, {.vMin = 50, .exit = new Range(30, 10)});
 
     //go to corner
-    Pt corner1 = {46.8, 3.3};
+    Pt corner1 = {46.8, 3.1};
     worldsWinningMech.toggle();
     chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(7, 10), .drift = 8});
     intake.move(127);
@@ -80,16 +81,20 @@ void bctrwallPos(){
     intake.move(127);
     chass.driveAngle(1190, ang, {.timeout = 700,.vMin = 55, .vMax = 60, .slew = 3});
     intake.setJamProtection(false);
-    chass.driveAngle(-155, ang, {.timeout = 480, .vMax = 35});
+    chass.driveAngle(-179, ang, {.timeout = 480, .vMax = 35});
     intake.stopOnColor(blue, 0);
     intake.setJamProtection(true);
     tsukasa.toggle();
     intake.move(127);
-    pros::delay(300);
+    pros::delay(400);
     lb.setState(keejLib::LiftState::two);
-    chass.driveAngle(890, 45, {.timeout = 680, .vMax = 60, .slew = 2.4});
-    intake.setJamProtection(false);
+    chass.driveAngle(890, 45, {.async = true, .timeout = 680, .vMax = 60, .slew = 2.4});
+    pros::delay(300);
     tsukasa.toggle();
+    intake.setJamProtection(false);
+    chass.waitUntilSettled();
+    intake.setJamProtection(true);
+    pros::delay(360);
     // ---
     chass.driveAngle(-530, 45, {.timeout =450,});
     // pros::delay(300);
@@ -100,20 +105,20 @@ void bctrwallPos(){
     // worldsWinningMech.toggle();
     // chass.driveAngle(1200, neg(128), {.async = false, .timeout = 800, .vMin = 50,});
     chass.turn(168, {.timeout = 640});
-    intake.move(0);
     worldsWinningMech.toggle();
     clamp.toggle();
     // chass.mtpoint({46.9, -47.5}, {.async = true, .exit = new Range(5, 10)});
-    chass.driveAngle(1200, 168, {.async = true, .exit = new Range(40, 10)});
-    pros::delay(300);
+    chass.driveAngle(1130, 168, {.async = true, .exit = new Range(40, 10)});
+    intake.move(0);
     lb.setState(keejLib::LiftState::prime);
-    pros::delay(300);
+    pros::delay(500);
     intake.move(127);
     // intake.stopOnColor(keejLib::blue, 0);
     chass.waitUntilSettled();
-    chass.driveAngle(300, 156, {.timeout =300});
+    chass.driveAngle(420, 147, {.timeout =390});
     
-    Pt wallStake = {55.0, -60.96};
+    Pt wallStake = {55.0, -59.96};
+    chass.setTurn(_5);
     double wallAng = chass.turnTo(wallStake, {.timeout = 600});
     // chass.driveAngle(260, wallAng, {.timeout = 340});
     lb.setState(keejLib::LiftState::lower);

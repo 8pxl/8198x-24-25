@@ -89,7 +89,7 @@ void Intake::handleAutoStop(Color col) {
 }
 
 bool Intake::ringSensed() {
-    return (distance -> get_distance() < 40);
+    return (distance -> get_distance() < 33);
 }
 
 void Intake::handleColorSort(Color col, bool liftClear) {
@@ -126,6 +126,7 @@ void Intake::handleColorSort(Color col, bool liftClear) {
         pros::delay(160);
         taskBlocked = false;
         jamTimer.reset();
+        ringSeen = false;
     }
 }
 
@@ -136,13 +137,13 @@ bool Intake::isJammed(double actual, int tolerance) {
 void Intake::handleJamProtection(bool liftClear, RobotState * s) {
     // std::cout << "intake jammed! " <<std::endl;
     if (s->getLiftState() == LiftState::one && autoLift && ringSeen) {
-      motor -> move(0);
+      motor -> move(2);
       s->setLiftState(LiftState::two);
-      pros::delay(200);
+      pros::delay(400);
       jamTimer.reset();
       ringSeen = false;
     }
-    else if ((!ringSeen) && jamProtection ) {
+    else if ((liftClear || !ringSeen) && jamProtection ) {
       Stopwatch sw;
       while (sw.elapsed() < 200) {
         motor->move(-127);
@@ -157,7 +158,7 @@ void Intake::control() {
   bool liftClear = !(liftState == LiftState::one || liftState == LiftState::two);
   Color col = detectColor();
   double vel = velocityEma.out(motor->get_actual_velocity());
-  std::cout << distance->get_distance() << std::endl;
+  // std::cout << distance->get_distance() << std::endl;
 
   if (ringSensed()) {
     ringSeen = true;
@@ -187,4 +188,8 @@ void Intake::control() {
     ringSeen = false;
   }
 } 
+
+bool Intake::isMoving() {
+    return velocity != 0;
+}
 }// namespace keejLib

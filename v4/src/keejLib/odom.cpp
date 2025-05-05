@@ -57,10 +57,10 @@ void Chassis::updateOdom() {
         currTheta= prev.theta;
     }
     else currTheta = Angle(rot, AngleType::HEADING);
-    // encMutex.take();
+    encMutex.take();
     double currVert = (vertEnc -> get_position() / 100.0);
     double currHoriz = (horizEnc -> get_position() / 100.0);
-    // encMutex.give();
+    encMutex.give();
     // std::cout << "currVert: " << currVert << " currHoriz: " << currHoriz << std::endl;
     double dTheta = toRad(currTheta.error(prev.theta));
     // std::cout << rot << std::endl;

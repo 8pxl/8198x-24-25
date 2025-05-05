@@ -16,14 +16,17 @@ void initialize() {
     std::cout << "mark 1" << std::endl;    
     // int clr = cont.select({"red", "blue", "driver"});
     std::cout << "mark 2" << std::endl;
-    glb::color = blue;
-    glb::auton = bAwp;
+    glb::color = red;
+    glb::auton = bctrwallPos;
     std::cout << "mark 3" << std::endl;
-    if (glb::auton == qbPos) {
+    if (glb::auton == bwallNeg) {
         imu.set_heading(342.6);
     }
-    else if(glb::auton == belimsNeg || glb::auton == rringsPos || glb::auton == bAwp) {
+    else if(glb::auton == belimsNeg || glb::auton == rctrPos || glb::auton == bAwp || glb::auton == rctrwallPos) {
         imu.set_heading(43.46);
+    }
+    else if (glb::auton == rAwp || glb::auton == relimsNeg || glb::auton == bctrPos || glb::auton == bctrwallPos) {
+        imu.set_heading(neg(43.46));
     }
     intake.setColor(red);
     robot::lb.startControl();

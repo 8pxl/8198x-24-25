@@ -14,16 +14,13 @@ void wbPos() {
     chass.setAng(_angBig);
     chass.setLin(_lin);
     chass.setMTP(_chassLin, _chassAng);
-        Pose p = chass.getPose();
-        chass.setPose({-p.pos.x, p.pos.y, p.heading});
     worldsWinningMech.toggle();
     // chass.moveWithin({17.14, 36.9}, 0, {.timeout = 1500, .vMin=60, .exit = new Range(5, 10), .reverse=false, }, 28.5);
     chass.mtpoint({17.14, 36.9}, {.timeout = 1500, .vMin = 110, .exit = new Range(5, 10), .reverse = false});
     chass.setAng(_ang);
     worldsWinningMech.toggle();
-    auto grab = chass.getPose();
     chass.driveAngle(-400, 28, {.async = false, .timeout = 400, .vMin = 0, .exit = new Range(800, 40)});
-    chass.holdPos(10, -4, 3000, {.exit = new Range(1, 100)});
+    chass.holdPos(10, -4, 5000, {.exit = new Range(1, 1000)});
     chass.driveAngle(400, 10, {});
     worldsWinningMech.toggle();
     lb.setState(LiftState::prime);

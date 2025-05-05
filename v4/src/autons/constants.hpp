@@ -110,6 +110,14 @@ PIDConstants _linBigger {
 //     .tolerance = 0,
 //     .integralThreshold = 0,
 // };
+PIDConstants _angSmall {
+    .kp = 1.2,
+    .ki = 0,
+    .kd = 0,
+    .maxIntegral = 0,
+    .tolerance = 0,
+    .integralThreshold = 0,
+};
 
 PIDConstants _ang {
     .kp = 2,
@@ -131,6 +139,15 @@ PIDConstants _angBig {
 
 PIDConstants _chassLin = {
     .kp = 4.2,
+    .ki = 0,
+    .kd = 0,
+    .maxIntegral = 1000,
+    .tolerance = 0,
+    .integralThreshold = 3,
+};
+
+PIDConstants _chassAngSmall = {
+    .kp = 1.5,
     .ki = 0,
     .kd = 0,
     .maxIntegral = 1000,

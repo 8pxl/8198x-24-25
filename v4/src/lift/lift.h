@@ -51,8 +51,8 @@ class Lift {
         };
         std::unordered_map<LiftState, double> valueMap = {
             {LiftState::idle, 5},
-            {LiftState::one, 174+4},
-            {LiftState::two, 226},
+            {LiftState::one, 140},
+            {LiftState::two, 190},
             {LiftState::prime, 476},
             {LiftState::lower, 360 + 290},
             {LiftState::alliance, 848},
@@ -67,7 +67,7 @@ class Lift {
         bool off = false;
         Stopwatch idleTimer;
         Stopwatch calibrateTimer;
-        const int snapRange = 30;
+        const int snapRange = 60;
         
        	LiftState currentState;
 

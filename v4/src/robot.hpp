@@ -25,6 +25,7 @@ namespace robot {
     pros::Motor liftMotor(10, pros::MotorGears::green);
     
     pros::adi::DigitalOut clampPiston('a');
+    pros::adi::DigitalOut worldsWinningPiston('b');
     pros::adi::DigitalOut rightDoinker('e');
     pros::adi::DigitalOut intakePiston('c');
     pros::adi::DigitalOut leftDoinker('d');
@@ -42,14 +43,15 @@ namespace robot {
     Pis rdoink({rightDoinker}, false);
     Pis ldoink({leftDoinker}, false);
     Pis tsukasa({intakePiston}, false);
+    Pis worldsWinningMech({worldsWinningPiston}, false);
     // Pis colorSort({colorSortPiston}, false);
     
     // ifsm::Intake intake(&intakeMotor, &opticalSensor, Color::red);
     Intake intake(&intakeMotor, &opticalSensor, &intakeDistance, Color::blue);
     Lift lb(&liftMotor, &rotationSensor,  {
-        .kp = 0.6,
+        .kp = 1.9,
         .ki= 0.08,
-        .kd = 0.1,
+        .kd = 0,
         .maxIntegral = 1000000,
         .tolerance = 0,
         .integralThreshold = 60,

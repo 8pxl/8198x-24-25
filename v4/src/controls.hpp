@@ -18,10 +18,10 @@ void driver() {
         if (state[NL1]) ldoink.toggle();
         if (state[NR2]) clamp.toggle();
         if (state[NL2]) worldsWinningMech.toggle();
-        if (state[NY && state[RIGHT]]) lb.setState(keejLib::LiftState::prime);
+        if (state[NY] && state[RIGHT]) lb.setState(keejLib::LiftState::prime);
+        if (state[NRIGHT] && state[Y]) tsukasa.toggle();
     }
     else if (state[RIGHT]) {
-        if (state[NRIGHT] && state[Y]) tsukasa.toggle();
         if (state[NL1]) lb.next();
         if (state[NL2]) lb.prev();
         if (state[NR2]) lb.setState(keejLib::LiftState::idle);
@@ -41,51 +41,6 @@ void driver() {
         }
         else lb.spin(0);
     }
-    // if (state[R1] && state[R2]) intake.move(-127);
-    // else if (state[R1]) intake.move(127);
-    // else intake.move(0);
-    
-    // if (state[NR1] && tsukasa.getState()) tsukasa.toggle();
-    
-    // if (state[L1]) {lb.setControl(false); lb.spin(127);}
-    // else if (state[L2]) {
-    //     lb.setControl(false); lb.spin(-127);
-    // }
-    // else lb.spin(0);
-    
-    // if (state[R2]) {
-    //     lb.setControl(true);
-    //     // if (state[L1]) lb.spin(-127);
-    //     // else if (state[L2]) lb.spin(127);
-    //     // else lb.spin(0);
-        
-    //     if (state[NL1]) {
-    //         // lb.setControl(true);
-    //         lb.next();
-    //     }
-    //     if (state[NL2]) {
-    //         // lb.setControl(true);
-    //         lb.prev();
-    //     }
-    // }
-    
-    // if (state[NRIGHT]) {
-    //     // ldoink.toggle();
-    //     worldsWinningMech.toggle();
-    // }
-    // // if (state[Y]) {
-    // //     clamp.toggle();
-    // // }
-    
-    // if (state[NUP]) tsukasa.toggle();
-    // if (state[NDOWN]) {
-    //     // test();
-    //     // rPos();
-    //     // bPos();
-    //     chass.setTurn(_90);
-    //     auto x = chass.measureOffsets(5);
-    //     std::cout << x.first << " " << x.second << std::endl;
-    // }
     if (state[NLEFT]) {
         auto p = chass.getPose();
         prosController.print(0, 0, "%.2f, %.2f, %.2f", p.pos.x, p.pos.y, p.heading.heading());

@@ -40,7 +40,7 @@ void intakeCorner(double ang1, double ang2) {
     intake.move(127);
     chass.driveAngle(1190, ang1, {.timeout = 700,.vMin = 55, .vMax = 60, .slew = 3});
     intake.setJamProtection(false);
-    chass.driveAngle(-160, ang1, {.timeout = 480, .vMax = 35});
+    chass.driveAngle(-185, ang1, {.timeout = 480, .vMax = 35});
     intake.setJamProtection(true);
     tsukasa.toggle();
     intake.move(127);

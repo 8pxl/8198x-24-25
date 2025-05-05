@@ -3,8 +3,8 @@ import os
 import re
 
 
-path = "src/autons/pos/rrings.hpp"
-write = "src/autons/pos/brings.hpp"
+path = "src/autons/pos/rctrwall.hpp"
+write = "src/autons/pos/bctrwall.hpp"
 f = open(path, 'r')
 w = open(write, 'w')
 

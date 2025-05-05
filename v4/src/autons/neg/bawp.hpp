@@ -69,6 +69,7 @@ void bAwp() {
       chass.setMTP(_chassLin, _chassAngSmall);
       chass.mtpoint({64.9, -5}, {.async = true, .timeout = 1400,.vMin = 100, .exit = new Range(5, 10),  .drift = 5,});
       pros::delay(300);
+      worldsWinningMech.toggle();
     tsukasa.toggle();
     chass.waitUntilSettled();
       chass.setMTP(_chassLin, _chassAng);
@@ -93,6 +94,7 @@ void bAwp() {
       
       chass.driveAngle(-300, 90, {.timeout = 600, .vMin = 90});
       chass.driveAngle(-300, 150, {.timeout = 600, .vMin = 90});
+      worldsWinningMech.toggle();
       // chass.turn(180, {.async = true, .timeout = 750});
       // intake.move(0);
       clamp.toggle();

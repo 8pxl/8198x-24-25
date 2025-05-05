@@ -303,15 +303,16 @@ void Chassis::mtpose(Pose target, double dLead, MotionParams params, double gLea
 void Chassis::holdPos(double angle, double offset, double timeout, MotionParams params) {
     this -> waitUntilSettled();
     moving = true;
-    double start = vertEnc -> get_position();
+    double start = vertEnc -> get_position() / 100.0;
     Exit* timer = new exit::Timeout(timeout);
     PID angCont = PID(this -> angConsts);
     double error = 1000;
     
     while (!timer -> exited({}) && !params.exit -> exited({.error = error})) {
         encMutex.take();
-        error = (angError(vertEnc -> get_position() / 100.0, start + offset) * M_PI * chassConsts.vertDia) / 360.0;
+        error = (angError(start + offset, vertEnc -> get_position() / 100.0) * M_PI * chassConsts.vertDia) / 360.0;
         encMutex.give();
+        std::cout << error << std::endl;
         
         //scale error via regressed exponential graph https://www.desmos.com/calculator/zjzo4sdlnr
         double vl = 0.233427 * (pow(66.72679, fabs(error)) - 1) * sign(error);

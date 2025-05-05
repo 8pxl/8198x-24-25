@@ -21,6 +21,7 @@ public:
   Color getColor();
   void setAutoLift(bool val);
   void stopOnColor(Color col, int timeout);
+  bool isMoving();
 
 private:
   pros::Motor *motor;
