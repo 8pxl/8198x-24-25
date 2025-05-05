@@ -8,7 +8,7 @@
 
 using namespace robot;
 
-void bAwp() {
+void rAwp() {
       chass.setTurn(_90);
       chass.setAng(_ang);
       chass.setLin(_lin);
@@ -17,17 +17,17 @@ void bAwp() {
 
       //score alliance ring
 
-      chass.driveLin(700, 28, {});
+      chass.driveLin(700, 24, {});
       // chass.driveLin(700, 33, {});
       chass.driveAngle(-200, neg(43), { .timeout = 400, .vMin = 100,});
       lb.setState(LiftState::idle);
 
-      chass.mtpoint({9.6, -16.1}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.8
+      chass.mtpoint({9.9, -15.02}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.96
       });
       // chass.driveAngle(-1200, neg(30), {.async = false, .timeout = 1000, .vMin = 70, .vMax = 80, .exit = new Range(100, 10)});
       chass.setAng(_angSmall);
-      chass.driveAngle(-300, 30, {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
-      chass.driveAngle(-500, 36, {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
+      chass.driveAngle(-300, 26, {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
+      chass.driveAngle(-500, 38, {.async = false, .timeout = 1000, .vMin = 40, .vMax = 50, .exit = new Range(100, 10)});
       chass.setAng(_ang);
       clamp.toggle();
       lb.setState(keejLib::LiftState::idle);
@@ -38,24 +38,25 @@ void bAwp() {
       intake.move(127);
 
       // Intake first ring
-      Pt ring1 = {32.1, -32.3};
+      Pt ring1 = {34.1, -32.3};
       // double ringAngle = chass.turnTo(ring1, {.exit = new Range(70, 10)});
       chass.driveAngle(600, 72, {.vMin = 60, .exit = new Range(50, 10)});
       chass.mtpoint(ring1, {.vMin = 100, .exit = new Range(7, 10), .drift = 5, .slew = 0});
       
       // Intake second ring
-      Pt ring2 = {32.0, -49.9};
-      chass.driveAngle(360, 135, {.timeout = 600, .vMin = 80});
+      Pt ring2 = {32.0, -50.3};
+      chass.driveAngle(400, 135, {.timeout = 600, .vMin = 80});
       chass.driveAngle(310, 180, {.timeout = 300, .vMin = 60});
       chass.mtpoint(ring2, {.vMin = 50, .vMax = 70,.exit = new Range(6, 10),  .drift = 9});
-      chass.driveAngle(700, neg(89), {.vMin = 70, .exit = new Range(40, 10), .slew = 0});
+      chass.driveAngle(550, neg(87), {.vMin = 70, .exit = new Range(40, 10), .slew = 0});
       // chass.driveAngle(200, neg(80), {.vMin = 70, .exit = new Range(40, 10), .slew = 0});
       
       intake.setJamProtection(true);
       
       // Go to third ring
-      Pt ring3 = {-23.0, -7.9};
-      chass.mtpoint(ring3, {.async = true,.vMin = 50, .exit = new Range (9, 10), .drift = 10,.within = 7.3, .slew = 4});
+      Pt ring3 = {-21.0, -7.9};
+      worldsWinningMech.toggle();
+      chass.mtpoint(ring3, {.async = true,.vMin = 50, .exit = new Range (9, 10), .drift = 10,.within = 9.3, .slew = 4});
       pros::delay(300);
       tsukasa.toggle();
       chass.waitUntilSettled();
@@ -67,19 +68,21 @@ void bAwp() {
       
       // Go to ring
       chass.setMTP(_chassLin, _chassAngSmall);
-      chass.mtpoint({-64.9, -5.0}, {.async = true, .timeout = 1400,.vMin = 100, .exit = new Range(5, 10),  .drift = 5,});
+      chass.mtpoint({-60.9, -5.0}, {.async = true, .timeout = 1400,.vMin = 100, .exit = new Range(5, 10),  .drift = 5,});
       pros::delay(300);
-      worldsWinningMech.toggle();
     tsukasa.toggle();
     chass.waitUntilSettled();
       chass.setMTP(_chassLin, _chassAng);
       // intake.stopOnColor(keejLib::blue, 1000);
       
       // Clamp second goal
+      dt.spinAll(-1);
+          pros::delay(100);
       intake.setJamProtection(true);
       // rdoink.toggle();
-      Pt corner = {-89.2, 9.0};
-      chass.mtpoint(corner, {.timeout = 1200, .vMin = 50, .exit = new Range(5, 10), .drift = 2, .within = 2,.turnBias = 0.8});
+      // ch≠
+      Pt corner = {-85.2, 9.0};
+      chass.mtpoint(corner, {.timeout = 1200, .vMin = 30,.vMax = 40, .exit = new Range(5, 10), .drift = 2, .within = 2,.turnBias = 0.8});
       intake.setJamProtection(false);
       chass.driveAngle(-200, neg(45), {.timeout = 480, .vMax = 35});
       // chass.driveLin(100, -50, {});
@@ -87,37 +90,38 @@ void bAwp() {
       tsukasa.toggle();
       intake.move(127);
       pros::delay(300);
-      intake.stopOnColor(keejLib::blue, 0);
+      intake.stopOnColor(keejLib::red, 0);
       chass.driveAngle(890, neg(45), {.timeout = 680, .vMax = 60, .slew = 2.4});
       intake.setJamProtection(false);
       tsukasa.toggle();
       
       chass.driveAngle(-300, neg(90), {.timeout = 600, .vMin = 90});
       chass.driveAngle(-300, neg(150), {.timeout = 600, .vMin = 90});
-      worldsWinningMech.toggle();
       // chass.turn(neg(180), {.async = true, .timeout = 750});
       // intake.move(0);
       clamp.toggle();
       
-      Pt ring5 = {-71.0, -42.6};
+      Pt ring5 = {-71.0, -44.6};
       if (!intake.isMoving()) tsukasa.setState(true);
       chass.mtpoint(ring5, {.async = false, .timeout = 1000, .vMin = 30, .exit = new Range(5, 10), .drift = 5});
       tsukasa.setState(false);
       chass.driveAngle(-300, neg(120), {.timeout = 400, .vMax=50});
+      worldsWinningMech.toggle();
       // chass.turn(neg(90), {.timeout=300});
       
-        Pt goal2 = {-43.0, -30.0};
+        Pt goal2 = {-43.0, -37.0};
       chass.setTurn(_135);
       chass.setTurn(_90);
       double angle = chass.turnTo(goal2, {.exit = new Range(5, 10), .reverse = true});
       // chass.mtpoint(goal2, {.async = false, .timeout = 1300, .vMin = 40, .exit = new Range(4, 10)});
-      chass.driveAngle(-1000, neg(angle), {.timeout = 800, .vMin = 55, .vMax = 90, .exit = new Range(90, 10)});
+      chass.driveAngle(-700, angle, {.timeout = 800, .vMin = 55, .vMax = 90, .exit = new Range(90, 10)});
       clamp.toggle();
       
       // chass.driveAngle(-400, neg(180), {.vMax = 60});
       chass.turn(neg(225), {.async = true,.vMax = 60});
       pros::delay(100);
       intake.move(127);
+      pros::delay(400);
       // chass.driveAngle(500, neg(180), {.vMax = 50});
       worldsWinningMech.toggle();
       pros::delay(2000);
