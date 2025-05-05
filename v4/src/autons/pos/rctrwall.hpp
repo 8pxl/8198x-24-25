@@ -42,10 +42,10 @@ void rctrwallPos(){
     // tsukasa.toggle();
     chass.waitUntilSettled();
     intake.move(0);
-    chass.mtpoint({12.1, -46.3}, {.settleRange = 6, .exit = new Range(3, 10),.drift = 4});
+    chass.mtpoint({11.9, -46.3}, {.settleRange = 6, .exit = new Range(3, 10),.drift = 4});
     chass.setTurn(_5);
     // chass.setLin(_linBigger);
-    chass.driveAngle(150, 166, {.timeout = 470,.exit = new Range(40, 10)});
+    chass.driveAngle(150, 165, {.timeout = 470,.exit = new Range(40, 10)});
     ldoink.toggle();
     pros::delay(200);
     chass.driveAngle(-160, 143, {.timeout = 400,.exit = new Range(50, 10)});
@@ -69,9 +69,9 @@ void rctrwallPos(){
     chass.driveAngle(-250, neg(45), {.vMin = 50, .exit = new Range(30, 10)});
 
     //go to corner
-    Pt corner1 = {-49, 2.3};
+    Pt corner1 = {-48.5, 2.3};
     worldsWinningMech.toggle();
-    chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(5, 10), .drift = 7});
+    chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(7, 10), .drift = 8});
     intake.move(127);
     chass.setTurn(_5);
     double ang = chass.turnTo({-55.9, 11.0}, {.timeout = 600});
@@ -80,7 +80,8 @@ void rctrwallPos(){
     intake.move(127);
     chass.driveAngle(1190, ang, {.timeout = 700,.vMin = 55, .vMax = 60, .slew = 3});
     intake.setJamProtection(false);
-    chass.driveAngle(-195, ang, {.timeout = 480, .vMax = 35});
+    chass.driveAngle(-175, ang, {.timeout = 480, .vMax = 35});
+    intake.stopOnColor(blue, 0);
     intake.setJamProtection(true);
     tsukasa.toggle();
     intake.move(127);
@@ -90,7 +91,7 @@ void rctrwallPos(){
     intake.setJamProtection(false);
     tsukasa.toggle();
     // ---
-    chass.driveAngle(-200, neg(45), {.timeout =300, .vMax = 35});
+    chass.driveAngle(-530, neg(45), {.timeout =450,});
     // pros::delay(300);
     // // rdoink.toggle();
     // chass.driveAngle(200, 135, {.timeout =200, .vMin = 100, .exit = new Range(150, 10),});
@@ -98,12 +99,12 @@ void rctrwallPos(){
     // clamp.toggle();
     // worldsWinningMech.toggle();
     // chass.driveAngle(1200, 128, {.async = false, .timeout = 800, .vMin = 50,});
-    chass.turn(174, {.timeout = 700});
+    chass.turn(neg(168), {.timeout = 700});
     intake.move(0);
     worldsWinningMech.toggle();
     clamp.toggle();
     // chass.mtpoint({-46.9, -47.5}, {.async = true, .exit = new Range(5, 10)});
-    chass.driveAngle(1560, neg(189), {.async = true, .exit = new Range(40, 10)});
+    chass.driveAngle(1210, neg(168), {.async = true, .exit = new Range(40, 10)});
     pros::delay(300);
     lb.setState(keejLib::LiftState::prime);
     pros::delay(300);
@@ -112,8 +113,8 @@ void rctrwallPos(){
     chass.waitUntilSettled();
     // chass.driveAngle(300, neg(135), {.timeout =300});
     
-    Pt wallStake = {-55, -59.9};
+    Pt wallStake = {-55, -60.3};
     double wallAng = chass.turnTo(wallStake, {.timeout = 600});
-    chass.driveAngle(300, wallAng, {.timeout = 400});
+    chass.driveAngle(260, wallAng, {.timeout = 340});
     lb.setState(keejLib::LiftState::lower);
 }
