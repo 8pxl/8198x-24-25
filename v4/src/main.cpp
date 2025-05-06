@@ -13,12 +13,21 @@ using namespace robot;
 
 void initialize() {
     imu.reset(true);
-    std::cout << "mark 1" << std::endl;    
-    // int clr = cont.select({"red", "blue", "driver"});
-    std::cout << "mark 2" << std::endl;
-    glb::color = red;
-    glb::auton = bctrwallPos;
-    std::cout << "mark 3" << std::endl;
+    int clr = cont.select({"red", "blue", "driver"});
+    if (clr == 2) {
+        intake.setColor(keejLib::none);
+    }
+    else {
+        glb::color = clr ? red : blue;
+        intake.setColor(oppositeColor(static_cast<Color>(clr)));
+        if (clr == red) {
+            glb::auton = redAutons.autonsList[cont.select(redAutons.names)];
+        }
+        else {
+            glb::auton = blueAutons.autonsList[cont.select(blueAutons.names)];
+        }
+    }
+    // glb::auton = rAwp;
     if (glb::auton == bwallNeg) {
         imu.set_heading(342.6);
     }
@@ -28,33 +37,14 @@ void initialize() {
     else if (glb::auton == rAwp || glb::auton == relimsNeg || glb::auton == bctrPos || glb::auton == bctrwallPos) {
         imu.set_heading(neg(43.46));
     }
-    intake.setColor(red);
     robot::lb.startControl();
 
     chass.startTracking();
-    std::cout << "mark 4" << std::endl;
-    // if (clr == 2) {
-    //     intake.setColor(keejLib::none);
-    // }
-    // else {
-    //     glb::color = clr ? red : blue;
-    //     intake.setColor(oppositeColor(static_cast<Color>(clr)));
-    //     if (clr == red) {
-    //         glb::auton = redAutons.autonsList[cont.select(redAutons.names)];
-    //     }
-    //     else {
-    //         glb::auton = blueAutons.autonsList[cont.select(blueAutons.names)];
-    //     }
-    // }
+
     
     lb.setState(keejLib::LiftState::one);
-    // liftMotor.set_brake_mode(pros::MotorBrake::hold);
-    pros::delay(50);
-    std::cout << "mark 5" << std::endl;
-    // robot::lb.startControl();
     robot::intake.startControl();
 
-    std::cout << "mark 6" << std::endl;
 }
 
 void disabled() {

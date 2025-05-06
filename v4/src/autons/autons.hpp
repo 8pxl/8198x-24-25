@@ -68,5 +68,7 @@ void triangulatePoint() {
 
 // keejLib::Autons autons = {{skills,  belimsNeg, relimsNeg, rwallNeg, bwallNeg,  bAwp, rAwp, qbPos, qrPos, test}, {"skills", "blue elims neg", "red elims neg", "red wall neg", "blue wall neg", "blue awp", "red awp", "bPos", "rPos", "test"}};
 
-keejLib::Autons redAutons = {{test, skills, relimsNeg, rwallNeg, rAwp, rwallNeg, rctrPos}, {"test", "skills", "elims neg", "wall neg", "awp", "wall pos", "rings pos"}};
-keejLib::Autons blueAutons = {{belimsNeg, bwallNeg, bAwp, bwallNeg, bctrPos, bctrwallPos}, {"blue elims neg", "blue wall neg", "blue awp", "blue pos", "blue rings"}};
+// keejLib::Autons redAutons = {{test, skills, relimsNeg, rwallNeg, rAwp, rwallNeg, rctrPos}, {"test", "skills", "elims neg", "wall neg", "awp", "wall pos", "rings pos"}};
+// keejLib::Autons blueAutons = {{belimsNeg, bwallNeg, bAwp, bwallNeg, bctrPos, bctrwallPos}, {"blue elims neg", "blue wall neg", "blue awp", "blue pos", "blue rings"}};
+keejLib::Autons redAutons = {{test, skills, relimsNeg, rAwp, rctrPos, rctrwallPos}, {"test", "skills", "6 ring neg", "awp", "rings pos", "wall pos"}};
+keejLib::Autons blueAutons = {{belimsNeg, bAwp, bctrPos, bctrwallPos}, {"blue elims neg", "blue awp", "rings pos", "wall pos"}};
