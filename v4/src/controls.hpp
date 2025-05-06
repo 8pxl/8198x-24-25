@@ -13,25 +13,33 @@ void driver() {
     dt.spinVolts(cont.drive(1, keejLib::Controller::driveMode::arcade));
     std::vector<bool> state = cont.getAll(ALLBUTTONS);
     
-    if (state[Y]) {
+    if (state[RIGHT]) {
         if (state[NR1]) rdoink.toggle();
         if (state[NL1]) ldoink.toggle();
-        if (state[NR2]) clamp.toggle();
+        // if (state[NR2]) clamp.toggle();
         if (state[NL2]) worldsWinningMech.toggle();
-        if (state[NY] && state[RIGHT]) lb.setState(keejLib::LiftState::prime);
-        if (state[NRIGHT] && state[Y]) tsukasa.toggle();
+        // if (state[NY] && state[RIGHT]) lb.setState(keejLib::LiftState::prime);
+        if (state[RIGHT] && state[NY]) tsukasa.toggle();
     }
-    else if (state[RIGHT]) {
+    else if (state[R2]) {
+        lb.setControl(true);
         if (state[NL1]) lb.next();
         if (state[NL2]) lb.prev();
-        if (state[NR2]) lb.setState(keejLib::LiftState::idle);
-        if (state[NR1]) lb.setState(keejLib::LiftState::one);
     }
-    else {
-        if (state[R1]) intake.move(127);
-        else if (state[R2]) intake.move(-127);
+    else if (state[NY]) {
+        clamp.toggle();
+        // worldsWinningMech.toggle();
+    }
+        // if (state[NL1]) lb.next();
+        // if (state[NL2]) lb.prev();
+    //     if (state[NR2]) lb.setState(keejLib::LiftState::idle);
+    //     if (state[NR1]) lb.setState(keejLib::LiftState::one);
+    // }
+    if (!state[RIGHT]) {
+        if (state[R2] && state[R1]) intake.move(-127);
+        else if (state[R1]) intake.move(127);
         else intake.move(0);
-        
+    }
         if (state[L1]) {
             lb.setControl(false); 
             lb.spin(127);
@@ -40,7 +48,6 @@ void driver() {
             lb.setControl(false); lb.spin(-127);
         }
         else lb.spin(0);
-    }
     if (state[NLEFT]) {
         auto p = chass.getPose();
         prosController.print(0, 0, "%.2f, %.2f, %.2f", p.pos.x, p.pos.y, p.heading.heading());
