@@ -85,6 +85,12 @@ void Intake::handleAutoStop(Color col) {
   if (col == colorToStop) {
     velocity = 0;
     colorToStop = none;
+    if (indexRing) {
+        motor->move(-127);
+        pros::delay(300);
+        motor->move(0);
+        indexRing = false;
+    }
   }
 }
 
@@ -191,5 +197,9 @@ void Intake::control() {
 
 bool Intake::isMoving() {
     return velocity != 0;
+}
+
+void Intake::setIndex(bool val) {
+    indexRing = val;
 }
 }// namespace keejLib

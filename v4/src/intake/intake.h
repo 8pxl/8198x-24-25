@@ -22,6 +22,7 @@ public:
   void setAutoLift(bool val);
   void stopOnColor(Color col, int timeout);
   bool isMoving();
+  void setIndex(bool val);
 
 private:
   pros::Motor *motor;
@@ -47,6 +48,7 @@ private:
   double sortDist = 300;
   bool jamProtection = true;
   bool ringSeen = false;
+  bool indexRing = false;
 
   Color colorToStop = none;
 

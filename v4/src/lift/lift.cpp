@@ -59,12 +59,12 @@ void Lift::calibrate() {
 }
 void Lift::setControl(bool state) {
     off = !state;
-    // if (state == true) {
-    //     if (motor -> get_position() >= 800) {
-    //         if (currentState == LiftState::two || currentState == LiftState::one) {setState(LiftState::idle);}
-    //         else setState(LiftState::idle);
-    //     }
-    // }
+    if (state == true) {
+        if (motor -> get_position() >= 800) {
+            if (currentState == LiftState::two || currentState == LiftState::one) {setState(LiftState::idle);}
+            else setState(LiftState::idle);
+        }
+    }
 }
 
 void Lift::spin(double voltage) {
@@ -113,7 +113,7 @@ void Lift::setState(LiftState state) {
     auto s = RobotState::getInstance();
     s -> setLiftState(currentState);
     pid.resetIntegral();    
-    setControl(true);
+    // setControl(true);
 }
 
 void Lift::next() {
