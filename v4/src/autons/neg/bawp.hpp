@@ -14,6 +14,7 @@ void bAwp() {
       chass.setLin(_lin);
       chass.setMTP(_chassLin, _chassAng);
       lb.setState(LiftState::alliance);
+      intake.setJamProtection(true);
 
       //score alliance ring
 
@@ -44,14 +45,13 @@ void bAwp() {
       chass.mtpoint(ring1, {.vMin = 100, .exit = new Range(7, 10), .drift = 5, .slew = 0});
       
       // Intake second ring
-      Pt ring2 = {-32.0, -49.9};
-      chass.driveAngle(360, neg(135), {.timeout = 600, .vMin = 80});
+      Pt ring2 = {-32.0, -49.1};
+      chass.driveAngle(410, neg(135), {.timeout = 600, .vMin = 80});
       chass.driveAngle(310, neg(180), {.timeout = 300, .vMin = 60});
       chass.mtpoint(ring2, {.vMin = 50, .vMax = 70,.exit = new Range(6, 10),  .drift = 9});
-      chass.driveAngle(700, 89, {.vMin = 70, .exit = new Range(40, 10), .slew = 0});
+      chass.driveAngle(550, 89, {.vMin = 70, .exit = new Range(40, 10), .slew = 0});
       // chass.driveAngle(200, 80, {.vMin = 70, .exit = new Range(40, 10), .slew = 0});
       
-      intake.setJamProtection(true);
       
       // Go to third ring
       Pt ring3 = {23.0, -7.9};
@@ -79,18 +79,23 @@ void bAwp() {
       intake.setJamProtection(true);
       // rdoink.toggle();
       Pt corner = {89.2, 9};
-      chass.mtpoint(corner, {.timeout = 1200, .vMin = 50, .exit = new Range(5, 10), .drift = 2, .within = 2,.turnBias = 0.8});
+      chass.mtpoint(corner, {.async = true, .timeout = 1200, .vMin = 50, .exit = new Range(5, 10), .drift = 2, .within = 2,.turnBias = 0.8});
+      pros::delay(300);
+      // intake.stopOnColor(keejLib::blue, 0);
+      chass.waitUntilSettled();
       intake.setJamProtection(false);
       chass.driveAngle(-200, 45, {.timeout = 480, .vMax = 35});
       // chass.driveLin(100, -50, {});
+      // 
+      /* go for second ring
       intake.setJamProtection(true);
       tsukasa.toggle();
       intake.move(127);
       pros::delay(300);
-      intake.stopOnColor(keejLib::blue, 0);
       chass.driveAngle(890, 45, {.timeout = 680, .vMax = 60, .slew = 2.4});
       intake.setJamProtection(false);
       tsukasa.toggle();
+      */
       
       chass.driveAngle(-300, 90, {.timeout = 600, .vMin = 90});
       chass.driveAngle(-300, 150, {.timeout = 600, .vMin = 90});
@@ -100,10 +105,16 @@ void bAwp() {
       clamp.toggle();
       
       Pt ring5 = {71, -42.6};
-      if (!intake.isMoving()) tsukasa.setState(true);
-      chass.mtpoint(ring5, {.async = false, .timeout = 1000, .vMin = 30, .exit = new Range(5, 10), .drift = 5});
-      tsukasa.setState(false);
+      // if (!intake.isMoving()) tsukasa.setState(true);
+      intake.stopOnColor(keejLib::blue, 0);
+      chass.mtpoint(ring5, {.async = true, .timeout = 1000, .vMin = 30, .exit = new Range(5, 10), .drift = 5});
+      intake.move(-80);
+      pros::delay(300);
+      intake.move(40);
+      chass.waitUntilSettled();
+      // tsukasa.setState(false);
       chass.driveAngle(-300, 120, {.timeout = 400, .vMax=50});
+      intake.move(0);
       // chass.turn(90, {.timeout=300});
       
         Pt goal2 = {43, -30};
@@ -115,8 +126,8 @@ void bAwp() {
       clamp.toggle();
       
       // chass.driveAngle(-400, 180, {.vMax = 60});
-      chass.turn(225, {.async = true,.vMax = 60});
-      pros::delay(100);
+      pros::delay(250);
+      chass.turn(225, {.async = false,.timeout = 600,.vMax = 60});
       intake.move(127);
       // chass.driveAngle(500, 180, {.vMax = 50});
       worldsWinningMech.toggle();
