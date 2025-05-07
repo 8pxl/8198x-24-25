@@ -63,7 +63,7 @@ void belimsNeg() {
       //go to corner
       Pt corner1 = {-41.4, 4.6};
       worldsWinningMech.toggle();
-      chass.mtpoint(corner1, {.timeout = 1500, .exit = new Range(1, 10), .drift = 6});
+      chass.mtpoint(corner1, {.timeout = 1500, .exit = new Range(1, 10), .drift = 6, .within = 2});
       intake.move(127);
       chass.setTurn(_5);
       double ang = chass.turnTo({-50.6, 11.0}, {.timeout = 600});

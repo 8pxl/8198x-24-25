@@ -84,6 +84,7 @@ void Intake::handleAutoStop(Color col) {
   // std::cout << colorDetected << std::endl;
   if (col == colorToStop) {
     velocity = 0;
+    // pros::delay(100);
     colorToStop = none;
     if (indexRing) {
         motor->move(-127);

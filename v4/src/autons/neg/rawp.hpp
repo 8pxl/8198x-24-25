@@ -34,13 +34,13 @@ void rAwp() {
       // chass.driveAngle(-250, 20, {.async = false, .timeout = 1000, .vMin = 30, .vMax = 40, .exit = new Range(50, 10)});
       
       chass.waitUntilSettled();
-      pros::delay(200);
-      intake.move(127);
 
       // Intake first ring
       Pt ring1 = {34.1, -32.3};
       // double ringAngle = chass.turnTo(ring1, {.exit = new Range(70, 10)});
-      chass.driveAngle(600, 72, {.vMin = 60, .exit = new Range(50, 10)});
+      chass.driveAngle(600, 72, {.async = true, .vMin = 60, .exit = new Range(50, 10)});
+      pros::delay(300);
+      intake.move(127);
       chass.mtpoint(ring1, {.vMin = 100, .exit = new Range(7, 10), .drift = 5, .slew = 0});
       
       // Intake second ring

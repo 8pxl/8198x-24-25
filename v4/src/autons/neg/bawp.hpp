@@ -67,7 +67,7 @@ void bAwp() {
       
       // Go to ring
       chass.setMTP(_chassLin, _chassAngSmall);
-      chass.mtpoint({64.9, -5}, {.async = true, .timeout = 1400,.vMin = 100, .exit = new Range(5, 10),  .drift = 5,});
+      chass.mtpoint({63.9, -5}, {.async = true, .timeout = 1400,.vMin = 100, .exit = new Range(5, 10),  .drift = 5,});
       pros::delay(300);
       worldsWinningMech.toggle();
     tsukasa.toggle();
@@ -98,26 +98,30 @@ void bAwp() {
       */
       
       chass.driveAngle(-300, 90, {.timeout = 600, .vMin = 90});
+      rdoink.toggle();
       chass.driveAngle(-300, 150, {.timeout = 600, .vMin = 90});
       worldsWinningMech.toggle();
       // chass.turn(180, {.async = true, .timeout = 750});
-      // intake.move(0);
+      intake.move(0);
       clamp.toggle();
       
       Pt ring5 = {71, -42.6};
       // if (!intake.isMoving()) tsukasa.setState(true);
-      intake.stopOnColor(keejLib::blue, 0);
       chass.mtpoint(ring5, {.async = true, .timeout = 1000, .vMin = 30, .exit = new Range(5, 10), .drift = 5});
-      intake.move(-80);
-      pros::delay(300);
-      intake.move(40);
+      pros::delay(100);
+      intake.move(127);
+      intake.stopOnColor(keejLib::blue, 0);
+      // intake.move(-80);
+      // pros::delay(300);
+      // intake.move(40);
       chass.waitUntilSettled();
       // tsukasa.setState(false);
-      chass.driveAngle(-300, 120, {.timeout = 400, .vMax=50});
+      // chass.driveAngle(-300, 120, {.timeout = 400, .vMax=50});
+      rdoink.toggle();
       intake.move(0);
       // chass.turn(90, {.timeout=300});
       
-        Pt goal2 = {43, -30};
+        Pt goal2 = {43, -32};
       chass.setTurn(_135);
       chass.setTurn(_90);
       double angle = chass.turnTo(goal2, {.exit = new Range(5, 10), .reverse = true});
@@ -127,7 +131,7 @@ void bAwp() {
       
       // chass.driveAngle(-400, 180, {.vMax = 60});
       pros::delay(250);
-      chass.turn(225, {.async = false,.timeout = 600,.vMax = 60});
+      chass.turn(neg(135), {.async = false,.timeout = 600,.vMax = 60});
       intake.move(127);
       // chass.driveAngle(500, 180, {.vMax = 50});
       worldsWinningMech.toggle();

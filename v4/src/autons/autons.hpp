@@ -30,7 +30,10 @@ chass.setMTPose(_mposeLin, _mposeAng);
     
         chass.setLin(_lin);
         // chass.mtpose({{-16, 10}, h(neg(90))}, 0.8, {});
-        chass.holdPos(0, 0, 15000 , {.exit = new Range(1, 15000)});
+        // chass.holdPos(0, 0, 15000 , {.exit = new Range(1, 15000)});
+        intake.move(127);
+        intake.stopOnColor(blue, 0);
+        pros::delay(30000);
     // auto x =chass.measureOffsets(20);
     // std::cout << x.first << x.second << std::endl;
     
