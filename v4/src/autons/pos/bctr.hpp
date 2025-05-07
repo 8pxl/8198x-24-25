@@ -48,7 +48,7 @@ void bctrPos(){
     // chass.driveAngle(150, neg(156), {.timeout = 500,.exit = new Range(40, 10)});
     rdoink.toggle();
     pros::delay(200);
-    chass.driveAngle(-160, neg(143), {.timeout = 500,.exit = new Range(50, 10)});
+    chass.driveAngle(-160, neg(144), {.timeout = 500,.exit = new Range(50, 10)});
     ldoink.toggle();
     pros::delay(200);
     chass.setLin(_lin);
@@ -61,17 +61,23 @@ void bctrPos(){
     rdoink.toggle();
     // tsukasa.toggle();
     intake.move(127);
-    chass.driveAngle(700, neg(168), {.vMin = 60, .exit = new Range(150, 10)});
+    chass.driveAngle(780, neg(168), {.vMin = 60, .exit = new Range(150, 10)});
     chass.driveAngle(600, 140, { .exit = new Range(150, 10)});
     chass.mtpoint({31.4, -35.0}, {.vMin = 90, .exit = new Range(4, 10)});
-    
-    chass.driveAngle(-300, 90, {.vMin = 80, .exit = new Range(90, 10)});
-    chass.driveAngle(-250, 45, {.vMin = 30, .exit = new Range(90, 10)});
+    tsukasa.toggle();
+    // chass.driveAngle(-300, 90, {.vMin = 80, .exit = new Range(90, 10)});
+    // chass.driveAngle(-250, 45, {.vMin = 30, .exit = new Range(90, 10)});
+    chass.driveAngle(300, 0, {.vMin = 80, .exit = new Range(90, 10)});
+    chass.driveAngle(600, neg(40), {.vMin = 80, .exit = new Range(90, 10)});
+    chass.driveAngle(300, 10, {.vMin = 60, .exit = new Range(50, 10)});
+    // chass.driveAngle(-300, neg(90), {.vMin = 80, .exit = new Range(90, 10)});
+    // chass.driveAngle(-550, neg(100), {.vMin = 45, .exit = new Range(90, 10)});
+    tsukasa.toggle();
 
     //go to corner
-    Pt corner1 = {49.04, 2.9};
+    Pt corner1 = {49.1, 2.9};
     worldsWinningMech.toggle();
-    chass.mtpoint(corner1, {.timeout = 1500, .exit = new Range(1, 10),  .drift = 7, .within = 2,});
+    chass.mtpoint(corner1, {.timeout = 1500, .exit = new Range(6, 10), .drift = 7, .within = 3.5});
     intake.move(127);
     chass.setTurn(_5);
     double ang = chass.turnTo({54.8, 11.0}, {.timeout = 600});
@@ -85,8 +91,8 @@ void bctrPos(){
     // clamp.toggle();
     // worldsWinningMech.toggle();
     // chass.driveAngle(1200, neg(128), {.async = false, .timeout = 800, .vMin = 50,});
-    chass.mtpoint({-4.0, -39.0}, {.async = true, .exit = new Range(5, 10)});
-    pros::delay(500);
+    chass.mtpoint({3, -37}, {.async = true,.vMin = 80, .exit = new Range(7.7, 10)});
+    pros::delay(750);
     intake.move(0);
     chass.waitUntilSettled();
     chass.driveAngle(-400, 78, {});

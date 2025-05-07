@@ -96,7 +96,7 @@ void Intake::handleAutoStop(Color col) {
 }
 
 bool Intake::ringSensed() {
-    return (distance -> get_distance() < 33);
+    return (distance -> get_distance() < 30);
 }
 
 void Intake::handleColorSort(Color col, bool liftClear) {
