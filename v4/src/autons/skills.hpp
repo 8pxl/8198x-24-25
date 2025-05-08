@@ -16,23 +16,20 @@ void init() {
 }
 void allianceStake() {
     intake.setColor(none);
-    // lb.next();
+    lb.setState(keejLib::LiftState::lower);
     chass.setLin(_linBigger);
     chass.driveAngle(-300, 0, {.async = false, .timeout = 700, .vMin = 0, .exit = new Range(40, 20), .slew = 3});
     // chass.useAlternateOffsets(true);
     clamp.toggle();
     pros::delay(100);
-    // intake.move(127);
+
     
     // Pt redAS = {-25.7, 6.7};
     //from circle regression
     // Pt redAS = {-25.956166554408174, 7.077167481154157};
-    Pt redAS = {-25.8, 5.6};
+    Pt redAS = {-24.8, 7.6};
     chass.turnTo(redAS, {.timeout = 600, .exit = new Range(3, 30)});
     intake.move(0);
-    lb.next();
-    lb.next();
-    lb.next();
     //10.9 < x
     chass.moveWithin(redAS,  13.6, {.timeout = 1500, .vMin=0, .exit = new Range(5, 10)});
     lb.next();
@@ -45,6 +42,7 @@ void goal1() {
     chass.setLin(_lin);
     
     Pt ring1 = {-3.9, -38};
+    intake.move(127);
     chass.turnTo(ring1, {.timeout = 500, .exit = new Range(4, 30)});
     intakeMotor.move(127);
     // chass.turnTo(ring1, {.timeout = 700, .exit = new Range(1, 30)});
@@ -225,7 +223,7 @@ void corner1() {
     chass.setTurn(_5);
 
     intake.move(0);
-    chass.wallReset(3, 10, false);
+    // chass.wallReset(3, 10, false);
     // clamp.toggle();
     // chass.driveAngle(1700, neg(88), {.timeout = 1000, .exit = new Range(30, 20)});
     // chass.mtpoint({-16.5, -125}, {.timeout = 1200, .drift = 5});
@@ -359,7 +357,7 @@ void goal2() {
     chass.setAng(_angBig);
     chass.driveAngle(400, 90, {.timeout = 400});
     chass.setAng(_ang);
-    chass.wallReset(1, 10, false);
+    // chass.wallReset(1, 10, false);
     intake.stopOnColor(red, 1300);
 }
 

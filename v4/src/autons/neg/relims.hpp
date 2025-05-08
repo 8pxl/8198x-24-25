@@ -27,7 +27,7 @@ void relimsNeg() {
       chass.driveAngle(-200, neg(43), { .timeout = 400, .vMin = 100,});
       lb.setState(LiftState::idle);
 
-      chass.mtpoint({9.9, -15.02}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.96
+      chass.mtpoint({9.9, -15.02}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.8
       });
       // chass.driveAngle(-1200, neg(30), {.async = false, .timeout = 1000, .vMin = 70, .vMax = 80, .exit = new Range(100, 10)});
       chass.setAng(_angSmall);

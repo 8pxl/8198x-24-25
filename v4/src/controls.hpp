@@ -30,6 +30,10 @@ void driver() {
         clamp.toggle();
         // worldsWinningMech.toggle();
     }
+    if (state[NX]) {
+        lb.startControl();
+        intake.startControl();
+    }
         // if (state[NL1]) lb.next();
         // if (state[NL2]) lb.prev();
     //     if (state[NR2]) lb.setState(keejLib::LiftState::idle);

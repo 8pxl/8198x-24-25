@@ -22,7 +22,7 @@ void belimsNeg() {
 
       // chass.moveWithin(allianceStake, 14.7, {});
       // chass.driveAngle(180, 43, {.timeout = 700});
-      chass.driveLin(700, 28, {});
+      chass.driveLin(700, 26, {});
       chass.driveAngle(-200, 43, { .timeout = 400, .vMin = 100,});
       lb.setState(LiftState::idle);
 

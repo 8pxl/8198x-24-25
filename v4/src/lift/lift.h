@@ -19,6 +19,7 @@ class Lift {
         void startControl();
         void spin(double voltage);
         void setControl(bool on);
+        void calibrate();
     
     private:
         pros::Motor *motor;
@@ -70,8 +71,6 @@ class Lift {
         const int snapRange = 60;
         
        	LiftState currentState;
-
-        void calibrate();
         void control();
         void updatePID(double error);
 };

@@ -20,13 +20,13 @@ void bctrPos(){
     
     // chass.moveWithin(allianceStake, 14.7, {});
     // chass.driveAngle(180, neg(43), {.timeout = 700});
-    chass.driveLin(700, 26, {});
+    chass.driveLin(700, 27.5, {});
     chass.driveAngle(-200, neg(43), { .timeout = 400, .vMin = 100,});
     lb.setState(LiftState::idle);
     
     // chass.mtpoint({7.3, -19.6}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 8, .turnBias = 0.8
     // });
-        chass.mtpoint({7.1, -19.6}, {.timeout = 1100, .vMin = 50, .exit = new Range(3, 10), .drift = 8, .turnBias = 0.74});
+        chass.mtpoint({7.1, -19.6}, {.timeout = 1100, .vMin = 60, .exit = new Range(3, 10), .drift = 8, .turnBias = 0.74});
 
     // pros::delay(100000);
     // chass.mtpose({{8.0, -19.6}, h(0)}, 0.5, {.timeout = 1100, .vMin = 60,.settleRange = 5, .exit = new Range(3, 10), .drift = 6,});
@@ -40,7 +40,7 @@ void bctrPos(){
     chass.driveAngle(320, neg(80), {.vMin = 70, .exit = new Range(100, 10)});
     // tsukasa.toggle();
     // chass.mtpoint({-11.03, -45.2}, {});
-    chass.mtpoint({-12.7, -45.3}, {});
+    chass.mtpoint({-12.7, -45.3}, {.timeout = 1000, .vMin = 20});
 
     chass.setTurn(_5);
     // chass.setLin(_linBigger);
@@ -48,7 +48,7 @@ void bctrPos(){
     // chass.driveAngle(150, neg(156), {.timeout = 500,.exit = new Range(40, 10)});
     rdoink.toggle();
     pros::delay(200);
-    chass.driveAngle(-160, neg(144), {.timeout = 500,.exit = new Range(50, 10)});
+    chass.driveAngle(-160, neg(143), {.timeout = 400,.exit = new Range(50, 10)});
     ldoink.toggle();
     pros::delay(200);
     chass.setLin(_lin);
@@ -64,26 +64,30 @@ void bctrPos(){
     chass.driveAngle(780, neg(168), {.vMin = 60, .exit = new Range(150, 10)});
     chass.driveAngle(600, 140, { .exit = new Range(150, 10)});
     chass.mtpoint({31.4, -35.0}, {.vMin = 90, .exit = new Range(4, 10)});
-    tsukasa.toggle();
-    // chass.driveAngle(-300, 90, {.vMin = 80, .exit = new Range(90, 10)});
-    // chass.driveAngle(-250, 45, {.vMin = 30, .exit = new Range(90, 10)});
-    chass.driveAngle(300, 0, {.vMin = 80, .exit = new Range(90, 10)});
-    chass.driveAngle(600, neg(40), {.vMin = 80, .exit = new Range(90, 10)});
-    chass.driveAngle(300, 10, {.vMin = 60, .exit = new Range(50, 10)});
+    // tsukasa.toggle();
+    chass.driveAngle(-300, 90, {.vMin = 80, .exit = new Range(90, 10)});
+    chass.driveAngle(-250, 30, {.vMin = 60, .exit = new Range(90, 10)});
+    // 
+    // chass.driveAngle(300, 0, {.vMin = 80, .exit = new Range(90, 10)});
+    // chass.driveAngle(680, neg(40), {.vMin = 90, .exit = new Range(90, 10)});
+    // chass.driveAngle(300, 10, {.vMin = 70, .exit = new Range(50, 10)});
+    
     // chass.driveAngle(-300, neg(90), {.vMin = 80, .exit = new Range(90, 10)});
     // chass.driveAngle(-550, neg(100), {.vMin = 45, .exit = new Range(90, 10)});
-    tsukasa.toggle();
+    // tsukasa.toggle();
 
     //go to corner
     Pt corner1 = {49.1, 2.9};
     worldsWinningMech.toggle();
-    chass.mtpoint(corner1, {.timeout = 1500, .exit = new Range(6, 10), .drift = 7, .within = 3.5});
+    chass.mtpoint(corner1, {.timeout = 1500, .exit = new Range(7.9, 10), .drift = 7, .within = 4.1});
     intake.move(127);
     chass.setTurn(_5);
     double ang = chass.turnTo({54.8, 11.0}, {.timeout = 600});
     chass.setTurn(_90);
     intakeCorner(ang, 45);
-    pros::delay(200);
+    // pros::delay(200);
+        chass.driveAngle(400, neg(10), {.timeout = 200});
+
     // chass.driveAngle(-300, 45, {.timeout =300, .vMin = 100});
     // // rdoink.toggle();
     // chass.driveAngle(200, neg(135), {.timeout =200, .vMin = 100, .exit = new Range(150, 10),});
@@ -91,10 +95,13 @@ void bctrPos(){
     // clamp.toggle();
     // worldsWinningMech.toggle();
     // chass.driveAngle(1200, neg(128), {.async = false, .timeout = 800, .vMin = 50,});
-    chass.mtpoint({3, -37}, {.async = true,.vMin = 80, .exit = new Range(7.7, 10)});
+    chass.driveAngle(-900, 45, {.timeout = 800, .vMin = 110});
+    chass.mtpoint({5, -38}, {.async = true,.vMin = 90, .exit = new Range(7.7, 10)});
     pros::delay(750);
     intake.move(0);
     chass.waitUntilSettled();
-    chass.driveAngle(-400, 78, {});
+    // chass.driveAngle(-400, 78, {});
+    chass.driveAngle(-600, 90, {});
+
     // worldsWinningMech.toggle();
 }

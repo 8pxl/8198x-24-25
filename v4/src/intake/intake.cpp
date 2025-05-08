@@ -96,7 +96,7 @@ void Intake::handleAutoStop(Color col) {
 }
 
 bool Intake::ringSensed() {
-    return (distance -> get_distance() < 30);
+    return (distance -> get_distance() < 26);
 }
 
 void Intake::handleColorSort(Color col, bool liftClear) {
@@ -144,7 +144,8 @@ bool Intake::isJammed(double actual, int tolerance) {
 void Intake::handleJamProtection(bool liftClear, RobotState * s) {
     // std::cout << "intake jammed! " <<std::endl;
     if (s->getLiftState() == LiftState::one && autoLift && ringSeen) {
-      motor -> move(2);
+      motor -> move(-25);
+      pros::delay(100);
       s->setLiftState(LiftState::two);
       pros::delay(400);
       jamTimer.reset();

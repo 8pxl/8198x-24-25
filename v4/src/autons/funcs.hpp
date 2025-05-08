@@ -38,7 +38,7 @@ void turnToRing(int timeout) {
 
 void intakeCorner(double ang1, double ang2) {
     intake.move(127);
-    chass.driveAngle(1190, ang1, {.timeout = 700,.vMin = 55, .vMax = 60, .slew = 3});
+    chass.driveAngle(1190, ang1, {.timeout = 700,.vMin = 64, .vMax = 66, .slew = 3});
     intake.setJamProtection(false);
     chass.driveAngle(-189, ang1, {.timeout = 480, .vMax = 35});
     intake.setJamProtection(true);

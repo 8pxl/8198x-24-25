@@ -27,6 +27,9 @@ void Lift::startControl() {
             }
         }};
     }
+    else {
+        calibrate();
+    }
     pros::delay(20);
 }
 
