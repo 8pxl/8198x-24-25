@@ -69,6 +69,7 @@ void relimsNeg() {
       bool touch = true;
       if(touch) {
           pros::delay(600);
+          intake.stopOnColor(blue, 0);
           ang = chass.turnTo({-22.0, -34.0}, {.timeout = 1400});
         lb.setState(keejLib::LiftState::lower);
         worldsWinningMech.toggle();

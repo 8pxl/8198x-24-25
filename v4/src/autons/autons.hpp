@@ -15,6 +15,8 @@
 #include "pos/rctrwall.hpp"
 #include "pos/bctr.hpp"
 #include "pos/bctrwall.hpp"
+#include "pos/rrrush.hpp"
+#include "pos/brrush.hpp"
 
 
 using namespace robot;
@@ -73,5 +75,5 @@ void triangulatePoint() {
 
 // keejLib::Autons redAutons = {{test, skills, relimsNeg, rwallNeg, rAwp, rwallNeg, rctrPos}, {"test", "skills", "elims neg", "wall neg", "awp", "wall pos", "rings pos"}};
 // keejLib::Autons blueAutons = {{belimsNeg, bwallNeg, bAwp, bwallNeg, bctrPos, bctrwallPos}, {"blue elims neg", "blue wall neg", "blue awp", "blue pos", "blue rings"}};
-keejLib::Autons redAutons = {{test, skills, relimsNeg, rAwp, rctrPos, rctrwallPos}, {"test", "skills", "6 ring neg", "awp", "rings pos", "wall pos"}};
-keejLib::Autons blueAutons = {{belimsNeg, bAwp, bctrPos, bctrwallPos}, {"blue elims neg", "blue awp", "rings pos", "wall pos"}};
+keejLib::Autons redAutons = {{test, skills, relimsNeg, rAwp, rctrPos, rctrwallPos, rrrushPos}, {"test", "skills", "6 ring neg", "awp", "rings pos", "wall pos", "pos rings rush"}};
+keejLib::Autons blueAutons = {{belimsNeg, bAwp, bctrPos, bctrwallPos, brrushPos}, {"blue elims neg", "blue awp", "rings pos", "wall pos", "pos rings rush"}};
