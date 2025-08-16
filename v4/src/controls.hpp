@@ -10,7 +10,13 @@
 using namespace robot;
 
 void driver() {
-    dt.spinVolts(cont.drive(1, keejLib::Controller::driveMode::arcade));
+dt.spinVolts(cont.drive(1, keejLib::Controller::driveMode::arcade));
+    // if (glb::color == blue) {
+    //     dt.spinVolts(cont.drive(1, keejLib::Controller::driveMode::arcade));
+    // }
+    // else {
+    //     dt.spinVolts(cont.drive(1, keejLib::Controller::driveMode::tank));
+    // }
     std::vector<bool> state = cont.getAll(ALLBUTTONS);
     
     if (state[RIGHT]) {
@@ -31,8 +37,9 @@ void driver() {
         // worldsWinningMech.toggle();
     }
     if (state[NX]) {
-        lb.startControl();
-        intake.startControl();
+        lb.calibrate();
+        // lb.startControl();
+        // intake.startControl();
     }
         // if (state[NL1]) lb.next();
         // if (state[NL2]) lb.prev();

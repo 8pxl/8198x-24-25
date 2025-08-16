@@ -15,8 +15,8 @@
 #include "pos/rctrwall.hpp"
 #include "pos/bctr.hpp"
 #include "pos/bctrwall.hpp"
-#include "pos/rrrush.hpp"
 #include "pos/brrush.hpp"
+#include "pos/rrrush.hpp"
 
 
 using namespace robot;

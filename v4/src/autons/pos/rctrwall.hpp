@@ -45,7 +45,7 @@ void rctrwallPos(){
     chass.mtpoint({11.9, -46.3}, {.settleRange = 6, .exit = new Range(3, 10),.drift = 4});
     chass.setTurn(_5);
     // chass.setLin(_linBigger);
-    chass.driveAngle(150, 165, {.timeout = 470,.exit = new Range(40, 10)});
+    chass.driveAngle(150, 162, {.timeout = 470,.exit = new Range(40, 10)});
     ldoink.toggle();
     pros::delay(200);
     chass.driveAngle(-160, 143, {.timeout = 400,.exit = new Range(50, 10)});
@@ -71,7 +71,7 @@ void rctrwallPos(){
     //go to corner
     Pt corner1 = {-48.5, 2.3};
     worldsWinningMech.toggle();
-    chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(7, 10), .drift = 8});
+    chass.mtpoint(corner1, {.timeout = 1300, .exit = new Range(7, 10), .drift = 8, .within = 7,});
     intake.move(127);
     chass.setTurn(_5);
     double ang = chass.turnTo({-55.9, 11.0}, {.timeout = 600});

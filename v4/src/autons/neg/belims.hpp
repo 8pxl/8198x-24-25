@@ -71,7 +71,7 @@ void belimsNeg() {
       intakeCorner(ang, neg(45));
 
       
-      bool touch = true;
+      bool touch = false;
       if(touch) {
           pros::delay(600);
           intake.stopOnColor(red, 0);
@@ -90,6 +90,10 @@ void belimsNeg() {
           worldsWinningMech.toggle();
           chass.mtpoint(ring3, {.drift = 18, .within = 5});
           tsukasa.toggle();
+          ldoink.toggle();
+          chass.driveAngle(1900, 90, {.async = true, .timeout = 1500, .slew = 0});
+          chass.waitUntilSettled();
+          chass.turn(180, {.timeout = 500});
       }
       pros::delay(2000);
 

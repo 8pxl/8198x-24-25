@@ -27,7 +27,7 @@ void relimsNeg() {
       chass.driveAngle(-200, neg(43), { .timeout = 400, .vMin = 100,});
       lb.setState(LiftState::idle);
 
-      chass.mtpoint({9.9, -15.02}, {.timeout = 1100, .vMin = 70, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.8
+      chass.mtpoint({9.5, -15.02}, {.timeout = 1100, .vMin = 65, .exit = new Range(3, 10), .drift = 6, .turnBias = 0.8
       });
       // chass.driveAngle(-1200, neg(30), {.async = false, .timeout = 1000, .vMin = 70, .vMax = 80, .exit = new Range(100, 10)});
       chass.setAng(_angSmall);
@@ -44,7 +44,7 @@ void relimsNeg() {
       double ringAngle = chass.turnTo(ring1, {.exit = new Range(3, 10)});
       chass.mtpoint(ring1, {.exit = new Range(5, 10), .drift = 9, .slew = 0});
       pros::delay(100);
-      chass.driveAngle(700, 90, {.exit = new Range(40, 10), .slew = 3});
+      chass.driveAngle(800, 90, {.timeout = 700, .exit = new Range(40, 10), .slew = 3});
       
       //intake second ring
       chass.driveAngle(-700, 110, {.vMin = 70, .exit = new Range(200, 10), .slew = 0});
@@ -66,13 +66,14 @@ void relimsNeg() {
       intakeCorner(ang, 45);
 
       
-      bool touch = true;
+      bool touch = false;
       if(touch) {
           pros::delay(600);
           intake.stopOnColor(blue, 0);
           ang = chass.turnTo({-22.0, -34.0}, {.timeout = 1400});
         lb.setState(keejLib::LiftState::lower);
         worldsWinningMech.toggle();
+        rdoink.toggle();
         chass.driveAngle(1900, ang, {.async = true, .timeout = 1500, .slew = 0});
         chass.waitUntilSettled();
         chass.turn(neg(95), {.timeout = 500});
@@ -84,7 +85,11 @@ void relimsNeg() {
           tsukasa.toggle();
           worldsWinningMech.toggle();
           chass.mtpoint(ring3, {.drift = 18, .within = 5});
+          pros::delay(200);
+          rdoink.toggle();
           tsukasa.toggle();
+          chass.driveAngle(1800, neg(88), {});
+          chass.turn(neg(170), {});
       }
       pros::delay(2000);
 
